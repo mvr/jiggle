@@ -1,15 +1,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "PointMass.h"
+#include "Particle.h"
 #include "Vector2.h"
 
-jgPointMass jgPointMassNew(float mass, jgVector2 pos)
+jgParticle jgParticleNew(float mass, jgVector2 pos)
 {
-     return (jgPointMass){mass, pos, jgVector2Zero(), jgVector2Zero()};
+     return (jgParticle){mass, pos, jgVector2Zero(), jgVector2Zero()};
 }
 
-void jgPointMassIntegrate(jgPointMass *point, float elapsed)
+void jgParticleIntegrate(jgParticle *point, float elapsed)
 {
      if(point->mass != INFINITY)
      {

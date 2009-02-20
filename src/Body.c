@@ -3,7 +3,7 @@
 #include <math.h>
 
 #include "Body.h"
-#include "PointMass.h"
+#include "Particle.h"
 #include "Spring.h"
 #include "Misc.h"
 
@@ -38,7 +38,7 @@ jgBody *jgBodyInit(jgBody       *body,
 
      body->numOfPoints = numOfPoints;
      body->baseShape   = calloc(numOfPoints, sizeof(jgVector2));
-     body->pointMasses = calloc(numOfPoints, sizeof(jgPointMass));
+     body->pointMasses = calloc(numOfPoints, sizeof(jgParticle));
 
      for(int i = 0; i < numOfPoints; i++)
      {
@@ -50,7 +50,7 @@ jgBody *jgBodyInit(jgBody       *body,
 
      for(int i = 0; i < numOfPoints; i++)
      {
-          body->pointMasses[i] = jgPointMassNew(massPerPoint, body->globalShape[i]);
+          body->pointMasses[i] = jgParticleNew(massPerPoint, body->globalShape[i]);
      }
 
      body->edgeSpringK = 300;
@@ -163,7 +163,7 @@ void jgBodyIntegrate(jgBody *body, float elapsed)
           return;
 
      for(int i = 0; i < body->numOfPoints; i++)
-          jgPointMassIntegrate(&body->pointMasses[i], elapsed);
+          jgParticleIntegrate(&body->pointMasses[i], elapsed);
 }
 
 void jgBodyUpdateAABB(jgBody *body, float elapsed, bool force)

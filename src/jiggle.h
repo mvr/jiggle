@@ -9,7 +9,7 @@
 #include "Body.h"
 #include "List.h"
 #include "Misc.h"
-#include "PointMass.h"
+#include "Particle.h"
 #include "PressureBody.h"
 #include "SpringBody.h"
 #include "Vector2.h"

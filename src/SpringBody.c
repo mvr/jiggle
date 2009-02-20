@@ -34,8 +34,8 @@ void jgSpringBodyAddSpring(jgBody *body, int springA, int springB, int k, int da
 {
      jgSpringBody *springbody = (jgSpringBody *)body;
 
-     jgPointMass *a = &body->pointMasses[springA];
-     jgPointMass *b = &body->pointMasses[springB];
+     jgParticle *a = &body->pointMasses[springA];
+     jgParticle *b = &body->pointMasses[springB];
      float dist = jgVector2DistanceBetween(a->position, b->position);
 
      jgSpring *spring = jgSpringNew(a, b, dist, k, damp);

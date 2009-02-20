@@ -7,15 +7,15 @@
 
 #include "Vector2.h"
 
-typedef struct jgPointMass
+typedef struct jgParticle
 {
      float     mass;
      jgVector2 position;
      jgVector2 velocity;
      jgVector2 force;
-} jgPointMass;
+} jgParticle;
 
-extern jgPointMass       jgPointMassNew(float mass, jgVector2 pos);
-extern void              jgPointMassIntegrate(jgPointMass *point, float elapsed);
+extern jgParticle        jgParticleNew(float mass, jgVector2 pos);
+extern void              jgParticleIntegrate(jgParticle *point, float elapsed);
 
 #endif

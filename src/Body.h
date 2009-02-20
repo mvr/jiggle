@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #include "Vector2.h"
-#include "PointMass.h"
+#include "Particle.h"
 #include "AABB.h"
 #include "Misc.h"
 
@@ -28,7 +28,7 @@ typedef struct jgBody
      void (*destroy)(struct jgBody *body);
      void (*accumulateForces)(struct jgBody *body);
 
-     jgPointMass        *pointMasses;
+     jgParticle         *pointMasses;
      jgVector2          *baseShape;
      jgVector2          *globalShape;
      int                 numOfPoints;

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "Spring.h"
-#include "PointMass.h"
+#include "Particle.h"
 #include "Vector2.h"
 
 static jgVector2 jgSpringCalculateForce(jgVector2 posA,
@@ -25,8 +25,8 @@ static jgVector2 jgSpringCalculateForce(jgVector2 posA,
      return jgVector2Multiply(BtoA, (dist * springK) - (totalRelVel * damping));
 }
 
-jgSpring *jgSpringNew(jgPointMass *a,
-                      jgPointMass *b,
+jgSpring *jgSpringNew(jgParticle *a,
+                      jgParticle *b,
                       float d,
                       float k,
                       float damp)
@@ -54,7 +54,7 @@ void jgSpringExert(jgSpring *spring)
                           spring->damping);
 }
 
-void jgSpringDragTowards(jgPointMass *mass, jgVector2 point, float d, float k, float damp)
+void jgSpringDragTowards(jgParticle *mass, jgVector2 point, float d, float k, float damp)
 {
      jgVector2 force = jgSpringCalculateForce(mass->position,
                                               mass->velocity,
@@ -67,7 +67,7 @@ void jgSpringDragTowards(jgPointMass *mass, jgVector2 point, float d, float k, f
      mass->force = jgVector2Add(mass->force, force);
 }
 
-void jgSpringDragTogether(jgPointMass *massA, jgPointMass *massB, float d, float k, float damp)
+void jgSpringDragTogether(jgParticle *massA, jgParticle *massB, float d, float k, float damp)
 {
      jgVector2 force = jgSpringCalculateForce(massA->position,
                                               massA->velocity,

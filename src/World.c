@@ -149,9 +149,9 @@ void jgWorldHandleCollisions(jgWorld *world)
      jgCollisionInfo *info;
      JG_LIST_FOREACH(world->collisions, info)
      {
-          jgPointMass A  = info->bodyA->pointMasses[info->bodyApm];
-          jgPointMass B1 = info->bodyB->pointMasses[info->bodyBpmA];
-          jgPointMass B2 = info->bodyB->pointMasses[info->bodyBpmB];
+          jgParticle A  = info->bodyA->pointMasses[info->bodyApm];
+          jgParticle B1 = info->bodyB->pointMasses[info->bodyBpmA];
+          jgParticle B2 = info->bodyB->pointMasses[info->bodyBpmB];
 
           jgVector2 bVel = jgVector2Multiply(jgVector2Add(B1.velocity, B2.velocity), 0.5);
           jgVector2 relVel = jgVector2Subtract(A.velocity, bVel);
