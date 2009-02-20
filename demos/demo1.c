@@ -3,43 +3,11 @@
 #include <allegro.h>
 
 #include "jiggle.h"
-
-BITMAP *buffer;
-
-int random_color()
-{
-     return makecol32(rand() % 256, rand() % 256, rand() % 256);
-}
-
-void flip()
-{
-     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-     clear_bitmap(buffer);
-}
-
-jgVector2 world2screen(jgVector2 in)
-{
-     return jgVector2Add(jgVector2Multiply(in, 20), jgv(320, 240));
-}
-
-jgVector2 screen2world(jgVector2 in)
-{
-     return jgVector2Divide(jgVector2Subtract(in, jgv(320, 240)), 20);
-}
+#include "common.h"
 
 int main()
 {
-     // Allegro setup
-     allegro_init();
-
-     install_keyboard();
-     install_mouse();
-     show_os_cursor(MOUSE_CURSOR_ARROW);
-
-     set_color_depth(32);
-     set_gfx_mode(GFX_AUTODETECT_WINDOWED, 640, 480, 0, 0);
-
-     buffer = create_bitmap(SCREEN_W, SCREEN_H);
+     setup();
 
      // Jiggle setup
 
@@ -64,8 +32,6 @@ int main()
 
      while (!key[KEY_ESC]) {
           flip();
-          vsync();
-	  for(long i=0;i<1000000;i++);
 
           if(key[KEY_A] && !a_was_pressed)
           {
@@ -163,37 +129,10 @@ int main()
           b_was_pressed = key[KEY_B];
           c_was_pressed = key[KEY_C];
 
-          circle(buffer, 10, 10, 10, random_color());
-
           for(int i = 0; i < 10; i++)
                jgWorldUpdate(world, 1 / 600.0f);
 
-          jgBody *currentBody;
-          JG_LIST_FOREACH(world->bodies, currentBody)
-          {
-/*                int *points = malloc(sizeof(int) * currentBody-> numOfPoints * 2); */
-/*                for(int i = 0; i < currentBody->numOfPoints; i++) */
-/*                { */
-/*                     jgVector2 fixedpoint = world2screen(currentBody->pointMasses[i].position); */
-/*                     points[i * 2]     = (int)fixedpoint.x; */
-/*                     points[i * 2 + 1] = (int)fixedpoint.y; */
-
-/*                } */
-/*                polygon(buffer, currentBody->numOfPoints, points, makecol32(, 255, 255)); */
-/*                free(points); */
-
-               for(int i = 0; i < currentBody->numOfPoints; i++)
-               {
-                    jgVector2 current = world2screen(currentBody->pointMasses[i].position);
-                    jgVector2 next = world2screen(currentBody->pointMasses[i == currentBody->numOfPoints - 1 ? 0 : i + 1].position);
-                    line(buffer,
-                         current.x,
-                         current.y,
-                         next.x,
-                         next.y,
-                         makecol32(255, 255, 255));
-               }
-          }
+          draw_all_bodies(world);
      }
      jgWorldFreeBodies(world);
      jgWorldFree(world);
