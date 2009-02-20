@@ -4,9 +4,14 @@
 #include "Particle.h"
 #include "Vector2.h"
 
-jgParticle jgParticleNew(float mass, jgVector2 pos)
+jgParticle *jgParticleNew(float mass, jgVector2 pos)
 {
-     return (jgParticle){mass, pos, jgVector2Zero(), jgVector2Zero()};
+     jgParticle *particle = malloc(sizeof(jgParticle));
+     particle->mass = mass;
+     particle->position = pos;
+     particle->velocity = jgVector2Zero();
+     particle->force = jgVector2Zero();
+     return particle;
 }
 
 void jgParticleIntegrate(jgParticle *point, float elapsed)
