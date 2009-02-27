@@ -278,7 +278,7 @@ void jgWorldUpdate(jgWorld *world, float elapsed)
      jgBody *b;
      JG_LIST_FOREACH(world->bodies, a)
      {
-          JG_LIST_FOREACH_PAIR(b)
+          JG_LIST_FOREACH_COMBO(b)
           {
                if(!a->isActive || !b->isActive)
                     continue;

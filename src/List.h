@@ -37,7 +37,7 @@ extern bool     jgListHasLoop(jgList *list);
 extern void     jgListAdd(jgList *list, void *data);
 extern void     jgListRemove(jgList *list, void *data);
 
-// These are both kinda clunky but they'll do for now.
+// These are clunky but they'll do for now.
 
 #define JG_LIST_FOREACH(list, var)                              \
      var = NULL;                                                \
@@ -46,7 +46,18 @@ extern void     jgListRemove(jgList *list, void *data);
          _c_ != NULL;                                           \
          _c_ = _c_->next, var = (_c_ == NULL) ? NULL : _c_->data)
 
-#define JG_LIST_FOREACH_PAIR(b)                                         \
+#define JG_LIST_FOREACH_PAIR(list, var, var2)                           \
+     var = NULL;                                                        \
+     if(list->length > 1) var = list->head->data, var2 = list->head->next->data; \
+     for(jgListNode *_c_ = list->head;                                  \
+         _c_ != NULL;                                                   \
+         _c_ = _c_->next,                                               \
+              var = (_c_ == NULL) ? NULL : _c_->data,                   \
+              var2 = (_c_ == NULL) ? NULL :                             \
+              ((_c_->next == NULL) ? jgListGet(list, 0)  : _c_->next->data) \
+          )
+
+#define JG_LIST_FOREACH_COMBO(b)                                        \
      b = NULL;                                                          \
      if(_c_->next != NULL) b = _c_->next->data;                         \
      for(jgListNode *_c2_ = _c_->next;                                  \
@@ -56,7 +67,7 @@ extern void     jgListRemove(jgList *list, void *data);
 
 // Can pair with themselves.
 
-/* #define JG_LIST_FOREACH_PAIR(b)                                         \ */
+/* #define JG_LIST_FOREACH_COMBO(b)                                         \ */
 /*      b = NULL;                                                          \ */
 /*      if(_c_ != NULL) b = _c_->data;                                     \ */
 /*      for(jgListNode *_c2_ = _c_;                                        \ */

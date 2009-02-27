@@ -53,20 +53,29 @@ test(ListForeach)
      void *k;
      JG_LIST_FOREACH(foo, j)
      {
-          assert(j == (void *)i);
+          assert((int)j == i);
           i++;
      }
 
      i = 0;
      JG_LIST_FOREACH(foo, j)
      {
-          JG_LIST_FOREACH_PAIR(k)
+          JG_LIST_FOREACH_COMBO(k)
           {
                i++;
           }
      }
 
-     assert(i == 10);
+     assert(i == 6);
+
+     JG_LIST_FOREACH_PAIR(foo, j, k)
+     {
+          if((int)j == 4) 
+               assert((int)k == 1);
+          else
+               assert((int)k == (int)j + 1);
+     }
+
 
      jgListFree(foo);
 
@@ -75,5 +84,6 @@ test(ListForeach)
      {
           assert(false); // List is empty, shouldn't get here.
      }
+
      jgListFree(foo);
 }
