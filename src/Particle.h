@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __POINTMASS_H__
-#define __POINTMASS_H__
+#ifndef __PARTICLE_H__
+#define __PARTICLE_H__
 
 #include "Vector2.h"
 
