@@ -280,10 +280,11 @@ void jgWorldUpdate(jgWorld *world, float elapsed)
      {
           JG_LIST_FOREACH_COMBO(b)
           {
-               if(!a->isActive || !b->isActive)
-                    continue;
 
                if((!a->bitmaskX & b->bitmaskX) && (!a->bitmaskY & b->bitmaskY))
+                    continue;
+
+               if(!a->isActive || !b->isActive)
                     continue;
 
                if(!(a->layers & b->layers))
