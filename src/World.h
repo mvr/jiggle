@@ -40,11 +40,15 @@ typedef struct jgWorld
 
      float           damping;
      jgVector2       gravity;
+
+     float           ticksPerSecond;
+     float           currentTime;
+     float           timeAccumulator;
 } jgWorld;
 
 extern jgWorld          *jgWorldAlloc();
-extern jgWorld          *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max);
-extern jgWorld          *jgWorldNew(jgVector2 min, jgVector2 max);
+extern jgWorld          *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
+extern jgWorld          *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
 extern void              jgWorldFree(jgWorld *world);
 extern void              jgWorldFreeBodies(jgWorld *world);
 
@@ -54,7 +58,8 @@ extern void              jgWorldAddBody(jgWorld *world, jgBody *body);
 extern void              jgWorldRemoveBody(jgWorld *world, jgBody *body);
 
 extern void              jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b);
-extern void              jgWorldUpdate(jgWorld *world, float elapsed);
+extern void              jgWorldStep(jgWorld *world, float timestep);
+extern void              jgWorldUpdate(jgWorld *world, float newTime);
 
 extern jgBody           *jgWorldBodyContaining(jgWorld *world, jgVector2 point);
 
