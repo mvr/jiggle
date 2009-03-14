@@ -35,7 +35,7 @@ jgWorld *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPe
 
 jgWorld *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
 {
-     return jgWorldInit(jgWorldAlloc(), min, max, ticksPerSecond);
+     return jgWorldInit(jgWorldAlloc(), min, max, ticksPerSecond, currentTime);
 }
 
 void jgWorldFree(jgWorld *world)

@@ -48,7 +48,7 @@ typedef struct jgWorld
 
 extern jgWorld          *jgWorldAlloc();
 extern jgWorld          *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
-extern jgWorld          *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
+extern jgWorld          *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
 extern void              jgWorldFree(jgWorld *world);
 extern void              jgWorldFreeBodies(jgWorld *world);
 
