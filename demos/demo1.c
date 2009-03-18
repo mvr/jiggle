@@ -12,7 +12,9 @@ int main()
      // Jiggle setup
 
      jgWorld *world = jgWorldNew(jgv(-20, -20),
-                                 jgv(20, 20));
+                                 jgv(20, 20),
+                                 100,
+                                 secondsElapsed());
 
      world->penetrationThreshold = 1;
      world->gravity = jgv(0, 10);
@@ -129,8 +131,7 @@ int main()
           b_was_pressed = key[KEY_B];
           c_was_pressed = key[KEY_C];
 
-          for(int i = 0; i < 10; i++)
-               jgWorldUpdate(world, 1 / 600.0f);
+          jgWorldUpdate(world, secondsElapsed());
 
           draw_all_bodies(world);
      }

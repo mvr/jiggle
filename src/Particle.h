@@ -15,7 +15,7 @@ typedef struct jgParticle
      jgVector2 force;
 } jgParticle;
 
-extern jgParticle       *jgParticleNew(float mass, jgVector2 pos);
+extern jgParticle        jgParticleNew(float mass, jgVector2 pos);
 extern void              jgParticleIntegrate(jgParticle *point, float elapsed);
 
 #endif

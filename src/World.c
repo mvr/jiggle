@@ -9,31 +9,6 @@
 #include "List.h"
 #include "AABB.h"
 
-static void jgWorldUpdateBodyBitmask(jgWorld *world, jgBody *body)
-{
-     jgAABB box = body->aabb;
-
-     int minX = (int)floor((box.min.x - world->limits.min.x) / world->gridstep.x);
-     int maxX = (int)floor((box.max.x - world->limits.min.x) / world->gridstep.x);
-
-     minX = minX % 32;
-     maxX = maxX % 32;
-
-     int minY = (int)floor((box.min.y - world->limits.min.y) / world->gridstep.y);
-     int maxY = (int)floor((box.max.y - world->limits.min.y) / world->gridstep.y);
-
-     minY = minY % 32;
-     maxY = maxY % 32;
-
-     JG_BITMASK_CLEAR(body->bitmaskX);
-     for (int i = minX; i <= maxX; i++)
-          JG_BITMASK_SET_ON(body->bitmaskX, i);
-
-     JG_BITMASK_CLEAR(body->bitmaskY);
-     for (int i = minY; i <= maxY; i++)
-          JG_BITMASK_SET_ON(body->bitmaskY, i);
-}
-
 jgWorld *jgWorldAlloc()
 {
      jgWorld *world = malloc(sizeof(jgWorld));
@@ -42,7 +17,7 @@ jgWorld *jgWorldAlloc()
      return world;
 }
 
-jgWorld *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max)
+jgWorld *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
 {
      jgWorldSetSize(world, min, max);
 
@@ -51,12 +26,16 @@ jgWorld *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max)
      world->damping = 0.999;
      world->gravity = jgVector2Zero();
 
+     world->ticksPerSecond = ticksPerSecond;
+     world->currentTime = currentTime;
+     world->timeAccumulator = 0.0;
+     
      return world;
 }
 
-jgWorld *jgWorldNew(jgVector2 min, jgVector2 max)
+jgWorld *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
 {
-     return jgWorldInit(jgWorldAlloc(), min, max);
+     return jgWorldInit(jgWorldAlloc(), min, max, ticksPerSecond, currentTime);
 }
 
 void jgWorldFree(jgWorld *world)
@@ -247,7 +226,47 @@ void jgWorldHandleCollisions(jgWorld *world)
      jgListClear(world->collisions);
 }
 
-void jgWorldUpdate(jgWorld *world, float elapsed)
+static void jgWorldUpdateBodyBitmask(jgWorld *world, jgBody *body)
+{
+     jgAABB box = body->aabb;
+
+     int minX = (int)floor((box.min.x - world->limits.min.x) / world->gridstep.x);
+     int maxX = (int)floor((box.max.x - world->limits.min.x) / world->gridstep.x);
+
+     minX = minX % 32;
+     maxX = maxX % 32;
+
+     int minY = (int)floor((box.min.y - world->limits.min.y) / world->gridstep.y);
+     int maxY = (int)floor((box.max.y - world->limits.min.y) / world->gridstep.y);
+
+     minY = minY % 32;
+     maxY = maxY % 32;
+
+     JG_BITMASK_CLEAR(body->bitmaskX);
+     for (int i = minX; i <= maxX; i++)
+          JG_BITMASK_SET_ON(body->bitmaskX, i);
+
+     JG_BITMASK_CLEAR(body->bitmaskY);
+     for (int i = minY; i <= maxY; i++)
+          JG_BITMASK_SET_ON(body->bitmaskY, i);
+}
+
+
+void jgWorldUpdate(jgWorld *world, float newTime)
+{
+     float timeStep = 1.0 / world->ticksPerSecond;
+     float deltaTime = newTime - world->currentTime;
+     world->currentTime = newTime;
+     world->timeAccumulator += deltaTime;
+     
+     while(world->timeAccumulator >= timeStep)
+     {
+          jgWorldStep(world, timeStep);
+          world->timeAccumulator -= timeStep;
+     }
+}
+
+void jgWorldStep(jgWorld *world, float timeStep)
 {
      world->penetrationCount = 0;
 
@@ -264,13 +283,13 @@ void jgWorldUpdate(jgWorld *world, float elapsed)
                continue;
 
           jgBodyAccumulateForces(currentBody);
-          jgBodyIntegrate(currentBody, elapsed);
+          jgBodyIntegrate(currentBody, timeStep);
           jgBodyDerive(currentBody);
 
           if(jgBodyIsInsideOut(currentBody))
                currentBody->isActive = false;
 
-          jgBodyUpdateAABB(currentBody, elapsed, false);
+          jgBodyUpdateAABB(currentBody, timeStep, false);
           jgWorldUpdateBodyBitmask(world, currentBody);
      }
 
@@ -280,10 +299,11 @@ void jgWorldUpdate(jgWorld *world, float elapsed)
      {
           JG_LIST_FOREACH_COMBO(b)
           {
-               if(!a->isActive || !b->isActive)
-                    continue;
 
                if((!a->bitmaskX & b->bitmaskX) && (!a->bitmaskY & b->bitmaskY))
+                    continue;
+
+               if(!a->isActive || !b->isActive)
                     continue;
 
                if(!(a->layers & b->layers))

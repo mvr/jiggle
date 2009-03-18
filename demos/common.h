@@ -35,19 +35,18 @@ void draw_all_bodies(jgWorld *world)
 volatile int ticks;
 void ticker(void)
 {
-   ++ticks;
+     ++ticks;
 } END_OF_FUNCTION(ticker)
+
+float secondsElapsed()
+{
+     return ticks / 100.0;
+}
 
 void flip()
 {
      blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
      clear_bitmap(buffer);
-     vsync();
-     while (ticks<1)
-     {
-          rest(1);
-     }
-     ticks=0;
 }
 
 void setup() 
