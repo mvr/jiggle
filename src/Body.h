@@ -84,14 +84,7 @@ extern void             jgBodyFree(jgBody *body);
 extern void             jgBodyAccumulateForces(jgBody *body);
 extern void             jgBodyDerive(jgBody *body);
 extern void             jgBodyIntegrate(jgBody *body, float elapsed);
-extern void             jgBodyUpdateAABB(jgBody *body, float elapsed, bool force);
 extern void             jgBodyUpdateGlobalShape(jgBody *body);
-
-extern bool             jgBodyContains(jgBody *body, jgVector2 point);
-extern jgVector2        jgBodyClosestOnEdge(jgBody *body, jgVector2 pt, jgVector2 normal,
-                                            int *Aout, int *Bout, float *Dout, jgVector2 *normout);
-extern float            jgBodyArea(jgBody *body);
-extern bool             jgBodyIsInsideOut(jgBody *body);
 
 extern void             jgBodyDampenVelocity(jgBody *body, float damp);
 extern void             jgBodyAddForce(jgBody *body, jgVector2 force);

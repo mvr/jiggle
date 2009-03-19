@@ -37,7 +37,7 @@ extern bool     jgListHasLoop(jgList *list);
 extern void     jgListAdd(jgList *list, void *data);
 extern void     jgListRemove(jgList *list, void *data);
 
-// These are clunky but they'll do for now.
+// EWW! These are mega-gross.
 
 #define JG_LIST_FOREACH(list, var)                              \
      var = NULL;                                                \
@@ -47,7 +47,8 @@ extern void     jgListRemove(jgList *list, void *data);
          _c_ = _c_->next, var = (_c_ == NULL) ? NULL : _c_->data)
 
 #define JG_LIST_FOREACH_PAIR(list, var, var2)                           \
-     var = NULL;                                                        \
+     var  = NULL;                                                       \
+     var2 = NULL;                                                       \
      if(list->length > 1) var = list->head->data, var2 = list->head->next->data; \
      for(jgListNode *_c_ = list->head;                                  \
          _c_ != NULL;                                                   \

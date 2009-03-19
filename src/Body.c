@@ -166,26 +166,6 @@ void jgBodyIntegrate(jgBody *body, float elapsed)
           jgParticleIntegrate(&body->pointMasses[i], elapsed);
 }
 
-void jgBodyUpdateAABB(jgBody *body, float elapsed, bool force)
-{
-     if(!force && body->isStatic)
-          return;
-
-     body->aabb = jgAABBNull();
-     for (int i = 0; i < body->numOfPoints; i++)
-     {
-          jgVector2 p = body->pointMasses[i].position;
-          body->aabb = jgAABBExpandToInclude(body->aabb, p);
-
-          // Expanding for velocity only makes sense for dynamic objects.
-          if (!body->isStatic)
-          {
-               p = jgVector2Add(p, jgVector2Multiply(body->pointMasses[i].velocity, elapsed));
-               body->aabb = jgAABBExpandToInclude(body->aabb, p);
-          }
-     }
-}
-
 void jgBodyUpdateGlobalShape(jgBody *body)
 {
      free(body->globalShape);
@@ -194,32 +174,6 @@ void jgBodyUpdateGlobalShape(jgBody *body)
                                             body->derivedPosition,
                                             body->derivedAngle,
                                             body->scale);
-}
-
-bool jgBodyContains(jgBody *body, jgVector2 point)
-{
-     // Draw a line from the point to a point known to be outside the body.
-     // Count the number of lines in the polygon it intersects. If that
-     // number is odd, we are inside.  If it's even, we are outside.
-
-     // out is guarenteed to be outside the shape.
-     jgVector2 out = jgVector2Add(body->aabb.max, jgVector2One());
-
-     int inside = false;
-     for(int i = 0; i < body->numOfPoints; i++)
-     {
-          jgVector2 start = body->pointMasses[i].position;
-          jgVector2 end;
-          if(i == body->numOfPoints - 1)
-               end = body->pointMasses[0].position;
-          else
-               end = body->pointMasses[i + 1].position;
-
-          if(jgVector2Intersect(point, out, start, end))
-               inside = !inside;
-     }
-
-     return inside;
 }
 
 jgVector2 jgBodyClosestOnEdge(jgBody *body, jgVector2 pt, jgVector2 normal,
@@ -297,24 +251,6 @@ jgVector2 jgBodyClosestOnEdge(jgBody *body, jgVector2 pt, jgVector2 normal,
                                       body->pointMasses[sameB].position);
           return sameClosest;
      }
-}
-
-float jgBodyArea(jgBody *body)
-{
-     float sum = 0;
-     for(int i = 0; i < body->numOfPoints; i++)
-     {
-          jgVector2 current = body->pointMasses[i].position;
-          jgVector2 next = body->pointMasses[i == body->numOfPoints - 1 ? 0 : i + 1].position;
-
-          sum += (current.x * next.y) - (next.x * current.y);
-     }
-     return -(sum / 2);
-}
-
-bool jgBodyIsInsideOut(jgBody *body)
-{
-     return jgBodyArea(body) < 0;
 }
 
 void jgBodyAccumulateForces(jgBody *body)
