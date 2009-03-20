@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __SPRINGBODY_H__
-#define __SPRINGBODY_H__
+#ifndef __JG_SPRINGBODY_H__
+#define __JG_SPRINGBODY_H__
 
 #include <stdbool.h>
 

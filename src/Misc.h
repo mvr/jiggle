@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __MISC_H__
-#define __MISC_H__
+#ifndef __JG_MISC_H__
+#define __JG_MISC_H__
 
 #define PI 3.14159265358979323846
 

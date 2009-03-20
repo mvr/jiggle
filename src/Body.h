@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __BODY_H__
-#define __BODY_H__
+#ifndef __JG_BODY_H__
+#define __JG_BODY_H__
 
 #include <stdbool.h>
 

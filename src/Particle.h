@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __PARTICLE_H__
-#define __PARTICLE_H__
+#ifndef __JG_PARTICLE_H__
+#define __JG_PARTICLE_H__
 
 #include "Vector2.h"
 

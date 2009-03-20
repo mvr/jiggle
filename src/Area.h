@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __AREA_H__
-#define __AREA_H__
+#ifndef __JG_AREA_H__
+#define __JG_AREA_H__
 
 #include "AABB.h"
 #include "List.h"

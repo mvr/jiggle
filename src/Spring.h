@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __INTERNALSPRING_H__
-#define __INTERNALSPRING_H__
+#ifndef __JG_INTERNALSPRING_H__
+#define __JG_INTERNALSPRING_H__
 
 #include "Vector2.h"
 #include "Particle.h"

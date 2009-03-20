@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __PRESSUREBODY_C__
-#define __PRESSUREBODY_C__
+#ifndef __JG_PRESSUREBODY_C__
+#define __JG_PRESSUREBODY_C__
 
 #include "Body.h"
 

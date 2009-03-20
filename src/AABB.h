@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __AABB_H__
-#define __AABB_H__
+#ifndef __JG_AABB_H__
+#define __JG_AABB_H__
 
 #include <stdbool.h>
 

@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __WORLD_H__
-#define __WORLD_H__
+#ifndef __JG_WORLD_H__
+#define __JG_WORLD_H__
 
 #include <stdbool.h>
 

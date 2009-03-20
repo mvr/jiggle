@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __LIST_H__
-#define __LIST_H__
+#ifndef __JG_LIST_H__
+#define __JG_LIST_H__
 
 #include <stdbool.h>
 
