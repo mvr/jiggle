@@ -2,12 +2,6 @@ require 'rake/clean'
 require 'rake/loaders/makefile'
 #import  '.depend.mf' # Import dependencies
 
-alias :old_sh :sh
-def sh(command)
-  puts command
-  old_sh command
-end
-
 SOURCES      = FileList.new('src/*.c')
 OBJECTS      = SOURCES.ext('.o')
 HEADERS      = FileList.new('src/*.h')
