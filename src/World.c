@@ -12,7 +12,9 @@
 jgWorld *jgWorldAlloc()
 {
      jgWorld *world = malloc(sizeof(jgWorld));
-     world->bodies = jgListNew();
+     world->particles = jgListNew();
+     world->areas = jgListNew();
+     world->springs = jgListNew();
      world->collisions = jgListNew();
      return world;
 }
@@ -40,17 +42,31 @@ jgWorld *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float cu
 
 void jgWorldFree(jgWorld *world)
 {
-     jgListFree(world->bodies);
-     jgListFree(world->collisions);
+     jgListNew(world->particles);
+     jgListNew(world->areas);
+     jgListNew(world->springs);
+     jgListNew(world->collisions);
      free(world);
 }
 
-void jgWorldFreeBodies(jgWorld *world)
+void jgWorldFreeChildren(jgWorld *world)
 {
-     jgBody *currentBody;
-     JG_LIST_FOREACH(world->bodies, currentBody)
+     jgParticle *currentParticle;
+     JG_LIST_FOREACH(world->particles, currentParticle)
      {
-          jgBodyFree(currentBody);
+          jgParticleFree(currentParticle);
+     }
+
+     jgSpring *currentSpring;
+     JG_LIST_FOREACH(world->springs, currentSpring)
+     {
+          jgSpringFree(currentSpring);
+     }
+
+     jgArea *currentArea;
+     JG_LIST_FOREACH(world->areas, currentArea)
+     {
+          jgAreaFree(currentArea);
      }
 }
 
@@ -61,19 +77,52 @@ void jgWorldSetSize(jgWorld *world, jgVector2 min, jgVector2 max)
      world->gridstep = jgVector2Divide(world->size, 32);
 }
 
-void jgWorldAddBody(jgWorld *world, jgBody *body)
+// SO UNDRY!
+void jgWorldAddArea(jgWorld *world, jgArea *area)
 {
-     if(!jgListContains(world->bodies, body))
+     if(!jgListContains(world->areas, area))
      {
-          jgListAdd(world->bodies, body);
+          jgListAdd(world->areas, area);
      }
 }
 
-void jgWorldRemoveBody(jgWorld *world, jgBody *body)
+void jgWorldRemoveArea(jgWorld *world, jgArea *area)
 {
-     if(jgListContains(world->bodies, body))
+     if(jgListContains(world->areas, area))
      {
-          jgListRemove(world->bodies, body);
+          jgListRemove(world->areas, area);
+     }
+}
+
+void jgWorldAddParticle(jgWorld *world, jgParticle *particle)
+{
+     if(!jgListContains(world->particles, particle))
+     {
+          jgListAdd(world->particles, particle);
+     }
+}
+
+void jgWorldRemoveParticle(jgWorld *world, jgParticle *particle)
+{
+     if(jgListContains(world->particles, particle))
+     {
+          jgListRemove(world->particles, particle);
+     }
+}
+
+void jgWorldAddSpring(jgWorld *world, jgSpring *spring)
+{
+     if(!jgListContains(world->springs, spring))
+     {
+          jgListAdd(world->springs, spring);
+     }
+}
+
+void jgWorldRemoveSpring(jgWorld *world, jgSpring *spring)
+{
+     if(jgListContains(world->springs, spring))
+     {
+          jgListRemove(world->springs, spring);
      }
 }
 
