@@ -15,20 +15,22 @@
 
 typedef struct jgCollisionInfo
 {
-     jgBody    *bodyA;
-     int        bodyApm;
-     jgBody    *bodyB;
-     int        bodyBpmA;
-     int        bodyBpmB;
-     jgVector2  hitPt;
-     float      edgeD;
-     jgVector2  normal;
-     float      penetration;
+     jgParticle *collisionParticle;
+     jgArea     *area;
+     jgParticle *areaParticleA;
+     jgParticle *areaParticleB;
+     jgVector2   hitPt;
+     float       edgeD;
+     jgVector2   normal;
+     float       penetration;
 } jgCollisionInfo;
 
 typedef struct jgWorld
 {
-     jgList         *bodies;
+     jgList         *particles;
+     jgList         *areas;
+     jgList         *springs;
+
      jgList         *collisions;
 
      jgAABB          limits;
