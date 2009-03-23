@@ -63,6 +63,4 @@ extern void              jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b
 extern void              jgWorldStep(jgWorld *world, float timestep);
 extern void              jgWorldUpdate(jgWorld *world, float newTime);
 
-extern jgBody           *jgWorldBodyContaining(jgWorld *world, jgVector2 point);
-
 #endif

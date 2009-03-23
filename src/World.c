@@ -126,17 +126,6 @@ void jgWorldRemoveSpring(jgWorld *world, jgSpring *spring)
      }
 }
 
-jgBody *jgWorldBodyContaining(jgWorld *world, jgVector2 point)
-{
-     jgBody *currentBody;
-     JG_LIST_FOREACH(world->bodies, currentBody)
-     {
-          if(jgBodyContains(currentBody, point))
-               return currentBody;
-     }
-     return NULL;
-}
-
 //static void jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b)
 void jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b)
 {
