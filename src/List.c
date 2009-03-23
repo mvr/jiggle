@@ -153,13 +153,3 @@ void jgListRemove(jgList *list, void *data)
           current = current->next;
      }
 }
-
-void jgListForeach(jgList *list, jgListIter iterFunction, void *mydata)
-{
-     jgListNode *current = list->head;
-     while(current)
-     {
-          iterFunction(current->data, mydata);
-          current = current->next;
-     }
-}

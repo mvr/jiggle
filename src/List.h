@@ -19,8 +19,6 @@ typedef struct jgList
      int length;
 } jgList;
 
-typedef void  (*jgListIter)(void *data, void *mydata);
-
 extern jgList  *jgListNew();
 extern jgList  *jgListNewFromArray(void **array, int length);
 extern void     jgListClear(jgList *list);
