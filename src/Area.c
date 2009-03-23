@@ -3,6 +3,25 @@
 #include "Spring.h"
 #include "Misc.h"
 
+jgArea *jgAreaNew(jgParticle **particles, int numOfParticles)
+{
+     area->particles = jgListNewFromArray(particles, numOfParticles);
+
+     area->friction  = 0.8;
+     area->elasticity = 0.3;
+
+     jgBodyUpdateAABB(area, 0.0);
+
+     JG_BITMASK_CLEAR(body->bitmaskX);
+     JG_BITMASK_CLEAR(body->bitmaskY);
+}
+
+void jgAreaFree(jgArea *area)
+{
+     jgListFree(area->particles);
+     free(area);
+}
+
 void jgAreaUpdateAABB(jgArea *area, float elapsed)
 {
      area->aabb = jgAABBNull();

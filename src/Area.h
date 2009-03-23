@@ -12,15 +12,18 @@
 
 typedef struct jgArea
 {
-     jgList     *particles;
+     jgList      *particles;
 
-     float       elasticity;
-     float       friction;
+     float        elasticity;
+     float        friction;
 
-     jgAABB      aabb;
+     jgAABB       aabb;
+
+     jgBitmask    bitmaskX;
+     jgBitmask    bitmaskY;
 } jgArea;
 
-extern jgArea   *jgAreaNew(jgParticle *particles, int numOfParticles);
+extern jgArea   *jgAreaNew(jgParticle **particles, int numOfParticles);
 extern void      jgAreaFree(jgArea *area);
 extern void      jgAreaUpdateAABB(jgArea *area, float elapsed);
 
