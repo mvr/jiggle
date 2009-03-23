@@ -1,6 +1,18 @@
 #include "test.h"
 #include "jiggle.h"
 
+test(ListNewFromArray)
+{
+     void *array[] = {(void *)1,
+                      (void *)2,
+                      (void *)3};
+     jgList *foo = jgListNewFromArray(array, 3);
+     assert(jgListGet(foo, 0) == (void *)1);
+     assert(jgListGet(foo, 1) == (void *)2);
+     assert(jgListGet(foo, 2) == (void *)3);
+     jgListFree(foo);
+}
+
 test(ListInsert)
 {
      jgList *foo = jgListNew();

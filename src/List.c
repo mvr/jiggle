@@ -22,6 +22,18 @@ jgList *jgListNew()
      return ret;
 }
 
+jgList *jgListNewFromArray(void **array, int length)
+{
+     jgList *list = jgListNew();
+     list->length = length;
+
+     for(int i = length - 1; i >= 0; i--)
+     {
+          jgListAdd(list, array[i]);
+     }
+     return list;
+}
+
 void jgListClear(jgList *list)
 {
      jgListNode *current = list->head;
