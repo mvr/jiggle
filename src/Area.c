@@ -37,6 +37,31 @@ void jgAreaUpdateAABB(jgArea *area, float elapsed)
      }
 }
 
+void jgAreaUpdateBitmask(jgArea *area, jgWorld *world)
+{
+     jgAABB box = area->aabb;
+
+     int minX = (int)floor((box.min.x - world->limits.min.x) / world->gridstep.x);
+     int maxX = (int)floor((box.max.x - world->limits.min.x) / world->gridstep.x);
+
+     minX = minX % 32;
+     maxX = maxX % 32;
+
+     int minY = (int)floor((box.min.y - world->limits.min.y) / world->gridstep.y);
+     int maxY = (int)floor((box.max.y - world->limits.min.y) / world->gridstep.y);
+
+     minY = minY % 32;
+     maxY = maxY % 32;
+
+     JG_BITMASK_CLEAR(area->bitmaskX);
+     for (int i = minX; i <= maxX; i++)
+          JG_BITMASK_SET_ON(area->bitmaskX, i);
+
+     JG_BITMASK_CLEAR(area->bitmaskY);
+     for (int i = minY; i <= maxY; i++)
+          JG_BITMASK_SET_ON(area->bitmaskY, i);
+}
+
 bool jgAreaContains(jgArea *area, jgVector2 point)
 {
      if(!jgAABBContains(area->aabb, point))
