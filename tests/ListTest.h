@@ -72,7 +72,7 @@ test(ListForeach)
      i = 0;
      JG_LIST_FOREACH(foo, j)
      {
-          JG_LIST_FOREACH_COMBO(k)
+          JG_LIST_FOREACH_COMBO(foo, k)
           {
                i++;
           }

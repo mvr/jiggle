@@ -309,7 +309,7 @@ void jgWorldStep(jgWorld *world, float timeStep)
      jgBody *b;
      JG_LIST_FOREACH(world->bodies, a)
      {
-          JG_LIST_FOREACH_COMBO(b)
+          JG_LIST_FOREACH_COMBO(world->bodies, b)
           {
 
                if((!a->bitmaskX & b->bitmaskX) && (!a->bitmaskY & b->bitmaskY))

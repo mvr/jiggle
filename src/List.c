@@ -2,23 +2,12 @@
 
 #include "List.h"
 
-static jgListNode *jgListNthNode(jgList *list, int position)
-{
-     jgListNode *current = list->head;
-     while(position-- != 0) {
-          if(current->next)
-               current = current->next;
-          else
-               return NULL;
-     }
-     return current;
-}
-
 jgList *jgListNew()
 {
      jgList *ret = malloc(sizeof(jgList));
-     ret->head = NULL;
      ret->length = 0;
+     ret->alloc = 4;
+     ret->arr = calloc(ret->alloc, sizeof(void*));
      return ret;
 }
 
@@ -36,120 +25,70 @@ jgList *jgListNewFromArray(void **array, int length)
 
 void jgListClear(jgList *list)
 {
-     jgListNode *current = list->head;
-     jgListNode *tmp;
-     while(current)
-     {
-          tmp = current->next;
-          free(current);
-          current = tmp;
-     }
-     list->head = NULL;
      list->length = 0;
 }
 
 void jgListFree(jgList *list)
 {
-     jgListClear(list);
      free(list);
 }
 
 void *jgListGet(jgList *list, int position)
 {
-     jgListNode *node = jgListNthNode(list, position);
-     if(node)
-          return node->data;
+     if(position < list->length)
+          return list->arr[position];
      else
           return NULL;
 }
 
 void jgListSet(jgList *list, int position, void* data)
 {
-     jgListNode *node = jgListNthNode(list, position);
-     if(node)
-          node->data = data;
+     if(position < list->length)
+          list->arr[position] = data;
 }
 
 void jgListInsert(jgList *list, int position, void *data)
 {
-     jgListNode *newnode = malloc(sizeof(jgListNode));
-     newnode->data = data;
-
-     if(position == 0) {
-          jgListNode *oldhead = list->head;
-          list->head = newnode;
-          list->head->next = oldhead;
-     } else {
-          jgListNode *previous = jgListNthNode(list, position - 1);
-          newnode->next = previous->next;
-          previous->next = newnode;
-     }
-     list->length++;
+     // TODO
 }
 
 void jgListDelete(jgList *list, int position)
 {
-     if(position == 0) {
-          jgListNode *newhead = list->head->next;
-          free(list->head);
-          list->head = newhead;
-     } else {
-          jgListNode *previous = jgListNthNode(list, position - 1);
-          jgListNode *current = previous->next;
-          jgListNode *next = current->next;
-
-          free(current);
-          previous->next = next;
-     }
-
+     // TODO: reorders array
+     int last = list->length - 1;
+     list->arr[position] = list->arr[last];
      list->length--;
 }
 
 bool jgListContains(jgList *list, void *data)
 {
-     jgListNode *current = list->head;
-     while(current)
+     void *currentData;
+     JG_LIST_FOREACH(list, currentData)
      {
-          if(current->data == data)
+          if(currentData == data)
                return true;
-          current = current->next;
-     }
-     return false;
-}
-
-bool jgListHasLoop(jgList *list)
-{
-     // Taken from http://ostermiller.org/find_loop_singly_linked_list.html
-
-     jgListNode *slowNode;
-     jgListNode *fastNode1;
-     jgListNode *fastNode2;
-     slowNode = fastNode1 = fastNode2 = list->head;
-
-     while (slowNode && (fastNode1 = fastNode2->next) && (fastNode2 = fastNode1->next)){
-          if (slowNode == fastNode1 || slowNode == fastNode2) return true;
-          slowNode = slowNode->next;
      }
      return false;
 }
 
 void jgListAdd(jgList *list, void *data)
 {
-     jgListInsert(list, 0, data);
+     if(list->length == list->alloc){
+          list->alloc *= 2;
+          list->arr = realloc(list->arr, list->alloc * sizeof(void *));
+     }
+
+     list->arr[list->length] = data;
+     list->length++;
 }
 
 void jgListRemove(jgList *list, void *data)
 {
-     jgListNode *current = list->head;
-     int position = 0;
-     while(current)
+     void *currentData;
+     JG_LIST_FOREACH(list, currentData)
      {
-          if(current->data == data)
-          {
-               jgListDelete(list, position);
-               return;
-          }
-          position++;
-          current = current->next;
+          // Hack!
+          if(currentData == data)
+               jgListDelete(list, _i_);
      }
 }
