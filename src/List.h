@@ -41,13 +41,22 @@ extern void     jgListRemove(jgList *list, void *data);
      var2 = jgListGet(list, 1);                                         \
      for(int _i_ = 0; _i_ < list->length; _i_++,                        \
               var = jgListGet(list, _i_),                               \
-              var2 = (_i_ == list->length) - 1 ? jgListGet(list, 0) : jgListGet(list, _i_))
+              var2 = (_i_ == list->length - 1) ? jgListGet(list, 0) : jgListGet(list, _i_ + 1))
+
+#define JG_LIST_FOREACH_TRIPLET(list, prev, current, next)              \
+     prev = jgListGet(list, list->length - 1);                          \
+     var2 = jgListGet(list, 0);                                         \
+     var = jgListGet(list, 1);                                          \
+     for(int _i_ = 0; _i_ < list->length; _i_++,                        \
+              prev = (_i_ == 0) ? jgListGet(list, list->length - 1) : jgListGet(list, _i_ - 1) \
+              current = jgListGet(list, _i_),                           \
+              next = (_i_ == list->length - 1) ? jgListGet(list, 0) : jgListGet(list, _i_ + 1))
           
 
 #define JG_LIST_FOREACH_COMBO(list, b)                                  \
      b = NULL;                                                          \
      if(_i_ != list->length - 1) b = jgListGet(list, _i_ + 1);          \
-     for(int _i2_ = _i_ + 1; _i2_ < list->length; _i2_++, b = (_i2_ == list->length) ? NULL : jgListGet(list, _i2_))
+     for(int _i2_ = _i_ + 1; _i2_ < list->length; _i2_++, b = (_i2_ == list->length - 1) ? NULL : jgListGet(list, _i2_))
 
 // Can pair with themselves.
 
