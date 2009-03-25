@@ -8,9 +8,9 @@
 #include <stdbool.h>
 
 #include "Vector2.h"
-#include "Body.h"
 #include "List.h"
 #include "AABB.h"
+#include "Area.h"
 #include "Misc.h"
 
 typedef struct jgCollisionInfo
@@ -63,7 +63,6 @@ extern void              jgWorldRemoveParticle(jgWorld *world, jgParticle *parti
 extern void              jgWorldAddSpring(jgWorld *world, jgSpring *spring);
 extern void              jgWorldRemoveSpring(jgWorld *world, jgSpring *spring);
 
-extern void              jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b);
 extern void              jgWorldStep(jgWorld *world, float timestep);
 extern void              jgWorldUpdate(jgWorld *world, float newTime);
 

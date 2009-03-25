@@ -11,6 +11,7 @@
 #include "List.h"
 #include "Particle.h"
 #include "Vector2.h"
+#include "Misc.h"
 
 typedef struct jgArea
 {
@@ -27,11 +28,13 @@ typedef struct jgArea
      jgBitmask    bitmaskY;
 } jgArea;
 
+struct jgWorld; // LOL WUT
+
 extern jgArea   *jgAreaNew(jgParticle **particles, int numOfParticles);
 extern void      jgAreaFree(jgArea *area);
 
 extern void      jgAreaUpdateAABB(jgArea *area, float elapsed);
-extern void      jgAreaUpdateBitmask(jgArea *area, jgWorld *world);
+extern void      jgAreaUpdateBitmask(jgArea *area, struct jgWorld *world);
 
 extern bool      jgAreaContains(jgArea *area, jgVector2 point);
 extern jgVector2 jgAreaClosestOnEdge(jgArea *area, jgVector2 pt, jgVector2 normal,

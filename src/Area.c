@@ -1,19 +1,26 @@
+#include <stdlib.h>
+
 #include "Area.h"
 #include "Particle.h"
 #include "Spring.h"
 #include "Misc.h"
+#include "AABB.h"
+#include "World.h"
 
 jgArea *jgAreaNew(jgParticle **particles, int numOfParticles)
 {
-     area->particles = jgListNewFromArray(particles, numOfParticles);
+     jgArea *area = malloc(sizeof(jgArea));
+     area->particles = jgListNewFromArray((void **)particles, numOfParticles);
 
      area->friction  = 0.8;
      area->elasticity = 0.3;
 
-     jgBodyUpdateAABB(area, 0.0);
+     jgAreaUpdateAABB(area, 0.0);
 
-     JG_BITMASK_CLEAR(body->bitmaskX);
-     JG_BITMASK_CLEAR(body->bitmaskY);
+     JG_BITMASK_CLEAR(area->bitmaskX);
+     JG_BITMASK_CLEAR(area->bitmaskY);
+     
+     return area;
 }
 
 void jgAreaFree(jgArea *area)
