@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h> // For memcpy, wtf?
 
 #include "List.h"
 
@@ -15,11 +16,10 @@ jgList *jgListNewFromArray(void **array, int length)
 {
      jgList *list = jgListNew();
      list->length = length;
+     list->alloc = length;
+     list->arr = malloc(length * sizeof(void *));
+     memcpy(list->arr, array, length * sizeof(void *));
 
-     for(int i = length - 1; i >= 0; i--)
-     {
-          jgListAdd(list, array[i]);
-     }
      return list;
 }
 
