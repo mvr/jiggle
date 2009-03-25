@@ -16,6 +16,10 @@ typedef struct jgParticle
 } jgParticle;
 
 extern jgParticle       *jgParticleNew(float mass, jgVector2 pos);
+
+extern void              jgParticleDampenVelocity(jgParticle *particle, float damp);
+extern void              jgParticleAddMasslessForce(jgParticle *particle, jgVector2 force);
+
 extern void              jgParticleIntegrate(jgParticle *point, float elapsed);
 
 #endif

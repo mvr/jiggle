@@ -14,6 +14,20 @@ jgParticle *jgParticleNew(float mass, jgVector2 pos)
      return particle;
 }
 
+void jgParticleDampenVelocity(jgParticle *particle, float damp)
+{
+     if(particle->mass != INFINITY)
+          particle->velocity = jgVector2Multiply(particle->velocity, damp);
+}
+
+void jgParticleAddMasslessForce(jgParticle *particle, jgVector2 force)
+{
+     // Multiply mass to negate dividing by mass during integration.
+     for(int i = 0; i < body->numOfPoints; i++)
+          body->pointMasses[i].force = jgVector2Add(body->pointMasses[i].force,
+                                                    jgVector2Multiply(force, body->pointMasses[i].mass));
+}
+
 void jgParticleIntegrate(jgParticle *point, float elapsed)
 {
      if(point->mass != INFINITY)

@@ -15,7 +15,7 @@
 
 typedef struct jgCollisionInfo
 {
-     jgParticle *collisionParticle;
+     jgParticle *particle;
      jgArea     *area;
      jgParticle *areaParticleA;
      jgParticle *areaParticleB;
@@ -56,8 +56,12 @@ extern void              jgWorldFreeChildren(jgWorld *world);
 
 extern void              jgWorldSetSize(jgWorld *world, jgVector2 min, jgVector2 max);
 
-extern void              jgWorldAddBody(jgWorld *world, jgBody *body);
-extern void              jgWorldRemoveBody(jgWorld *world, jgBody *body);
+extern void              jgWorldAddArea(jgWorld *world, jgArea *area);
+extern void              jgWorldRemoveArea(jgWorld *world, jgArea *area);
+extern void              jgWorldAddParticle(jgWorld *world, jgParticle *particle);
+extern void              jgWorldRemoveParticle(jgWorld *world, jgParticle *particle);
+extern void              jgWorldAddSpring(jgWorld *world, jgSpring *spring);
+extern void              jgWorldRemoveSpring(jgWorld *world, jgSpring *spring);
 
 extern void              jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b);
 extern void              jgWorldStep(jgWorld *world, float timestep);

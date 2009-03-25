@@ -10,8 +10,8 @@
 
 typedef struct jgSpring
 {
-     jgParticle         *massA;
-     jgParticle         *massB;
+     jgParticle         *particleA;
+     jgParticle         *particleB;
      float               springD;
      float               springK;
      float               damping;
@@ -25,7 +25,7 @@ extern jgSpring *jgSpringNew(jgParticle *a,
 extern void      jgSpringFree(jgSpring *spring);
 extern void      jgSpringExert(jgSpring *spring);
 
-extern void      jgSpringDragTowards(jgParticle *mass, jgVector2 point, float d, float k, float damp);
-extern void      jgSpringDragTogether(jgParticle *massA, jgParticle *massB, float d, float k, float damp);
+extern void      jgSpringDragTowards(jgParticle *particle, jgVector2 point, float d, float k, float damp);
+extern void      jgSpringDragTogether(jgParticle *particleA, jgParticle *particleB, float d, float k, float damp);
 
 #endif

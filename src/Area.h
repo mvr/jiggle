@@ -5,6 +5,8 @@
 #ifndef __JG_AREA_H__
 #define __JG_AREA_H__
 
+#include <stdbool.h>
+
 #include "AABB.h"
 #include "List.h"
 #include "Particle.h"
@@ -18,6 +20,8 @@ typedef struct jgArea
      float        friction;
 
      jgAABB       aabb;
+     
+     bool         isValid;
 
      jgBitmask    bitmaskX;
      jgBitmask    bitmaskY;
