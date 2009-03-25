@@ -45,10 +45,10 @@ extern void     jgListRemove(jgList *list, void *data);
 
 #define JG_LIST_FOREACH_TRIPLET(list, prev, current, next)              \
      prev = jgListGet(list, list->length - 1);                          \
-     var2 = jgListGet(list, 0);                                         \
-     var = jgListGet(list, 1);                                          \
+     current = jgListGet(list, 0);                                      \
+     next = jgListGet(list, 1);                                         \
      for(int _i_ = 0; _i_ < list->length; _i_++,                        \
-              prev = (_i_ == 0) ? jgListGet(list, list->length - 1) : jgListGet(list, _i_ - 1) \
+              prev = (_i_ == 0) ? jgListGet(list, list->length - 1) : jgListGet(list, _i_ - 1), \
               current = jgListGet(list, _i_),                           \
               next = (_i_ == list->length - 1) ? jgListGet(list, 0) : jgListGet(list, _i_ + 1))
           

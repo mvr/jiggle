@@ -7,11 +7,21 @@
 jgParticle *jgParticleNew(float mass, jgVector2 pos)
 {
      jgParticle *particle = malloc(sizeof(jgParticle));
+
      particle->mass = mass;
      particle->position = pos;
      particle->velocity = jgVector2Zero();
      particle->force = jgVector2Zero();
+
+     particle->friction  = 0.8;
+     particle->elasticity = 0.3;
+
      return particle;
+}
+
+void jgParticleFree(jgParticle *particle)
+{
+     free(particle);
 }
 
 void jgParticleDampenVelocity(jgParticle *particle, float damp)

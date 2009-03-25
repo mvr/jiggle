@@ -11,6 +11,7 @@
 #include "List.h"
 #include "AABB.h"
 #include "Area.h"
+#include "Spring.h"
 #include "Misc.h"
 
 typedef struct jgCollisionInfo

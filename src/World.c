@@ -6,6 +6,7 @@
 #include "World.h"
 #include "Vector2.h"
 #include "List.h"
+#include "Particle.h"
 #include "AABB.h"
 
 jgWorld *jgWorldAlloc()
@@ -167,7 +168,7 @@ void jgWorldHandleCollisions(jgWorld *world)
      {
           jgParticle *A  = info->particle;
           jgParticle *B1 = info->areaParticleA;
-          jgParticle *B2 = info->areaParticleB
+          jgParticle *B2 = info->areaParticleB;
 
           jgVector2 bVel = jgVector2Multiply(jgVector2Add(B1->velocity, B2->velocity), 0.5);
           jgVector2 relVel = jgVector2Subtract(A->velocity, bVel);
@@ -201,7 +202,7 @@ void jgWorldHandleCollisions(jgWorld *world)
           else
           {
                Amove = info->penetration * (b2MassSum / massSum);
-               Bmove = info->penetration * (A.mass / massSum);
+               Bmove = info->penetration * (A->mass / massSum);
           }
 
           float B1move = Bmove * b1inf;
@@ -285,14 +286,14 @@ void jgWorldStep(jgWorld *world, float timeStep)
      }
 
      jgSpring *currentSpring;
-     JG_LIST_FOREACH(world->springs, currentspring)
+     JG_LIST_FOREACH(world->springs, currentSpring)
      {
           jgSpringExert(currentSpring);
      }
 
      JG_LIST_FOREACH(world->particles, currentParticle)
      {
-          jgParticleIntegrate(currentArea, timeStep);
+          jgParticleIntegrate(currentParticle, timeStep);
      }
 
      jgArea *currentArea;
@@ -300,7 +301,7 @@ void jgWorldStep(jgWorld *world, float timeStep)
      {
           currentArea->isValid = jgAreaIsInsideOut(currentArea);
 
-          jgAreaUpdateAABB(currentArea, timeStep, false);
+          jgAreaUpdateAABB(currentArea, timeStep);
           jgAreaUpdateBitmask(currentArea, world);
      }
 
