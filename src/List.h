@@ -56,7 +56,7 @@ extern void     jgListRemove(jgList *list, void *data);
 #define JG_LIST_FOREACH_COMBO(list, b)                                  \
      b = NULL;                                                          \
      if(_i_ != list->length - 1) b = jgListGet(list, _i_ + 1);          \
-     for(int _i2_ = _i_ + 1; _i2_ < list->length; _i2_++, b = (_i2_ == list->length - 1) ? NULL : jgListGet(list, _i2_))
+     for(int _i2_ = _i_ + 1; _i2_ < list->length; _i2_++, b = (_i2_ == list->length) ? NULL : jgListGet(list, _i2_))
 
 // Can pair with themselves.
 
