@@ -73,8 +73,9 @@ end
 
 task :demo => DEMOS + [LIBRARY] do
   DEMOS.each do |name|
-    config = `allegro-config --libs`.chomp
-    sh "gcc -o #{name.ext ''} #{name} #{CCOPTIONS} -L. -ljiggle #{config} -lm"
+    libs = `allegro-config --libs`.chomp
+    cflags = `allegro-config --cflags`.chomp
+    sh "gcc -o #{name.ext ''} #{name} #{CCOPTIONS} -L. -ljiggle #{cflags} #{libs} -lm"
   end
 end
 
