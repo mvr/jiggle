@@ -50,12 +50,12 @@ typedef struct jgWorld
 } jgWorld;
 
 extern jgWorld          *jgWorldAlloc();
-extern jgWorld          *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
-extern jgWorld          *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
+extern jgWorld          *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond, float currentTime);
+extern jgWorld          *jgWorldNew(jgAABB bounds, float ticksPerSecond, float currentTime);
 extern void              jgWorldFree(jgWorld *world);
 extern void              jgWorldFreeChildren(jgWorld *world);
 
-extern void              jgWorldSetSize(jgWorld *world, jgVector2 min, jgVector2 max);
+extern void              jgWorldSetSize(jgWorld *world, jgAABB bounds);
 
 extern void              jgWorldAddArea(jgWorld *world, jgArea *area);
 extern void              jgWorldRemoveArea(jgWorld *world, jgArea *area);

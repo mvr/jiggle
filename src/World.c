@@ -19,9 +19,9 @@ jgWorld *jgWorldAlloc()
      return world;
 }
 
-jgWorld *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
+jgWorld *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond, float currentTime)
 {
-     jgWorldSetSize(world, min, max);
+     jgWorldSetSize(world, bounds);
 
      world->penetrationThreshold = 0.3;
 
@@ -35,9 +35,9 @@ jgWorld *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPe
      return world;
 }
 
-jgWorld *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime)
+jgWorld *jgWorldNew(jgAABB bounds, float ticksPerSecond, float currentTime)
 {
-     return jgWorldInit(jgWorldAlloc(), min, max, ticksPerSecond, currentTime);
+     return jgWorldInit(jgWorldAlloc(), bounds, ticksPerSecond, currentTime);
 }
 
 void jgWorldFree(jgWorld *world)
@@ -70,10 +70,10 @@ void jgWorldFreeChildren(jgWorld *world)
      }
 }
 
-void jgWorldSetSize(jgWorld *world, jgVector2 min, jgVector2 max)
+void jgWorldSetSize(jgWorld *world, jgAABB bounds)
 {
-     world->limits = jgAABBNewFromVector2(min, max);
-     world->size = jgVector2Subtract(max, min);
+     world->limits = bounds;
+     world->size = jgVector2Subtract(bounds->max, bounds->min);
      world->gridstep = jgVector2Divide(world->size, 32);
 }
 
