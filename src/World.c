@@ -73,58 +73,32 @@ void jgWorldFreeChildren(jgWorld *world)
 void jgWorldSetSize(jgWorld *world, jgAABB bounds)
 {
      world->limits = bounds;
-     world->size = jgVector2Subtract(bounds->max, bounds->min);
+     world->size = jgVector2Subtract(bounds.max, bounds.min);
      world->gridstep = jgVector2Divide(world->size, 32);
 }
 
-// SO UNDRY!
-void jgWorldAddArea(jgWorld *world, jgArea *area)
-{
-     if(!jgListContains(world->areas, area))
-     {
-          jgListAdd(world->areas, area);
-     }
-}
+#define CREATE_ADDS_AND_REMOVES(class, name)                            \
+     void jgWorldAdd ## class(jgWorld *world, jg ## class *name)        \
+     {                                                                  \
+          if(!jgListContains(world->name ## s, name))                   \
+          {                                                             \
+               jgListAdd(world->name ## s, name);                       \
+          }                                                             \
+     }                                                                  \
+                                                                        \
+     void jgWorldRemove ## class(jgWorld *world, jg ## class *name)     \
+     {                                                                  \
+          if(jgListContains(world->name ## s, name))                    \
+          {                                                             \
+               jgListRemove(world->name ## s, name);                    \
+          }                                                             \
+     }                                                                  \
 
-void jgWorldRemoveArea(jgWorld *world, jgArea *area)
-{
-     if(jgListContains(world->areas, area))
-     {
-          jgListRemove(world->areas, area);
-     }
-}
+CREATE_ADDS_AND_REMOVES(Area,     area)
+CREATE_ADDS_AND_REMOVES(Particle, particle)
+CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
-void jgWorldAddParticle(jgWorld *world, jgParticle *particle)
-{
-     if(!jgListContains(world->particles, particle))
-     {
-          jgListAdd(world->particles, particle);
-     }
-}
-
-void jgWorldRemoveParticle(jgWorld *world, jgParticle *particle)
-{
-     if(jgListContains(world->particles, particle))
-     {
-          jgListRemove(world->particles, particle);
-     }
-}
-
-void jgWorldAddSpring(jgWorld *world, jgSpring *spring)
-{
-     if(!jgListContains(world->springs, spring))
-     {
-          jgListAdd(world->springs, spring);
-     }
-}
-
-void jgWorldRemoveSpring(jgWorld *world, jgSpring *spring)
-{
-     if(jgListContains(world->springs, spring))
-     {
-          jgListRemove(world->springs, spring);
-     }
-}
+#undef CREATE_ADDS_AND_REMOVES
 
 void jgWorldAreaCollide(jgWorld *world, jgArea *a, jgArea *b)
 {
