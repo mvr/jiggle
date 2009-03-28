@@ -20,10 +20,11 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
 
      VALUE particles, attr;
      rb_scan_args(argc, argv, "11", &particles, &attr);
+     Check_Type(particles, T_ARRAY);
+     if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
      jgArea *area = AREA(self);
      
-     Check_Type(particles, T_ARRAY);
      jgParticle **unwrapped;
      unwrapped = malloc(RARRAY(particles)->len * sizeof(jgParticle *));
      for(int i = 0; i < RARRAY(particles)->len; i++)

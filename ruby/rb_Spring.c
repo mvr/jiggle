@@ -22,6 +22,7 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
 {
      VALUE particleAvalue, particleBvalue, attr;
      rb_scan_args(argc, argv, "21", &particleAvalue, &particleBvalue, &attr);
+     if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
      jgSpring *spring = SPRING(self);
      

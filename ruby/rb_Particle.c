@@ -31,6 +31,7 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
 {
      VALUE wrappedposition, attr;
      rb_scan_args(argc, argv, "11", &wrappedposition, &attr);
+     if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
      jgParticle *particle = PARTICLE(self);
      

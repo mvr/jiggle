@@ -17,6 +17,7 @@ static VALUE rb_jgWorldInitialize(int argc, VALUE *argv, VALUE self)
 {
      VALUE attr;
      rb_scan_args(argc, argv, "01", &attr);
+     if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
      VALUE timeValue = rb_jgHashGet(attr, "current_time");
      float time;
