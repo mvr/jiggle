@@ -48,8 +48,8 @@ void Init_jiggle(void)
      m_Jiggle = rb_define_module("Jiggle");
 
      Init_jgVector2();
-     Init_jgPointMass();
-     Init_jgBody();
-     Init_jgSpringBody();
+     Init_jgParticle();
+     Init_jgArea();
+     Init_jgSpring();
      Init_jgWorld();
 }

@@ -2,6 +2,11 @@
 
 VALUE c_jgWorld;
 
+static float to_f(VALUE thing)
+{
+     return NUM2DBL(rb_funcall(thing, rb_intern("to_f"), 0));
+}
+
 static VALUE rb_jgWorldAlloc(VALUE klass)
 {
      jgWorld *world = jgWorldAlloc();
@@ -12,43 +17,68 @@ static VALUE rb_jgWorldInitialize(int argc, VALUE *argv, VALUE self)
 {
      VALUE attr;
      rb_scan_args(argc, argv, "01", &attr);
+
+     VALUE timeValue = rb_jgHashGet(attr, "current_time");
+     float time;
+     if(NIL_P(timeValue))
+          time = 0.0;
+     else
+          time = to_f(timeValue);
      
      jgVector2 min = rb_jgHashGetVector2(attr, "min", jgv(-20, -20));
      jgVector2 max = rb_jgHashGetVector2(attr, "max", jgv(20, 20));
-     jgWorldInit(WORLD(self), min, max);
-     rb_iv_set(self, "bodies", rb_ary_new());
+     float ticks   = rb_jgHashGetFloat(attr, "ticks_per_second", 100);
+
+     jgWorldInit(WORLD(self), jgAABBNewFromVector2(min, max), ticks, time);
+
+     rb_iv_set(self, "areas", rb_ary_new());
+     rb_iv_set(self, "particles", rb_ary_new());
+     rb_iv_set(self, "springs", rb_ary_new());
+
      return self;
 }
 
-static VALUE rb_jgWorldUpdate(VALUE self, VALUE stepsize)
+static VALUE rb_jgWorldUpdate(VALUE self, VALUE currentTime)
 {
-     jgWorldUpdate(WORLD(self), NUM2DBL(stepsize));
+     jgWorldUpdate(WORLD(self), to_f(currentTime));
      return self;
 }
 
-static VALUE rb_jgWorldAddBody(VALUE self, VALUE body)
-{
-     jgWorldAddBody(WORLD(self), BODY(body));
-     rb_ary_push(rb_iv_get(self, "bodies"), body);
-     return body;
-}
+#define RUBY_ADD_AND_REMOVE(classname, iv, converter)                   \
+     static VALUE rb_jgWorldAdd ## classname(VALUE self, VALUE thing)   \
+     {                                                                  \
+          jgWorldAdd ## classname(WORLD(self), converter(thing));       \
+          rb_ary_push(rb_iv_get(self, iv "s"), thing);                  \
+          return thing;                                                 \
+     }                                                                  \
+                                                                        \
+     static VALUE rb_jgWorldRemove ## classname(VALUE self, VALUE thing) \
+     {                                                                  \
+          jgWorldRemove ## classname(WORLD(self), converter(thing));    \
+          return rb_ary_delete(rb_iv_get(self, iv "s"), thing);         \
+     }                                                                  \
+                                                                        \
+     static VALUE rb_jgWorld ## classname ## s(VALUE self)              \
+     {                                                                  \
+          return rb_iv_get(self, iv "s");                               \
+     }                                                                  \
 
-static VALUE rb_jgWorldBodies(VALUE self)
-{
-     return rb_iv_get(self, "bodies");
-}
+RUBY_ADD_AND_REMOVE(Area, "area", AREA)
+RUBY_ADD_AND_REMOVE(Particle, "particle", PARTICLE)
+RUBY_ADD_AND_REMOVE(Spring, "spring", SPRING)
 
-static VALUE rb_jgWorldRemoveBody(VALUE self, VALUE body)
-{
-     jgWorldRemoveBody(WORLD(self), BODY(body));
-     return rb_ary_delete(rb_iv_get(self, "bodies"), body);
-}
+#undef RUBY_ADD_AND_REMOVE
 
 VECTOR_GET(rb_jgWorldGetGravity, WORLD, gravity)
 VECTOR_SET(rb_jgWorldSetGravity, WORLD, gravity)
 
 FLOAT_GET(rb_jgWorldGetDamping, WORLD, damping)
 FLOAT_SET(rb_jgWorldSetDamping, WORLD, damping)
+
+#define RUBY_DEFINE_ADD_AND_REMOVE(method_name, class)                  \
+     rb_define_method(c_jgWorld, "add_" method_name,    rb_jgWorldAdd ## class,    1); \
+     rb_define_method(c_jgWorld, "remove_" method_name, rb_jgWorldRemove ## class, 1); \
+     rb_define_method(c_jgWorld, method_name "s",       rb_jgWorld ## class ## s,  0); \
 
 void Init_jgWorld()
 {
@@ -57,9 +87,10 @@ void Init_jgWorld()
      rb_define_method(c_jgWorld, "initialize", rb_jgWorldInitialize, -1);
 
      rb_define_method(c_jgWorld, "update", rb_jgWorldUpdate, 1);
-     rb_define_method(c_jgWorld, "add", rb_jgWorldAddBody, 1);
-     rb_define_method(c_jgWorld, "remove", rb_jgWorldRemoveBody, 1);
-     rb_define_method(c_jgWorld, "bodies", rb_jgWorldBodies, 0);
+
+     RUBY_DEFINE_ADD_AND_REMOVE("particle", Particle);
+     RUBY_DEFINE_ADD_AND_REMOVE("area",     Area);
+     RUBY_DEFINE_ADD_AND_REMOVE("spring",   Spring);
 
      rb_define_method(c_jgWorld, "gravity",  rb_jgWorldGetGravity, 0);
      rb_define_method(c_jgWorld, "gravity=", rb_jgWorldSetGravity, 1);

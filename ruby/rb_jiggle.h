@@ -12,19 +12,17 @@
 extern VALUE m_Jiggle;
 
 extern VALUE c_jgVector2;
-extern VALUE c_jgPointMass;
-extern VALUE c_jgBody;
-extern VALUE c_jgStaticBody;
-extern VALUE c_jgSpringBody;
-extern VALUE c_jgPressureBody;
+extern VALUE c_jgParticle;
+extern VALUE c_jgArea;
+extern VALUE c_jgSpring;
 extern VALUE c_jgWorld;
 
 void Init_jiggle(void);
 void Init_jgVector2();
-void Init_jgPointMass();
+void Init_jgParticle();
+void Init_jgSpring();
+void Init_jgArea();
 void Init_jgWorld();
-void Init_jgBody();
-void Init_jgSpringBody();
 
 VALUE rb_jgHashGet(VALUE hash, char *key);
 int rb_jgHashGetInt(VALUE hash, char *key, int de);
@@ -47,8 +45,9 @@ bool rb_jgHashGetBool(VALUE hash, char *key, bool de);
      }
 
 GETTER_TEMPLATE(VGET,         c_jgVector2,      Vector2,      jgVector2)
-GETTER_TEMPLATE(POINTMASS,    c_jgPointMass,    PointMass,    jgPointMass)
-GETTER_TEMPLATE(BODY,         c_jgBody,         Body,         jgBody)
+GETTER_TEMPLATE(AREA,         c_jgArea,         Area,         jgArea)
+GETTER_TEMPLATE(PARTICLE,     c_jgParticle,     Particle,     jgParticle)
+GETTER_TEMPLATE(SPRING,       c_jgSpring,       Spring,       jgSpring)
 GETTER_TEMPLATE(WORLD,        c_jgWorld,        World,        jgWorld)
 
 #define FLOAT_GET(func_name, type_conv, attr)			\
