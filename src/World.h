@@ -50,8 +50,8 @@ typedef struct jgWorld
 } jgWorld;
 
 extern jgWorld          *jgWorldAlloc();
-extern jgWorld          *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond, float currentTime);
-extern jgWorld          *jgWorldNew(jgAABB bounds, float ticksPerSecond, float currentTime);
+extern jgWorld          *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond);
+extern jgWorld          *jgWorldNew(jgAABB bounds, float ticksPerSecon);
 extern void              jgWorldFree(jgWorld *world);
 extern void              jgWorldFreeChildren(jgWorld *world);
 

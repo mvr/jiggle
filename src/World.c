@@ -19,7 +19,7 @@ jgWorld *jgWorldAlloc()
      return world;
 }
 
-jgWorld *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond, float currentTime)
+jgWorld *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond)
 {
      jgWorldSetSize(world, bounds);
 
@@ -29,15 +29,15 @@ jgWorld *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond, float 
      world->gravity = jgVector2Zero();
 
      world->ticksPerSecond = ticksPerSecond;
-     world->currentTime = currentTime;
+     world->currentTime = 0.0;
      world->timeAccumulator = 0.0;
      
      return world;
 }
 
-jgWorld *jgWorldNew(jgAABB bounds, float ticksPerSecond, float currentTime)
+jgWorld *jgWorldNew(jgAABB bounds, float ticksPerSecond)
 {
-     return jgWorldInit(jgWorldAlloc(), bounds, ticksPerSecond, currentTime);
+     return jgWorldInit(jgWorldAlloc(), bounds, ticksPerSecond);
 }
 
 void jgWorldFree(jgWorld *world)
