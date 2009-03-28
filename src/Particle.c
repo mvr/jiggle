@@ -4,10 +4,13 @@
 #include "Particle.h"
 #include "Vector2.h"
 
-jgParticle *jgParticleNew(float mass, jgVector2 pos)
+jgParticle *jgParticleAlloc()
 {
-     jgParticle *particle = malloc(sizeof(jgParticle));
+     return malloc(sizeof(jgParticle));
+}
 
+jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
+{
      particle->mass = mass;
      particle->position = pos;
      particle->velocity = jgVector2Zero();
@@ -17,6 +20,11 @@ jgParticle *jgParticleNew(float mass, jgVector2 pos)
      particle->elasticity = 0.3;
 
      return particle;
+}
+
+jgParticle *jgParticleNew(float mass, jgVector2 pos)
+{
+     return jgParticleInit(jgParticleAlloc(), mass, pos);
 }
 
 void jgParticleFree(jgParticle *particle)

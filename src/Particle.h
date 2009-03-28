@@ -18,6 +18,8 @@ typedef struct jgParticle
      float     friction;
 } jgParticle;
 
+extern jgParticle       *jgParticleAlloc();
+extern jgParticle       *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos);
 extern jgParticle       *jgParticleNew(float mass, jgVector2 pos);
 extern void              jgParticleFree(jgParticle *particle);
 

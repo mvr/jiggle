@@ -30,6 +30,8 @@ typedef struct jgArea
 
 struct jgWorld; // LOL WUT
 
+extern jgArea   *jgAreaAlloc();
+extern jgArea   *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles);
 extern jgArea   *jgAreaNew(jgParticle **particles, int numOfParticles);
 extern void      jgAreaFree(jgArea *area);
 

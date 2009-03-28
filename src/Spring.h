@@ -17,6 +17,13 @@ typedef struct jgSpring
      float               damping;
 } jgSpring;
 
+extern jgSpring *jgSpringAlloc();
+extern jgSpring *jgSpringInit(jgSpring *spring, 
+                              jgParticle *a,
+                              jgParticle *b,
+                              float d,
+                              float k,
+                              float damp);
 extern jgSpring *jgSpringNew(jgParticle *a,
                              jgParticle *b,
                              float d,

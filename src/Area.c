@@ -7,9 +7,13 @@
 #include "AABB.h"
 #include "World.h"
 
-jgArea *jgAreaNew(jgParticle **particles, int numOfParticles)
+jgArea *jgAreaAlloc()
 {
-     jgArea *area = malloc(sizeof(jgArea));
+     return malloc(sizeof(jgArea));
+}
+
+jgArea *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles)
+{
      area->particles = jgListNewFromArray((void **)particles, numOfParticles);
 
      area->friction  = 0.8;
@@ -21,6 +25,11 @@ jgArea *jgAreaNew(jgParticle **particles, int numOfParticles)
      JG_BITMASK_CLEAR(area->bitmaskY);
      
      return area;
+}
+
+jgArea *jgAreaNew(jgParticle **particles, int numOfParticles)
+{
+     return jgAreaInit(jgAreaAlloc(), particles, numOfParticles);
 }
 
 void jgAreaFree(jgArea *area)

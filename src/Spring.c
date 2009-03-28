@@ -25,19 +25,33 @@ static jgVector2 jgSpringCalculateForce(jgVector2 posA,
      return jgVector2Multiply(BtoA, (dist * springK) - (totalRelVel * damping));
 }
 
+jgSpring *jgSpringAlloc()
+{
+     return malloc(sizeof(jgSpring));
+}
+
+jgSpring *jgSpringInit(jgSpring *spring,
+                       jgParticle *a,
+                       jgParticle *b,
+                       float d,
+                       float k,
+                       float damp)
+{
+     spring->particleA = a;
+     spring->particleB = b;
+     spring->springD = d;
+     spring->springK = k;
+     spring->damping = damp;
+     return spring;
+}
+
 jgSpring *jgSpringNew(jgParticle *a,
                       jgParticle *b,
                       float d,
                       float k,
                       float damp)
 {
-     jgSpring *ret = malloc(sizeof(jgSpring));
-     ret->particleA = a;
-     ret->particleB = b;
-     ret->springD = d;
-     ret->springK = k;
-     ret->damping = damp;
-     return ret;
+     return jgSpringInit(jgSpringAlloc(), a, b, d, k, damp);
 }
 
 void jgSpringFree(jgSpring *spring)
