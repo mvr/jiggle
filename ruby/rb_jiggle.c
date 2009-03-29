@@ -43,7 +43,7 @@ bool rb_jgHashGetBool(VALUE hash, char *key, bool de)
      return de;					
 }
 
-void Init_jiggle(void)
+void Init_jiggle_ext(void)
 {
      m_Jiggle = rb_define_module("Jiggle");
 

@@ -17,7 +17,7 @@ extern VALUE c_jgArea;
 extern VALUE c_jgSpring;
 extern VALUE c_jgWorld;
 
-void Init_jiggle(void);
+void Init_jiggle_ext(void);
 void Init_jgVector2();
 void Init_jgParticle();
 void Init_jgSpring();
