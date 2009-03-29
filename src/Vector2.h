@@ -9,8 +9,6 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "Misc.h"
-
 typedef struct jgVector2
 {
      float x, y;

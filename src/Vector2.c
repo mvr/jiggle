@@ -93,21 +93,3 @@ jgVector2 *jgVector2Transform(jgVector2 points[],
 
      return dup;
 }
-
-jgVector2 *jgVector2MakeCircle(float radius, int segments)
-{
-     jgVector2 *ret = calloc(segments, sizeof(jgVector2));
-
-     float step = (2 * PI) / segments;
-     float angle = 2 * PI;
-     for(int i = 0; i < segments; i++)
-     {
-          float x = cos(angle) * radius;
-          float y = sin(angle) * radius;
-
-          ret[i] = jgv(x, y);
-
-          angle -= step;
-     }
-     return ret;
-}

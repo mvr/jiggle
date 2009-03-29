@@ -11,7 +11,6 @@
 #include "List.h"
 #include "Particle.h"
 #include "Vector2.h"
-#include "Misc.h"
 
 typedef struct jgArea
 {
