@@ -100,29 +100,25 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 #undef CREATE_ADDS_AND_REMOVES
 
-void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *hitParticle)
+void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
 {
-     jgParticle *prev, *particle, *next;
-     JG_LIST_FOREACH_TRIPLET(area->particles, prev, particle, next)
-     {
-          jgCollisionInfo *info = malloc(sizeof(jgCollisionInfo));
+     jgCollisionInfo *info = malloc(sizeof(jgCollisionInfo));
+     
+     // Will this work?
+     jgVector2 norm = jgVector2Normalize(particle->velocity);
 
-          // Will this work?
-          jgVector2 norm = jgVector2Normalize(particle->velocity);
+     info->particle = particle;
+     info->area = area;
+     info->hitPt = jgAreaClosestOnEdge(area, 
+                                       particle->position, 
+                                       norm, 
+                                       &info->areaParticleA, 
+                                       &info->areaParticleB, 
+                                       &info->edgeD, 
+                                       &info->normal);
+     info->penetration = jgVector2DistanceBetween(particle->position, info->hitPt);
 
-          info->particle = particle;
-          info->area = area;
-          info->hitPt = jgAreaClosestOnEdge(area, 
-                                            particle->position, 
-                                            norm, 
-                                            &info->areaParticleA, 
-                                            &info->areaParticleB, 
-                                            &info->edgeD, 
-                                            &info->normal);
-          info->penetration = jgVector2DistanceBetween(particle->position, info->hitPt);
-
-          jgListAdd(world->collisions, info);
-     }
+     jgListAdd(world->collisions, info);
 }
 
 void jgWorldHandleCollisions(jgWorld *world)
