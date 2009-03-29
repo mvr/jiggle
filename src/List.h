@@ -36,6 +36,11 @@ extern void     jgListRemove(jgList *list, void *data);
      var = jgListGet(list, 0);                  \
      for(int _i_ = 0; _i_ < list->length; _i_++, var = jgListGet(list, _i_))
 
+// OMGWTFBBQ
+#define JG_LIST_FOREACH2(list, var)             \
+     var = jgListGet(list, 0);                  \
+     for(int _i2_ = 0; _i2_ < list->length; _i2_++, var = jgListGet(list, _i2_))
+
 #define JG_LIST_FOREACH_PAIR(list, var, var2)                           \
      var = jgListGet(list, 0);                                          \
      var2 = jgListGet(list, 1);                                         \
@@ -52,6 +57,7 @@ extern void     jgListRemove(jgList *list, void *data);
               current = jgListGet(list, _i_),                           \
               next = (_i_ == list->length - 1) ? jgListGet(list, 0) : jgListGet(list, _i_ + 1))
           
+// Is this even used any more?
 
 #define JG_LIST_FOREACH_COMBO(list, b)                                  \
      b = NULL;                                                          \

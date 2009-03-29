@@ -100,27 +100,19 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 #undef CREATE_ADDS_AND_REMOVES
 
-void jgWorldAreaCollide(jgWorld *world, jgArea *a, jgArea *b)
+void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *hitParticle)
 {
      jgParticle *prev, *particle, *next;
-     JG_LIST_FOREACH_TRIPLET(a->particles, prev, particle, next)
+     JG_LIST_FOREACH_TRIPLET(area->particles, prev, particle, next)
      {
-          // Early-outs
-          if(!jgAABBContains(b->aabb, particle->position))
-               continue;
-
-          if(!jgAreaContains(b, particle->position))
-               continue;
-
           jgCollisionInfo *info = malloc(sizeof(jgCollisionInfo));
 
-          jgVector2 norm = jgVector2ThreePointNormal(prev->position, 
-                                                     particle->position, 
-                                                     next->position);
+          // Will this work?
+          jgVector2 norm = jgVector2Normalize(particle->velocity);
 
           info->particle = particle;
-          info->area = b;
-          info->hitPt = jgAreaClosestOnEdge(b, 
+          info->area = area;
+          info->hitPt = jgAreaClosestOnEdge(area, 
                                             particle->position, 
                                             norm, 
                                             &info->areaParticleA, 
@@ -276,27 +268,24 @@ void jgWorldStep(jgWorld *world, float timeStep)
           currentArea->isValid = jgAreaIsInsideOut(currentArea);
 
           jgAreaUpdateAABB(currentArea, timeStep);
-          jgAreaUpdateBitmask(currentArea, world);
      }
 
-     jgArea *a;
-     jgArea *b;
-     JG_LIST_FOREACH(world->areas, a)
+     jgArea *area;
+     jgParticle *particle;
+     JG_LIST_FOREACH(world->areas, area)
      {
-          JG_LIST_FOREACH_COMBO(world->areas, b)
+          JG_LIST_FOREACH2(world->particles, particle)
           {
-
-               if((!a->bitmaskX & b->bitmaskX) && (!a->bitmaskY & b->bitmaskY))
+               if(!jgAABBContains(area->aabb, particle->position))
                     continue;
 
-               if(!a->isValid || !b->isValid)
+               if(!jgAreaContains(area, particle->position))
                     continue;
 
-               if(!jgAABBIntersects(a->aabb, b->aabb))
+               if(!area->isValid)
                     continue;
 
-               jgWorldAreaCollide(world, a, b);
-               jgWorldAreaCollide(world, b, a);
+               jgWorldAreaCollide(world, area, particle);
           }
      }
 
