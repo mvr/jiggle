@@ -9,4 +9,7 @@ module Jiggle
     end
   end
   
+  def jgv(x, y)
+    Vector2.new(x, y)
+  end
 end

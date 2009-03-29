@@ -24,37 +24,22 @@ FLOAT_SET(rb_jgVector2SetY, VGET, y)
 
 VALUE rb_jgVector2Add(VALUE self, VALUE other)
 {
-     jgVector2 *r = malloc(sizeof(jgVector2));
-     *r = jgVector2Add(*VGET(self), *VGET(other));
-     return Data_Wrap_Struct(c_jgVector2, NULL, free, r);
+     return VNEW(jgVector2Add(*VGET(self), *VGET(other)));
 }
 
 VALUE rb_jgVector2Subtract(VALUE self, VALUE other)
 {
-     jgVector2 *r = malloc(sizeof(jgVector2));
-     *r = jgVector2Subtract(*VGET(self), *VGET(other));
-     return Data_Wrap_Struct(c_jgVector2, NULL, free, r);
+     return VNEW(jgVector2Subtract(*VGET(self), *VGET(other)));
 }
 
 VALUE rb_jgVector2Multiply(VALUE self, VALUE other)
 {
-     jgVector2 *r = malloc(sizeof(jgVector2));
-     *r = jgVector2Multiply(*VGET(self), NUM2DBL(other));
-     return Data_Wrap_Struct(c_jgVector2, NULL, free, r);
+     return VNEW(jgVector2Multiply(*VGET(self), NUM2DBL(other)));
 }
 
 VALUE rb_jgVector2Divide(VALUE self, VALUE other)
 {
-     jgVector2 *r = malloc(sizeof(jgVector2));
-     *r = jgVector2Divide(*VGET(self), NUM2DBL(other));
-     return Data_Wrap_Struct(c_jgVector2, NULL, free, r);
-}
-
-static VALUE rb_jgv(VALUE self, VALUE x, VALUE y)
-{
-     jgVector2 *vector = malloc(sizeof(jgVector2));
-     *vector = jgv(NUM2DBL(x), NUM2DBL(y));
-     return Data_Wrap_Struct(c_jgVector2, NULL, free, vector);
+     return VNEW(jgVector2Divide(*VGET(self), NUM2DBL(other)));
 }
 
 void Init_jgVector2()
@@ -72,6 +57,4 @@ void Init_jgVector2()
      rb_define_method(c_jgVector2, "-", rb_jgVector2Subtract, 1);
      rb_define_method(c_jgVector2, "*", rb_jgVector2Multiply, 1);
      rb_define_method(c_jgVector2, "/", rb_jgVector2Divide, 1);
-
-     rb_define_global_function("jgv", rb_jgv, 2);
 }
