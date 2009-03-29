@@ -37,14 +37,6 @@ static inline VALUE VNEW(jgVector2 v)
 	return Data_Wrap_Struct(c_jgVector2, NULL, free, ptr);	
 }
 
-static inline VALUE VWRAP(VALUE parent, jgVector2 *v)
-{
-	VALUE vec_obj = Data_Wrap_Struct(c_jgVector2, NULL, NULL, v);
-	rb_ivar_set(vec_obj, rb_intern("parent"), parent);
-	
-	return vec_obj;	
-}
-
 #define BOOL2VAL(b)   ((b) ? Qtrue : Qfalse)
 #define VAL2BOOL(b)   (RTEST(b))
 
@@ -106,8 +98,10 @@ GETTER_TEMPLATE(WORLD,        c_jgWorld,        World,        jgWorld)
 #define VECTOR_GET(func_name, type_conv, attr)				\
      static VALUE func_name(VALUE self)					\
      {									\
-	  jgVector2 *vector = &(type_conv(self)->attr);			\
-	  return Data_Wrap_Struct(c_jgVector2, NULL, NULL, vector);	\
+          jgVector2 *vector = &(type_conv(self)->attr);			\
+          VALUE wrapped = Data_Wrap_Struct(c_jgVector2, NULL, NULL, vector); \
+          rb_ivar_set(wrapped, rb_intern("parent"), self);              \
+          return wrapped;                                               \
      }
 
 #define VECTOR_SET(func_name, type_conv, attr)		\
