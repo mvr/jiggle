@@ -37,6 +37,9 @@ static inline VALUE VNEW(jgVector2 v)
 	return Data_Wrap_Struct(c_jgVector2, NULL, free, ptr);	
 }
 
+#define SET_PARENT(value)                               \
+     rb_ivar_set(value, rb_intern("parent"), self)
+
 #define BOOL2VAL(b)   ((b) ? Qtrue : Qfalse)
 #define VAL2BOOL(b)   (RTEST(b))
 
@@ -100,7 +103,7 @@ GETTER_TEMPLATE(WORLD,        c_jgWorld,        "World",        jgWorld)
      {									\
           jgVector2 *vector = &(type_conv(self)->attr);			\
           VALUE wrapped = Data_Wrap_Struct(c_jgVector2, NULL, NULL, vector); \
-          rb_ivar_set(wrapped, rb_intern("parent"), self);              \
+          SET_PARENT(wrapped);                                          \
           return wrapped;                                               \
      }
 

@@ -45,7 +45,9 @@ static VALUE rb_jgSpringGetParticles(VALUE self)
 {
      jgSpring *spring = SPRING(self);
      VALUE wrappedA = Data_Wrap_Struct(c_jgParticle, NULL, jgParticleFree, spring->particleA);
+     SET_PARENT(wrappedA);
      VALUE wrappedB = Data_Wrap_Struct(c_jgParticle, NULL, jgParticleFree, spring->particleB);
+     SET_PARENT(wrappedB);
      VALUE particles[] = {wrappedA, wrappedB};
      return rb_ary_new4(2, particles);
 }
