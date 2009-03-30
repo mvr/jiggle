@@ -45,17 +45,17 @@ static inline VALUE VNEW(jgVector2 v)
      func_name(VALUE self)						\
      {									\
 	  if(!rb_obj_is_kind_of(self, klass))				\
-	       rb_raise(rb_eTypeError, "wrong argument type %s (expected Jiggle::klass_name)", rb_obj_classname(self)); \
+	       rb_raise(rb_eTypeError, "wrong argument type %s (expected Jiggle::" klass_name ")", rb_obj_classname(self)); \
 	  type *ptr;							\
 	  Data_Get_Struct(self, type, ptr);				\
 	  return ptr;							\
      }
 
-GETTER_TEMPLATE(VGET,         c_jgVector2,      Vector2,      jgVector2)
-GETTER_TEMPLATE(AREA,         c_jgArea,         Area,         jgArea)
-GETTER_TEMPLATE(PARTICLE,     c_jgParticle,     Particle,     jgParticle)
-GETTER_TEMPLATE(SPRING,       c_jgSpring,       Spring,       jgSpring)
-GETTER_TEMPLATE(WORLD,        c_jgWorld,        World,        jgWorld)
+GETTER_TEMPLATE(VGET,         c_jgVector2,      "Vector2",      jgVector2)
+GETTER_TEMPLATE(AREA,         c_jgArea,         "Area",         jgArea)
+GETTER_TEMPLATE(PARTICLE,     c_jgParticle,     "Particle",     jgParticle)
+GETTER_TEMPLATE(SPRING,       c_jgSpring,       "Spring",       jgSpring)
+GETTER_TEMPLATE(WORLD,        c_jgWorld,        "World",        jgWorld)
 
 #define FLOAT_GET(func_name, type_conv, attr)			\
      static VALUE func_name(VALUE self)				\
