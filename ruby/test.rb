@@ -25,15 +25,11 @@ screen = Screen.set_mode [400, 400]
 w = World.new
 w.gravity = jgv(0, 9.8)
 
-p1 = Particle.new jgv(10, 0)
-w.add_particle p1
-
-p2 = Particle.new jgv(0, 0)
-w.add_particle p2
-p2.mass = 5
-
-s = Spring.new p1, p2, :length => 5
-w.add_spring s
+b = Body.new [jgv(0, 0),
+              jgv(0, 10),
+              jgv(10, 10),
+              jgv(10, 0)]
+w.add_body b
 
 buffer = Surface.new(screen.size)
 
@@ -42,7 +38,6 @@ loop do
   
   w.particles.each do |particle|
     position = particle.position.to_screen
-    p position
     buffer.draw_circle_s [position.x, position.y], 2, :white
   end
 
