@@ -29,8 +29,8 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
      jgParticle *particleA = PARTICLE(particleAvalue);
      jgParticle *particleB = PARTICLE(particleBvalue);
 
-     float defaultLength = jgVector2DistanceBetween(spring->particleA->position,
-                                                    spring->particleB->position);
+     float defaultLength = jgVector2DistanceBetween(particleA->position,
+                                                    particleB->position);
 
      float length   = rb_jgHashGetFloat(attr, "length",   defaultLength);
      float strength = rb_jgHashGetFloat(attr, "strength", 400.0);
