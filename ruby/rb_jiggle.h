@@ -38,7 +38,7 @@ static inline VALUE VNEW(jgVector2 v)
 }
 
 #define SET_PARENT(value)                               \
-     rb_ivar_set(value, rb_intern("parent"), self)
+     rb_iv_set(value, "parent", self)
 
 #define BOOL2VAL(b)   ((b) ? Qtrue : Qfalse)
 #define VAL2BOOL(b)   (RTEST(b))

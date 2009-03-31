@@ -29,6 +29,9 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
      jgParticle *particleA = PARTICLE(particleAvalue);
      jgParticle *particleB = PARTICLE(particleBvalue);
 
+     rb_iv_set(self, "a", particleAvalue);
+     rb_iv_set(self, "b", particleBvalue);
+
      float defaultLength = jgVector2DistanceBetween(particleA->position,
                                                     particleB->position);
 
@@ -41,15 +44,14 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
      return self;
 }
 
-static VALUE rb_jgSpringGetParticles(VALUE self)
+static VALUE rb_jgSpringGetA(VALUE self)
 {
-     jgSpring *spring = SPRING(self);
-     VALUE wrappedA = Data_Wrap_Struct(c_jgParticle, NULL, jgParticleFree, spring->particleA);
-     SET_PARENT(wrappedA);
-     VALUE wrappedB = Data_Wrap_Struct(c_jgParticle, NULL, jgParticleFree, spring->particleB);
-     SET_PARENT(wrappedB);
-     VALUE particles[] = {wrappedA, wrappedB};
-     return rb_ary_new4(2, particles);
+     return rb_iv_get(self, "a");
+}
+
+static VALUE rb_jgSpringGetB(VALUE self)
+{
+     return rb_iv_get(self, "b");
 }
 
 void Init_jgSpring()
@@ -58,7 +60,8 @@ void Init_jgSpring()
      rb_define_alloc_func(c_jgSpring, rb_jgSpringAlloc);
      rb_define_method(c_jgSpring, "initialize", rb_jgSpringInitialize, -1);
 
-     rb_define_method(c_jgSpring, "particles", rb_jgSpringGetParticles, 0);
+     rb_define_method(c_jgSpring, "a", rb_jgSpringGetA, 0);
+     rb_define_method(c_jgSpring, "b", rb_jgSpringGetB, 0);
      
      rb_define_method(c_jgSpring, "length",    rb_jgSpringGetLength, 0);
      rb_define_method(c_jgSpring, "length=",   rb_jgSpringSetLength, 1);
