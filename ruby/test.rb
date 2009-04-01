@@ -25,10 +25,15 @@ screen = Screen.set_mode [400, 400]
 w = World.new
 w.gravity = jgv(0, 9.8)
 
-b = Body.new [jgv(0, 0),
-              jgv(0, 10),
-              jgv(10, 10),
-              jgv(10, 0)]
+box_shape = [jgv(0, 0),
+             jgv(0, 10),
+             jgv(10, 10),
+             jgv(10, 0)]
+
+b = Body.new box_shape, :offset => jgv(-5, -20)
+w.add_body b
+
+b = StaticBody.new box_shape
 w.add_body b
 
 buffer = Surface.new(screen.size)
