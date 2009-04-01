@@ -6,12 +6,13 @@ module Jiggle
 
     def initialize(points, attr={})
       attr[:mass] ||= points.size
-      
       mass = attr[:mass] / points.size
+
+      offset = attr[:offset] || jgv(0, 0)
 
       @particles = []
       points.each do |point|
-        particle = Particle.new point, :mass => mass
+        particle = Particle.new point + offset, :mass => mass
         @particles << particle
       end
 
