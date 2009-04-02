@@ -25,6 +25,7 @@ screen = Screen.set_mode [400, 400]
 w = World.new
 w.gravity = jgv(0, 9.8)
 
+
 box_shape = [jgv(0, 0),
              jgv(0, 10),
              jgv(10, 10),
@@ -49,7 +50,15 @@ loop do
   w.springs.each do |spring|
     p_a = spring.a.position.to_screen
     p_b = spring.b.position.to_screen
-    buffer.draw_line [p_a.x, p_a.y], [p_b.x, p_b.y], :white
+    buffer.draw_line [p_a.x, p_a.y], [p_b.x, p_b.y], :blue
+  end
+
+  w.areas.each do |area|
+    area.particles.adjacent.each do |a, b|
+      p_a = a.position.to_screen
+      p_b = b.position.to_screen
+      buffer.draw_line [p_a.x, p_a.y], [p_b.x, p_b.y], :red
+    end
   end
   
   buffer.blit(screen, [0,0])
