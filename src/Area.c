@@ -163,7 +163,7 @@ float jgAreaArea(jgArea *area)
 
           sum += (current.x * next.y) - (next.x * current.y);
      }
-     return -(sum / 2);
+     return sum / 2;
 }
 
 bool jgAreaIsInsideOut(jgArea *area)
