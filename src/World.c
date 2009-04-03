@@ -122,6 +122,15 @@ void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
      jgListAdd(world->collisions, collision);
 }
 
+static void jgWorldClearCollisions(jgWorld *world)
+{
+     jgCollision *collision;
+     JG_LIST_FOREACH(world->collisions, collision)
+          jgCollisionFree(collision);
+
+     jgListClear(world->collisions);
+}
+
 void jgWorldHandleCollisions(jgWorld *world)
 {
      // I'm just copying, I don't understand any of this... yet.
@@ -218,9 +227,7 @@ void jgWorldHandleCollisions(jgWorld *world)
                }
           }
 
-          jgCollisionFree(collision);
      }
-     jgListClear(world->collisions);
 }
 
 void jgWorldUpdate(jgWorld *world, float newTime)
@@ -266,6 +273,8 @@ void jgWorldStep(jgWorld *world, float timeStep)
 
           jgAreaUpdateAABB(currentArea, timeStep);
      }
+
+     jgWorldClearCollisions(world);
 
      jgArea *area;
      jgParticle *particle;
