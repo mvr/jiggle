@@ -11,5 +11,6 @@
 #include "Particle.h"
 #include "Vector2.h"
 #include "World.h"
+#include "Collision.h"
 
 #endif
