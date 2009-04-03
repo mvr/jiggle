@@ -13,7 +13,7 @@
 #include "Area.h"
 #include "Spring.h"
 
-typedef struct jgCollisionInfo
+typedef struct jgCollision
 {
      jgParticle *particle;
      jgArea     *area;
@@ -23,7 +23,7 @@ typedef struct jgCollisionInfo
      float       edgeD;
      jgVector2   normal;
      float       penetration;
-} jgCollisionInfo;
+} jgCollision;
 
 typedef struct jgWorld
 {

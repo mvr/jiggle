@@ -102,49 +102,49 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
 {
-     jgCollisionInfo *info = malloc(sizeof(jgCollisionInfo));
+     jgCollision *collision = malloc(sizeof(jgCollision));
      
      // Will this work?
      jgVector2 norm = jgVector2Normalize(particle->velocity);
 
-     info->particle = particle;
-     info->area = area;
-     info->hitPt = jgAreaClosestOnEdge(area, 
+     collision->particle = particle;
+     collision->area = area;
+     collision->hitPt = jgAreaClosestOnEdge(area, 
                                        particle->position, 
                                        norm, 
-                                       &info->areaParticleA, 
-                                       &info->areaParticleB, 
-                                       &info->edgeD, 
-                                       &info->normal);
-     info->penetration = jgVector2DistanceBetween(particle->position, info->hitPt);
+                                       &collision->areaParticleA, 
+                                       &collision->areaParticleB, 
+                                       &collision->edgeD, 
+                                       &collision->normal);
+     collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
 
-     jgListAdd(world->collisions, info);
+     jgListAdd(world->collisions, collision);
 }
 
 void jgWorldHandleCollisions(jgWorld *world)
 {
      // I'm just copying, I don't understand any of this... yet.
 
-     jgCollisionInfo *info;
-     JG_LIST_FOREACH(world->collisions, info)
+     jgCollision *collision;
+     JG_LIST_FOREACH(world->collisions, collision)
      {
-          jgParticle *A  = info->particle;
-          jgParticle *B1 = info->areaParticleA;
-          jgParticle *B2 = info->areaParticleB;
+          jgParticle *A  = collision->particle;
+          jgParticle *B1 = collision->areaParticleA;
+          jgParticle *B2 = collision->areaParticleB;
 
           jgVector2 bVel = jgVector2Multiply(jgVector2Add(B1->velocity, B2->velocity), 0.5);
           jgVector2 relVel = jgVector2Subtract(A->velocity, bVel);
 
-          float relDot = jgVector2Dot(relVel, info->normal);
+          float relDot = jgVector2Dot(relVel, collision->normal);
 
-          if(info->penetration > world->penetrationThreshold)
+          if(collision->penetration > world->penetrationThreshold)
           {
                world->penetrationCount++;
                continue;
           }
 
-          float b1inf = 1.0 - info->edgeD;
-          float b2inf = info->edgeD;
+          float b1inf = 1.0 - collision->edgeD;
+          float b2inf = collision->edgeD;
 
           float b2MassSum = B1->mass + B2->mass;
           float massSum = A->mass + b2MassSum;
@@ -154,17 +154,17 @@ void jgWorldHandleCollisions(jgWorld *world)
 	  if(A->mass == INFINITY)
           {
                Amove = 0;
-               Bmove = info->penetration + 0.001;
+               Bmove = collision->penetration + 0.001;
           }
           else if(b2MassSum == INFINITY)
           {
-               Amove = info->penetration + 0.001;
+               Amove = collision->penetration + 0.001;
                Bmove = 0;
           }
           else
           {
-               Amove = info->penetration * (b2MassSum / massSum);
-               Bmove = info->penetration * (A->mass / massSum);
+               Amove = collision->penetration * (b2MassSum / massSum);
+               Bmove = collision->penetration * (A->mass / massSum);
           }
 
           float B1move = Bmove * b1inf;
@@ -174,27 +174,27 @@ void jgWorldHandleCollisions(jgWorld *world)
           float BinvMass = 1.0 / b2MassSum;
 
           float jDenom = AinvMass + BinvMass;
-          float elas = info->particle->elasticity * info->area->elasticity + 1;
+          float elas = collision->particle->elasticity * collision->area->elasticity + 1;
           jgVector2 numV = jgVector2Multiply(relVel, elas);
 
-          float jNumerator = jgVector2Dot(numV, info->normal);
+          float jNumerator = jgVector2Dot(numV, collision->normal);
           jNumerator = -jNumerator;
 
           float j = jNumerator / jDenom;
 
           if(A->mass != INFINITY)
 	  {
-               A->position = jgVector2Add(A->position, jgVector2Multiply(info->normal, Amove));
+               A->position = jgVector2Add(A->position, jgVector2Multiply(collision->normal, Amove));
 	  }
 
           if(b2MassSum != INFINITY)
           {
-               B1->position = jgVector2Subtract(B1->position, jgVector2Multiply(info->normal, B1move));
-               B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(info->normal, B2move));
+               B1->position = jgVector2Subtract(B1->position, jgVector2Multiply(collision->normal, B1move));
+               B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, B2move));
           }
 
-          jgVector2 tangent = jgVector2Perpendicular(info->normal);
-          float friction = info->particle->friction * info->area->friction;
+          jgVector2 tangent = jgVector2Perpendicular(collision->normal);
+          float friction = collision->particle->friction * collision->area->friction;
 
           float fNumerator = jgVector2Dot(relVel, tangent);
           fNumerator *= friction;
@@ -204,20 +204,20 @@ void jgWorldHandleCollisions(jgWorld *world)
           {
 	       if(A->mass != INFINITY)
                {
-                    A->velocity.x += (info->normal.x * (j / A->mass)) - (tangent.x * (f / A->mass));
-                    A->velocity.y += (info->normal.y * (j / A->mass)) - (tangent.y * (f / A->mass));
+                    A->velocity.x += (collision->normal.x * (j / A->mass)) - (tangent.x * (f / A->mass));
+                    A->velocity.y += (collision->normal.y * (j / A->mass)) - (tangent.y * (f / A->mass));
                }
 	       if(b2MassSum != INFINITY)
                {
-                    B1->velocity.x -= (info->normal.x * (j / b2MassSum) * b1inf) - (tangent.x * (f / b2MassSum) * b1inf);
-                    B1->velocity.y -= (info->normal.y * (j / b2MassSum) * b1inf) - (tangent.y * (f / b2MassSum) * b1inf);
+                    B1->velocity.x -= (collision->normal.x * (j / b2MassSum) * b1inf) - (tangent.x * (f / b2MassSum) * b1inf);
+                    B1->velocity.y -= (collision->normal.y * (j / b2MassSum) * b1inf) - (tangent.y * (f / b2MassSum) * b1inf);
 
-                    B2->velocity.x -= (info->normal.x * (j / b2MassSum) * b2inf) - (tangent.x * (f / b2MassSum) * b2inf);
-                    B2->velocity.y -= (info->normal.y * (j / b2MassSum) * b2inf) - (tangent.y * (f / b2MassSum) * b2inf);
+                    B2->velocity.x -= (collision->normal.x * (j / b2MassSum) * b2inf) - (tangent.x * (f / b2MassSum) * b2inf);
+                    B2->velocity.y -= (collision->normal.y * (j / b2MassSum) * b2inf) - (tangent.y * (f / b2MassSum) * b2inf);
                }
           }
 
-          free(info);
+          free(collision);
      }
      jgListClear(world->collisions);
 }
