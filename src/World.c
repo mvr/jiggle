@@ -8,6 +8,7 @@
 #include "List.h"
 #include "Particle.h"
 #include "AABB.h"
+#include "Collision.h"
 
 jgWorld *jgWorldAlloc()
 {
@@ -102,7 +103,7 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
 {
-     jgCollision *collision = malloc(sizeof(jgCollision));
+     jgCollision *collision = jgCollisionAlloc();
      
      // Will this work?
      jgVector2 norm = jgVector2Normalize(particle->velocity);
@@ -217,7 +218,7 @@ void jgWorldHandleCollisions(jgWorld *world)
                }
           }
 
-          free(collision);
+          jgCollisionFree(collision);
      }
      jgListClear(world->collisions);
 }

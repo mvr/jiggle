@@ -13,18 +13,6 @@
 #include "Area.h"
 #include "Spring.h"
 
-typedef struct jgCollision
-{
-     jgParticle *particle;
-     jgArea     *area;
-     jgParticle *areaParticleA;
-     jgParticle *areaParticleB;
-     jgVector2   hitPt;
-     float       edgeD;
-     jgVector2   normal;
-     float       penetration;
-} jgCollision;
-
 typedef struct jgWorld
 {
      jgList         *particles;
