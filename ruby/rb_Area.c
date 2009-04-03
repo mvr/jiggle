@@ -43,6 +43,22 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      return self;
 }
 
+VALUE rb_jgAreaWrap(jgArea *area)
+{
+     VALUE wrappedArea = Data_Wrap_Struct(c_jgArea, NULL, jgAreaFree, area);
+     
+     VALUE *particles = malloc(area->particles->length * sizeof(VALUE));
+     for(int i = 0; i < area->particles->length; i++)
+          particles[i] = rb_jgParticleWrap(area->particles->arr[i]);
+
+     VALUE particlesArray = rb_ary_new4(area->particles->length, particles);
+     free(particles);
+
+     rb_iv_set(wrappedArea, "particles", particlesArray);
+
+     return wrappedArea;
+}
+
 static VALUE rb_jgAreaParticles(VALUE self)
 {
      return rb_iv_get(self, "particles");

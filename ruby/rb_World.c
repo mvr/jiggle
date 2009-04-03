@@ -38,6 +38,17 @@ static VALUE rb_jgWorldUpdate(VALUE self, VALUE currentTime)
      return self;
 }
 
+static VALUE rb_jgWorldCollisions(VALUE self)
+{
+     jgWorld *world = WORLD(self);
+
+     VALUE *collisions = malloc(world->collisions->length * sizeof(VALUE));
+     for(int i = 0; i < world->collisions->length; i++)
+          collisions[i] = rb_jgCollisionWrap(world->collisions->arr[i]);
+
+     return rb_ary_new4(world->collisions->length, collisions);
+}
+
 #define RUBY_ADD_AND_REMOVE(classname, iv, converter)                   \
      static VALUE rb_jgWorldAdd ## classname(VALUE self, VALUE thing)   \
      {                                                                  \
@@ -85,6 +96,8 @@ void Init_jgWorld()
      RUBY_DEFINE_ADD_AND_REMOVE("particle", Particle);
      RUBY_DEFINE_ADD_AND_REMOVE("area",     Area);
      RUBY_DEFINE_ADD_AND_REMOVE("spring",   Spring);
+
+     rb_define_method(c_jgWorld, "collisions", rb_jgWorldCollisions, 0);
 
      rb_define_method(c_jgWorld, "gravity",  rb_jgWorldGetGravity, 0);
      rb_define_method(c_jgWorld, "gravity=", rb_jgWorldSetGravity, 1);
