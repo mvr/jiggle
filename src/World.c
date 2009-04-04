@@ -106,7 +106,8 @@ void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
      jgCollision *collision = jgCollisionAlloc();
      
      // Will this work?
-     jgVector2 norm = jgVector2Normalize(particle->velocity);
+//     jgVector2 norm = jgVector2Normalize(particle->velocity);
+     jgVector2 norm = jgVector2Zero();
 
      collision->particle = particle;
      collision->area = area;
@@ -147,11 +148,11 @@ void jgWorldHandleCollisions(jgWorld *world)
 
           float relDot = jgVector2Dot(relVel, collision->normal);
 
-          if(collision->penetration > world->penetrationThreshold)
-          {
-               world->penetrationCount++;
-               continue;
-          }
+/*           if(collision->penetration > world->penetrationThreshold) */
+/*           { */
+/*                world->penetrationCount++; */
+/*                continue; */
+/*           } */
 
           float b1inf = 1.0 - collision->edgeD;
           float b2inf = collision->edgeD;
