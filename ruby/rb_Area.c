@@ -45,7 +45,7 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
 
 VALUE rb_jgAreaWrap(jgArea *area)
 {
-     VALUE wrappedArea = Data_Wrap_Struct(c_jgArea, NULL, jgAreaFree, area);
+     VALUE wrappedArea = Data_Wrap_Struct(c_jgArea, NULL, NULL, area);
      
      VALUE *particles = malloc(area->particles->length * sizeof(VALUE));
      for(int i = 0; i < area->particles->length; i++)

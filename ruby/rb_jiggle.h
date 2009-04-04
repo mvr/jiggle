@@ -33,7 +33,7 @@ jgVector2 rb_jgHashGetVector2(VALUE hash, char *key, jgVector2 de);
 bool rb_jgHashGetBool(VALUE hash, char *key, bool de);
 
 #define rb_jgParticleWrap(particle)                                     \
-     Data_Wrap_Struct(c_jgParticle, NULL, jgParticleFree, (particle))
+     Data_Wrap_Struct(c_jgParticle, NULL, NULL, (particle))
 VALUE rb_jgAreaWrap(jgArea *area);
 VALUE rb_jgCollisionWrap(jgCollision *collision);
 
