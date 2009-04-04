@@ -282,6 +282,9 @@ void jgWorldStep(jgWorld *world, float timeStep)
      {
           JG_LIST_FOREACH2(world->particles, particle)
           {
+               if(jgListContains(area->particles, particle))
+                    continue;
+
                if(!jgAABBContains(area->aabb, particle->position))
                     continue;
 
