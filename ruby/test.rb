@@ -21,9 +21,10 @@ end
 
 Rubygame.init
 screen = Screen.set_mode [400, 400]
+queue = EventQueue.new()
 
 w = World.new
-w.gravity = jgv(0, 9.8)
+w.gravity = jgv(0, 98)
 
 
 box_shape = [jgv(0, 0),
@@ -31,15 +32,21 @@ box_shape = [jgv(0, 0),
              jgv(10, 10),
              jgv(10, 0)]
 
-b = Body.new box_shape, :offset => jgv(-5, -20)
-w.add_body b
-
 b = StaticBody.new box_shape
 w.add_body b
 
 buffer = Surface.new(screen.size)
 
 loop do
+  queue.each do |event|
+    case(event)
+    when MouseDownEvent
+      position = jgv(*event.pos).to_world
+      b = Body.new box_shape, :offset => position
+      w.add_body b
+    end
+  end
+  
   buffer.fill :black
   
   w.particles.each do |particle|
