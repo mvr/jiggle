@@ -52,6 +52,8 @@ void jgWorldFree(jgWorld *world)
 
 void jgWorldFreeChildren(jgWorld *world)
 {
+     jgWorldClearCollisions(world);
+
      jgParticle *currentParticle;
      JG_LIST_FOREACH(world->particles, currentParticle)
      {
