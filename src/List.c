@@ -30,6 +30,7 @@ void jgListClear(jgList *list)
 
 void jgListFree(jgList *list)
 {
+     free(list->arr);
      free(list);
 }
 
