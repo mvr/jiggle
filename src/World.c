@@ -50,6 +50,15 @@ void jgWorldFree(jgWorld *world)
      free(world);
 }
 
+static void jgWorldClearCollisions(jgWorld *world)
+{
+     jgCollision *collision;
+     JG_LIST_FOREACH(world->collisions, collision)
+          jgCollisionFree(collision);
+
+     jgListClear(world->collisions);
+}
+
 void jgWorldFreeChildren(jgWorld *world)
 {
      jgWorldClearCollisions(world);
@@ -123,15 +132,6 @@ void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
      collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
 
      jgListAdd(world->collisions, collision);
-}
-
-static void jgWorldClearCollisions(jgWorld *world)
-{
-     jgCollision *collision;
-     JG_LIST_FOREACH(world->collisions, collision)
-          jgCollisionFree(collision);
-
-     jgListClear(world->collisions);
 }
 
 void jgWorldHandleCollisions(jgWorld *world)
