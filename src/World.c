@@ -43,10 +43,10 @@ jgWorld *jgWorldNew(jgAABB bounds, float ticksPerSecond)
 
 void jgWorldFree(jgWorld *world)
 {
-     jgListNew(world->particles);
-     jgListNew(world->areas);
-     jgListNew(world->springs);
-     jgListNew(world->collisions);
+     jgListFree(world->particles);
+     jgListFree(world->areas);
+     jgListFree(world->springs);
+     jgListFree(world->collisions);
      free(world);
 }
 
