@@ -10,7 +10,7 @@ static VALUE rb_jgCollisionAlloc(VALUE klass)
 
 VALUE rb_jgCollisionWrap(jgCollision *collision)
 {     
-     VALUE wrappedCollision = Data_Wrap_Struct(c_jgCollision, NULL, jgCollisionFree, collision);
+     VALUE wrappedCollision = Data_Wrap_Struct(c_jgCollision, NULL, NULL, collision);
      
      rb_iv_set(wrappedCollision, "particle",        rb_jgParticleWrap(collision->particle));
      rb_iv_set(wrappedCollision, "area",            rb_jgAreaWrap(collision->area));
