@@ -7,6 +7,7 @@ tests/*.o
 tests/test
 demos/demo1
 demos/demo2
+ruby/Rakefile
 ruby/*.o
 ruby/mkrf.log
 ruby/lib/jiggle_ext.so
