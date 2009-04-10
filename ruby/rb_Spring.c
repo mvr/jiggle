@@ -29,8 +29,8 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
      jgParticle *particleA = PARTICLE(particleAvalue);
      jgParticle *particleB = PARTICLE(particleBvalue);
 
-     rb_iv_set(self, "a", particleAvalue);
-     rb_iv_set(self, "b", particleBvalue);
+     rb_iv_set(self, "@a", particleAvalue);
+     rb_iv_set(self, "@b", particleBvalue);
 
      float defaultLength = jgVector2DistanceBetween(particleA->position,
                                                     particleB->position);
@@ -44,24 +44,14 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
      return self;
 }
 
-static VALUE rb_jgSpringGetA(VALUE self)
-{
-     return rb_iv_get(self, "a");
-}
-
-static VALUE rb_jgSpringGetB(VALUE self)
-{
-     return rb_iv_get(self, "b");
-}
-
 void Init_jgSpring()
 {
      c_jgSpring = rb_define_class_under(m_Jiggle, "Spring", rb_cObject);
      rb_define_alloc_func(c_jgSpring, rb_jgSpringAlloc);
      rb_define_method(c_jgSpring, "initialize", rb_jgSpringInitialize, -1);
 
-     rb_define_method(c_jgSpring, "a", rb_jgSpringGetA, 0);
-     rb_define_method(c_jgSpring, "b", rb_jgSpringGetB, 0);
+     rb_define_attr(c_jgSpring, "a", 1, 0);
+     rb_define_attr(c_jgSpring, "b", 1, 0);
      
      rb_define_method(c_jgSpring, "length",    rb_jgSpringGetLength, 0);
      rb_define_method(c_jgSpring, "length=",   rb_jgSpringSetLength, 1);

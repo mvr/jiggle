@@ -16,8 +16,6 @@ static VALUE rb_jgAreaAlloc(VALUE klass)
 
 static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
 {
-     rb_iv_set(self, "particles", rb_ary_new());
-
      VALUE particles, attr;
      rb_scan_args(argc, argv, "11", &particles, &attr);
      Check_Type(particles, T_ARRAY);
@@ -32,7 +30,7 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      jgAreaInit(area, unwrapped, RARRAY(particles)->len);
      free(unwrapped);
 
-     rb_iv_set(self, "particles", particles);
+     rb_iv_set(self, "@particles", particles);
 
      float friction   = rb_jgHashGetFloat(attr, "friction", 0.8);
      float elasticity = rb_jgHashGetFloat(attr, "elasticity", 0.3);
@@ -41,11 +39,6 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      area->elasticity = elasticity;
 
      return self;
-}
-
-static VALUE rb_jgAreaParticles(VALUE self)
-{
-     return rb_iv_get(self, "particles");
 }
 
 void Init_jgArea()
@@ -59,5 +52,5 @@ void Init_jgArea()
      rb_define_method(c_jgArea, "friction",    rb_jgAreaGetFriction, 0);
      rb_define_method(c_jgArea, "friction=",   rb_jgAreaSetFriction, 1);
 
-     rb_define_method(c_jgArea, "particles", rb_jgAreaParticles, 0);
+     rb_define_attr(c_jgArea, "particles", 1, 0);
 }

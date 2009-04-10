@@ -23,39 +23,19 @@ VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE world)
 {     
      VALUE wrappedCollision = Data_Wrap_Struct(c_jgCollision, NULL, NULL, collision);
      
-     rb_iv_set(wrappedCollision, "particle",        
-               rb_jgFindInArray(rb_iv_get(world, "particles"), collision->particle));
+     rb_iv_set(wrappedCollision, "@particle",        
+               rb_jgFindInArray(rb_iv_get(world, "@particles"), collision->particle));
 
-     rb_iv_set(wrappedCollision, "area",
-               rb_jgFindInArray(rb_iv_get(world, "areas"), collision->area));
+     rb_iv_set(wrappedCollision, "@area",
+               rb_jgFindInArray(rb_iv_get(world, "@areas"), collision->area));
 
-     rb_iv_set(wrappedCollision, "area_particle_a", 
-               rb_jgFindInArray(rb_iv_get(world, "particles"), collision->areaParticleA));
+     rb_iv_set(wrappedCollision, "@area_particle_a", 
+               rb_jgFindInArray(rb_iv_get(world, "@particles"), collision->areaParticleA));
 
-     rb_iv_set(wrappedCollision, "area_particle_b", 
-               rb_jgFindInArray(rb_iv_get(world, "particles"), collision->areaParticleB));
+     rb_iv_set(wrappedCollision, "@area_particle_b", 
+               rb_jgFindInArray(rb_iv_get(world, "@particles"), collision->areaParticleB));
      
      return wrappedCollision;
-}
-
-static VALUE rb_jgCollisionGetParticle(VALUE self)
-{
-     return rb_iv_get(self, "particle");
-}
-
-static VALUE rb_jgCollisionGetArea(VALUE self)
-{
-     return rb_iv_get(self, "area");
-}
-
-static VALUE rb_jgCollisionGetAreaA(VALUE self)
-{
-     return rb_iv_get(self, "area_particle_a");
-}
-
-static VALUE rb_jgCollisionGetAreaB(VALUE self)
-{
-     return rb_iv_get(self, "area_particle_b");
 }
 
 VECTOR_GET(rb_jgCollisionGetHitPoint,    COLLISION, hitPt)
@@ -68,10 +48,10 @@ void Init_jgCollision()
      c_jgCollision = rb_define_class_under(m_Jiggle, "Collision", rb_cObject);
      rb_define_alloc_func(c_jgCollision, rb_jgCollisionAlloc);
 
-     rb_define_method(c_jgCollision, "particle", rb_jgCollisionGetParticle, 0);
-     rb_define_method(c_jgCollision, "area", rb_jgCollisionGetArea, 0);
-     rb_define_method(c_jgCollision, "area_particle_a", rb_jgCollisionGetAreaA, 0);
-     rb_define_method(c_jgCollision, "area_particle_b", rb_jgCollisionGetAreaB, 0);
+     rb_define_attr(c_jgCollision, "particle",        1, 0);
+     rb_define_attr(c_jgCollision, "area",            1, 0);
+     rb_define_attr(c_jgCollision, "area_particle_a", 1, 0);
+     rb_define_attr(c_jgCollision, "area_particle_b", 1, 0);
 
      rb_define_method(c_jgCollision, "hit_point", rb_jgCollisionGetHitPoint, 0);
      rb_define_method(c_jgCollision, "edge_d", rb_jgCollisionGetEdgeD, 0);

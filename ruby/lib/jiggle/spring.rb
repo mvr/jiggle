@@ -1,7 +1,7 @@
 module Jiggle
   class Spring
     def particles
-      [a, b]
+      [@a, @b]
     end
   end
 end

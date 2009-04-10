@@ -23,9 +23,9 @@ static VALUE rb_jgWorldInitialize(int argc, VALUE *argv, VALUE self)
 
      jgWorldInit(WORLD(self), ticks);
 
-     rb_iv_set(self, "areas", rb_ary_new());
-     rb_iv_set(self, "particles", rb_ary_new());
-     rb_iv_set(self, "springs", rb_ary_new());
+     rb_iv_set(self, "@areas", rb_ary_new());
+     rb_iv_set(self, "@particles", rb_ary_new());
+     rb_iv_set(self, "@springs", rb_ary_new());
 
      return self;
 }
@@ -53,19 +53,14 @@ static VALUE rb_jgWorldCollisions(VALUE self)
      static VALUE rb_jgWorldAdd ## classname(VALUE self, VALUE thing)   \
      {                                                                  \
           jgWorldAdd ## classname(WORLD(self), converter(thing));       \
-          rb_ary_push(rb_iv_get(self, iv "s"), thing);                  \
+          rb_ary_push(rb_iv_get(self, "@" iv "s"), thing);                  \
           return thing;                                                 \
      }                                                                  \
                                                                         \
      static VALUE rb_jgWorldRemove ## classname(VALUE self, VALUE thing) \
      {                                                                  \
           jgWorldRemove ## classname(WORLD(self), converter(thing));    \
-          return rb_ary_delete(rb_iv_get(self, iv "s"), thing);         \
-     }                                                                  \
-                                                                        \
-     static VALUE rb_jgWorld ## classname ## s(VALUE self)              \
-     {                                                                  \
-          return rb_iv_get(self, iv "s");                               \
+          return rb_ary_delete(rb_iv_get(self, "@" iv "s"), thing);         \
      }                                                                  \
 
 RUBY_ADD_AND_REMOVE(Area, "area", AREA)
@@ -83,7 +78,7 @@ FLOAT_SET(rb_jgWorldSetDamping, WORLD, damping)
 #define RUBY_DEFINE_ADD_AND_REMOVE(method_name, class)                  \
      rb_define_method(c_jgWorld, "add_" method_name,    rb_jgWorldAdd ## class,    1); \
      rb_define_method(c_jgWorld, "remove_" method_name, rb_jgWorldRemove ## class, 1); \
-     rb_define_method(c_jgWorld, method_name "s",       rb_jgWorld ## class ## s,  0); \
+     rb_define_attr(  c_jgWorld, method_name "s", 1, 0); \
 
 void Init_jgWorld()
 {
