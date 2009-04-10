@@ -40,11 +40,13 @@ static VALUE rb_jgWorldCollisions(VALUE self)
 {
      jgWorld *world = WORLD(self);
 
-     VALUE *collisions = malloc(world->collisions->length * sizeof(VALUE));
-     for(int i = 0; i < world->collisions->length; i++)
-          collisions[i] = rb_jgCollisionWrap(world->collisions->arr[i], self);
+     VALUE array = rb_ary_new();
 
-     return rb_ary_new4(world->collisions->length, collisions);
+     jgCollision *collision;
+     JG_LIST_FOREACH(world->collisions, collision)
+          rb_ary_push(array, rb_jgCollisionWrap(collision, self));
+
+     return array;
 }
 
 #define RUBY_ADD_AND_REMOVE(classname, iv, converter)                   \
