@@ -44,7 +44,7 @@ static VALUE rb_jgWorldCollisions(VALUE self)
 
      VALUE *collisions = malloc(world->collisions->length * sizeof(VALUE));
      for(int i = 0; i < world->collisions->length; i++)
-          collisions[i] = rb_jgCollisionWrap(world->collisions->arr[i]);
+          collisions[i] = rb_jgCollisionWrap(world->collisions->arr[i], self);
 
      return rb_ary_new4(world->collisions->length, collisions);
 }

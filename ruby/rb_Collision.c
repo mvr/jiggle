@@ -8,14 +8,32 @@ static VALUE rb_jgCollisionAlloc(VALUE klass)
      return Data_Wrap_Struct(klass, NULL, jgCollisionFree, v);
 }
 
-VALUE rb_jgCollisionWrap(jgCollision *collision)
+static VALUE rb_jgFindInArray(VALUE array, void *element)
+{
+     for(int i = 0; i < RARRAY(array)->len; i++)
+     {
+          VALUE value = RARRAY(array)->ptr[i];
+          if(DATA_PTR(value) == element)
+               return value;
+     }
+     return Qnil;
+}
+
+VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE world)
 {     
      VALUE wrappedCollision = Data_Wrap_Struct(c_jgCollision, NULL, NULL, collision);
      
-     rb_iv_set(wrappedCollision, "particle",        rb_jgParticleWrap(collision->particle));
-     rb_iv_set(wrappedCollision, "area",            rb_jgAreaWrap(collision->area));
-     rb_iv_set(wrappedCollision, "area_particle_a", rb_jgParticleWrap(collision->areaParticleA));
-     rb_iv_set(wrappedCollision, "area_particle_b", rb_jgParticleWrap(collision->areaParticleB));
+     rb_iv_set(wrappedCollision, "particle",        
+               rb_jgFindInArray(rb_iv_get(world, "particles"), collision->particle));
+
+     rb_iv_set(wrappedCollision, "area",
+               rb_jgFindInArray(rb_iv_get(world, "areas"), collision->area));
+
+     rb_iv_set(wrappedCollision, "area_particle_a", 
+               rb_jgFindInArray(rb_iv_get(world, "particles"), collision->areaParticleA));
+
+     rb_iv_set(wrappedCollision, "area_particle_b", 
+               rb_jgFindInArray(rb_iv_get(world, "particles"), collision->areaParticleB));
      
      return wrappedCollision;
 }
