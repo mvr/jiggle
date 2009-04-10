@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 require 'lib/jiggle'
 include Jiggle
 require 'rubygems'
@@ -32,8 +34,11 @@ box_shape = [jgv(0, 0),
              jgv(10, 10),
              jgv(10, 0)]
 
-b = StaticBody.new box_shape
-w.add_body b
+#b = StaticBody.new box_shape
+#w.add_body b
+
+r = Rope.new jgv(-20, -30), jgv(20, -30), :number_of_points => 30, :mass => 10
+w.add_rope r
 
 buffer = Surface.new(screen.size)
 
