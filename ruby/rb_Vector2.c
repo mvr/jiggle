@@ -42,6 +42,11 @@ VALUE rb_jgVector2Divide(VALUE self, VALUE other)
      return VNEW(jgVector2Divide(*VGET(self), NUM2DBL(other)));
 }
 
+VALUE rb_jgVector2DistanceTo(VALUE self, VALUE other)
+{
+     return rb_float_new(jgVector2DistanceBetween(*VGET(self), *VGET(other)));
+}
+
 void Init_jgVector2()
 {
      c_jgVector2 = rb_define_class_under(m_Jiggle, "Vector2", rb_cObject);
@@ -57,4 +62,6 @@ void Init_jgVector2()
      rb_define_method(c_jgVector2, "-", rb_jgVector2Subtract, 1);
      rb_define_method(c_jgVector2, "*", rb_jgVector2Multiply, 1);
      rb_define_method(c_jgVector2, "/", rb_jgVector2Divide, 1);
+
+     rb_define_method(c_jgVector2, "distance_to", rb_jgVector2DistanceTo, 1);
 }
