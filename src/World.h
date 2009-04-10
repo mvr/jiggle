@@ -21,10 +21,6 @@ typedef struct jgWorld
 
      jgList         *collisions;
 
-     jgAABB          limits;
-     jgVector2       size;
-     jgVector2       gridstep;
-
      float           penetrationThreshold;
      int             penetrationCount;
 
@@ -37,12 +33,10 @@ typedef struct jgWorld
 } jgWorld;
 
 extern jgWorld          *jgWorldAlloc();
-extern jgWorld          *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond);
-extern jgWorld          *jgWorldNew(jgAABB bounds, float ticksPerSecon);
+extern jgWorld          *jgWorldInit(jgWorld *world, float ticksPerSecond);
+extern jgWorld          *jgWorldNew(float ticksPerSecon);
 extern void              jgWorldFree(jgWorld *world);
 extern void              jgWorldFreeChildren(jgWorld *world);
-
-extern void              jgWorldSetSize(jgWorld *world, jgAABB bounds);
 
 extern void              jgWorldAddArea(jgWorld *world, jgArea *area);
 extern void              jgWorldRemoveArea(jgWorld *world, jgArea *area);

@@ -20,10 +20,8 @@ jgWorld *jgWorldAlloc()
      return world;
 }
 
-jgWorld *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond)
+jgWorld *jgWorldInit(jgWorld *world, float ticksPerSecond)
 {
-     jgWorldSetSize(world, bounds);
-
      world->penetrationThreshold = 0.3;
 
      world->damping = 0.999;
@@ -36,9 +34,9 @@ jgWorld *jgWorldInit(jgWorld *world, jgAABB bounds, float ticksPerSecond)
      return world;
 }
 
-jgWorld *jgWorldNew(jgAABB bounds, float ticksPerSecond)
+jgWorld *jgWorldNew(float ticksPerSecond)
 {
-     return jgWorldInit(jgWorldAlloc(), bounds, ticksPerSecond);
+     return jgWorldInit(jgWorldAlloc(), ticksPerSecond);
 }
 
 void jgWorldFree(jgWorld *world)
@@ -80,13 +78,6 @@ void jgWorldFreeChildren(jgWorld *world)
      {
           jgAreaFree(currentArea);
      }
-}
-
-void jgWorldSetSize(jgWorld *world, jgAABB bounds)
-{
-     world->limits = bounds;
-     world->size = jgVector2Subtract(bounds.max, bounds.min);
-     world->gridstep = jgVector2Divide(world->size, 32);
 }
 
 #define CREATE_ADDS_AND_REMOVES(class, name)                            \

@@ -19,11 +19,9 @@ static VALUE rb_jgWorldInitialize(int argc, VALUE *argv, VALUE self)
      rb_scan_args(argc, argv, "01", &attr);
      if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
-     jgVector2 min = rb_jgHashGetVector2(attr, "min", jgv(-20, -20));
-     jgVector2 max = rb_jgHashGetVector2(attr, "max", jgv(20, 20));
      float ticks   = rb_jgHashGetFloat(attr, "ticks_per_second", 100);
 
-     jgWorldInit(WORLD(self), jgAABBNewFromVector2(min, max), ticks);
+     jgWorldInit(WORLD(self), ticks);
 
      rb_iv_set(self, "areas", rb_ary_new());
      rb_iv_set(self, "particles", rb_ary_new());
