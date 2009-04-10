@@ -1,54 +1,31 @@
 module Jiggle
-  class Body
-    attr_accessor :particles
-    attr_accessor :springs
-    attr_accessor :area
-
+  
+  class Body < Group
     def initialize(points, attr={})
+      super()
+      
       attr[:mass] ||= points.size
       mass = attr[:mass] / points.size
 
       offset = attr[:offset] || jgv(0, 0)
 
-      @particles = []
       points.each do |point|
         particle = Particle.new point + offset, :mass => mass
         @particles << particle
       end
 
-      @springs = []
       @particles.pairs.each do |p1, p2|
         spring = Spring.new p1, p2, :strength => attr[:strength], :damping => attr[:damping]
         @springs << spring
       end
 
-      @area = Area.new @particles
+      @areas = [Area.new @particles]
     end
   end
   
   class World
-    def add_body(body)
-      body.particles.each do |particle| 
-        add_particle particle
-      end
-      
-      body.springs.each do |spring| 
-        add_spring spring
-      end
-      
-      add_area body.area
-    end
-    
-    def remove_body(body)
-      body.particles.each do |particle| 
-        remove_particle particle
-      end
-      
-      body.springs.each do |spring| 
-        remove_spring spring
-      end
-      
-      remove_area body.area
-    end
+    alias :add_body    :add_group
+    alias :remove_body :remove_group
   end
+  
 end
