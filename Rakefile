@@ -1,5 +1,6 @@
 require 'rake/clean'
 require 'rake/loaders/makefile'
+require 'spec/rake/spectask'
 #import  '.depend.mf' # Import dependencies
 
 SOURCES      = FileList.new('src/*.c')
@@ -60,6 +61,10 @@ task :test => ['tests/test.c', LIBRARY] do
   sh "gcc -c -o tests/test.o tests/test.c #{CCOPTIONS}"
   sh "gcc -o tests/test tests/test.o -L. -ljiggle -lm"
   sh "tests/test"
+end
+
+Spec::Rake::SpecTask.new do |t|
+  t.libs +=  ["lib", "spec"]
 end
 
 # Ruby

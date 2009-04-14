@@ -41,6 +41,11 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      return self;
 }
 
+static VALUE rb_jgAreaContains(VALUE self, VALUE point)
+{
+     return BOOL2VAL(jgAreaContains(AREA(self), *VGET(point)));
+}
+
 void Init_jgArea()
 {
      c_jgArea = rb_define_class_under(m_Jiggle, "Area", rb_cObject);
@@ -51,6 +56,8 @@ void Init_jgArea()
      rb_define_method(c_jgArea, "elasticity=", rb_jgAreaSetElasticity, 1);
      rb_define_method(c_jgArea, "friction",    rb_jgAreaGetFriction, 0);
      rb_define_method(c_jgArea, "friction=",   rb_jgAreaSetFriction, 1);
+
+     rb_define_method(c_jgArea, "contains?",   rb_jgAreaContains, 1);
 
      rb_define_attr(c_jgArea, "particles", 1, 0);
 }

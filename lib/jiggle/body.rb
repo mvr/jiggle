@@ -21,6 +21,17 @@ module Jiggle
 
       @areas = [Area.new @particles]
     end
+
+    def contains?(thing)
+      point =  case thing
+               when Vector2
+                 thing
+               when Particle
+                 thing.position
+               end
+      
+      @areas.any? {|a| a.contains? point}
+    end
   end
   
   class World
