@@ -5,9 +5,7 @@ TODO
 tests/test.c
 tests/*.o
 tests/test
-demos/demo1
-demos/demo2
-ruby/Rakefile
+ruby/Makefile
 ruby/*.o
-ruby/mkrf.log
+ruby/mkmf.log
 ruby/lib/jiggle_ext.so

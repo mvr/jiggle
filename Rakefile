@@ -63,18 +63,8 @@ task :test => ['tests/test.c', LIBRARY] do
   sh "tests/test"
 end
 
-# Demos
-
-task :demo => DEMOS + [LIBRARY] do
-  DEMOS.each do |name|
-    config = `allegro-config --libs`.chomp
-    sh "gcc -o #{name.ext ''} #{name} #{CCOPTIONS} -L. -ljiggle #{config} -lm"
-  end
-end
-
 # Ruby
 
 task :ruby => LIBRARY do
-  system "cd ruby && ruby mkrf_conf.rb"
-  system "cd ruby && rake"
+  system "cd ruby && ruby extconf.rb && make && mv jiggle_ext.so lib/jiggle_ext.so"
 end
