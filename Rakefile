@@ -13,7 +13,6 @@ CCOPTIONS    = '-std=c99 -Werror -Wall -pedantic -I. -I.. -Isrc -O3'
 CLEAN.include(OBJECTS)
 CLEAN.include('.depend.mf')
 CLEAN.include('libjiggle.a')
-CLEAN.include('ruby/jiggle.a')
 CLEAN.include('tests/test.o')
 CLEAN.include('tests/test')
 
@@ -66,5 +65,5 @@ end
 # Ruby
 
 task :ruby => LIBRARY do
-  system "cd ruby && ruby extconf.rb && make && mv jiggle_ext.so lib/jiggle_ext.so"
+  system "cd ext && ruby extconf.rb && make && mv jiggle_ext.so ../lib/jiggle_ext.so"
 end
