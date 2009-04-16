@@ -19,7 +19,8 @@ typedef struct jgWorld
      jgList         *areas;
      jgList         *springs;
 
-     jgList         *collisions;
+     jgList         *pendingCollisions;    // That need resolving
+     jgList         *collisions;           // That hang around for peeking at
 
      float           penetrationThreshold;
      int             penetrationCount;

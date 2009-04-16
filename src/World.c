@@ -16,6 +16,7 @@ jgWorld *jgWorldAlloc()
      world->particles = jgListNew();
      world->areas = jgListNew();
      world->springs = jgListNew();
+     world->pendingCollisions = jgListNew();
      world->collisions = jgListNew();
      return world;
 }
@@ -44,6 +45,7 @@ void jgWorldFree(jgWorld *world)
      jgListFree(world->particles);
      jgListFree(world->areas);
      jgListFree(world->springs);
+     jgListFree(world->pendingCollisions);
      jgListFree(world->collisions);
      free(world);
 }
@@ -123,6 +125,7 @@ void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
      collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
 
      jgListAdd(world->collisions, collision);
+     jgListAdd(world->pendingCollisions, collision);
 }
 
 void jgWorldHandleCollisions(jgWorld *world)
@@ -130,7 +133,7 @@ void jgWorldHandleCollisions(jgWorld *world)
      // I'm just copying, I don't understand any of this... yet.
 
      jgCollision *collision;
-     JG_LIST_FOREACH(world->collisions, collision)
+     JG_LIST_FOREACH(world->pendingCollisions, collision)
      {
           jgParticle *A  = collision->particle;
           jgParticle *B1 = collision->areaParticleA;
@@ -220,17 +223,19 @@ void jgWorldHandleCollisions(jgWorld *world)
                     B2->velocity.y -= (collision->normal.y * (j / b2MassSum) * b2inf) - (tangent.y * (f / b2MassSum) * b2inf);
                }
           }
-
      }
+     jgListClear(world->pendingCollisions);
 }
 
 void jgWorldUpdate(jgWorld *world, float newTime)
 {
+     jgWorldClearCollisions(world);
+
      float timeStep = 1.0 / world->ticksPerSecond;
      float deltaTime = newTime - world->currentTime;
      world->currentTime = newTime;
      world->timeAccumulator += deltaTime;
-     
+ 
      while(world->timeAccumulator >= timeStep)
      {
           jgWorldStep(world, timeStep);
@@ -267,8 +272,6 @@ void jgWorldStep(jgWorld *world, float timeStep)
 
           jgAreaUpdateAABB(currentArea, timeStep);
      }
-
-     jgWorldClearCollisions(world);
 
      jgArea *area;
      jgParticle *particle;
