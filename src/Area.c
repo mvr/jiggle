@@ -59,7 +59,7 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
      // number is odd, we are inside.  If it's even, we are outside.
 
      // out is guarenteed to be outside the shape.
-     jgVector2 out = jgVector2Add(area->aabb.max, jgVector2One());
+     jgVector2 out = jgVector2Add(area->aabb.max, jgv(0, 1));
 
      int inside = false;
      jgParticle *currentParticle;

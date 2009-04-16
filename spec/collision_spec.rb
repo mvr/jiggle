@@ -12,11 +12,11 @@ describe Collision do
     @world.add_particle @particle
   end
   
-  it "happens when there's a point inside an area" do
+  it "notices when there's a point inside an area" do
     @box.should contain @particle
     
     @world.update(1.0)
     
-    @world.collisions.length.should == 1
+    @world.collisions.should_not be_empty
   end
 end
