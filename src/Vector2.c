@@ -5,7 +5,7 @@
 
 bool jgVector2Intersect(jgVector2 a1, jgVector2 a2, jgVector2 b1, jgVector2 b2)
 {
-     // Taken from http://local.wasp.uwa.edu.au/~pbourke/geombetry/lineline2d/
+     // Taken from http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
      // Because I'm too lazy to figure it out myself.
      float denom = ((b2.y - b1.y) * (a2.x - a1.x)) - ((b2.x - b1.x) * (a2.y - a1.y));
 
