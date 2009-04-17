@@ -13,8 +13,6 @@ describe Collision do
   end
   
   it "notices when there's a point inside an area" do
-    @box.should contain @particle
-    
     @world.update(1.0)
     
     @world.collisions.should_not be_empty
