@@ -74,7 +74,7 @@ loop do
   end
   
   buffer.blit(screen, [0,0])
-  w.update(current_time)
+  w.update
   screen.update
 end
 

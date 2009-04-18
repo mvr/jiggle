@@ -21,23 +21,19 @@ jgWorld *jgWorldAlloc()
      return world;
 }
 
-jgWorld *jgWorldInit(jgWorld *world, float ticksPerSecond)
+jgWorld *jgWorldInit(jgWorld *world)
 {
      world->penetrationThreshold = 0.3;
 
      world->damping = 0.999;
      world->gravity = jgVector2Zero();
 
-     world->ticksPerSecond = ticksPerSecond;
-     world->currentTime = 0.0;
-     world->timeAccumulator = 0.0;
-     
      return world;
 }
 
-jgWorld *jgWorldNew(float ticksPerSecond)
+jgWorld *jgWorldNew()
 {
-     return jgWorldInit(jgWorldAlloc(), ticksPerSecond);
+     return jgWorldInit(jgWorldAlloc());
 }
 
 void jgWorldFree(jgWorld *world)
@@ -50,7 +46,7 @@ void jgWorldFree(jgWorld *world)
      free(world);
 }
 
-static void jgWorldClearCollisions(jgWorld *world)
+void jgWorldClearCollisions(jgWorld *world)
 {
      jgCollision *collision;
      JG_LIST_FOREACH(world->collisions, collision)
@@ -225,22 +221,6 @@ void jgWorldHandleCollisions(jgWorld *world)
           }
      }
      jgListClear(world->pendingCollisions);
-}
-
-void jgWorldUpdate(jgWorld *world, float newTime)
-{
-     jgWorldClearCollisions(world);
-
-     float timeStep = 1.0 / world->ticksPerSecond;
-     float deltaTime = newTime - world->currentTime;
-     world->currentTime = newTime;
-     world->timeAccumulator += deltaTime;
- 
-     while(world->timeAccumulator >= timeStep)
-     {
-          jgWorldStep(world, timeStep);
-          world->timeAccumulator -= timeStep;
-     }
 }
 
 void jgWorldStep(jgWorld *world, float timeStep)

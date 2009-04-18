@@ -2,11 +2,6 @@
 
 VALUE c_jgWorld;
 
-static float to_f(VALUE thing)
-{
-     return NUM2DBL(rb_funcall(thing, rb_intern("to_f"), 0));
-}
-
 static VALUE rb_jgWorldAlloc(VALUE klass)
 {
      jgWorld *world = jgWorldAlloc();
@@ -19,20 +14,23 @@ static VALUE rb_jgWorldInitialize(int argc, VALUE *argv, VALUE self)
      rb_scan_args(argc, argv, "01", &attr);
      if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
-     float ticks   = rb_jgHashGetFloat(attr, "ticks_per_second", 100);
+     float ticks = rb_jgHashGetFloat(attr, "ticks_per_second", 100);
 
-     jgWorldInit(WORLD(self), ticks);
+     jgWorldInit(WORLD(self));
 
+     rb_iv_set(self, "@ticks_per_second", rb_float_new(ticks));
      rb_iv_set(self, "@areas", rb_ary_new());
      rb_iv_set(self, "@particles", rb_ary_new());
      rb_iv_set(self, "@springs", rb_ary_new());
 
+     rb_funcall(self, rb_intern("setup"), 0);
+
      return self;
 }
 
-static VALUE rb_jgWorldUpdate(VALUE self, VALUE currentTime)
+static VALUE rb_jgWorldStep(VALUE self, VALUE step)
 {
-     jgWorldUpdate(WORLD(self), to_f(currentTime));
+     jgWorldStep(WORLD(self), NUM2DBL(step));
      return self;
 }
 
@@ -47,6 +45,15 @@ static VALUE rb_jgWorldCollisions(VALUE self)
           rb_ary_push(array, rb_jgCollisionWrap(collision, self));
 
      return array;
+}
+
+static VALUE rb_jgWorldClearCollisions(VALUE self)
+{
+     jgWorld *world = WORLD(self);
+     
+     jgWorldClearCollisions(world);
+
+     return self;
 }
 
 #define RUBY_ADD_AND_REMOVE(classname, iv, converter)                   \
@@ -86,13 +93,14 @@ void Init_jgWorld()
      rb_define_alloc_func(c_jgWorld, rb_jgWorldAlloc);
      rb_define_method(c_jgWorld, "initialize", rb_jgWorldInitialize, -1);
 
-     rb_define_method(c_jgWorld, "update", rb_jgWorldUpdate, 1);
+     rb_define_method(c_jgWorld, "step",   rb_jgWorldStep, 1);
 
      RUBY_DEFINE_ADD_AND_REMOVE("particle", Particle);
      RUBY_DEFINE_ADD_AND_REMOVE("area",     Area);
      RUBY_DEFINE_ADD_AND_REMOVE("spring",   Spring);
 
      rb_define_method(c_jgWorld, "collisions", rb_jgWorldCollisions, 0);
+     rb_define_method(c_jgWorld, "clear_collisions", rb_jgWorldClearCollisions, 0);
 
      rb_define_method(c_jgWorld, "gravity",  rb_jgWorldGetGravity, 0);
      rb_define_method(c_jgWorld, "gravity=", rb_jgWorldSetGravity, 1);

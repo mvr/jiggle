@@ -27,15 +27,11 @@ typedef struct jgWorld
 
      float           damping;
      jgVector2       gravity;
-
-     float           ticksPerSecond;
-     float           currentTime;
-     float           timeAccumulator;
 } jgWorld;
 
 extern jgWorld          *jgWorldAlloc();
-extern jgWorld          *jgWorldInit(jgWorld *world, float ticksPerSecond);
-extern jgWorld          *jgWorldNew(float ticksPerSecon);
+extern jgWorld          *jgWorldInit(jgWorld *world);
+extern jgWorld          *jgWorldNew();
 extern void              jgWorldFree(jgWorld *world);
 extern void              jgWorldFreeChildren(jgWorld *world);
 
@@ -46,7 +42,8 @@ extern void              jgWorldRemoveParticle(jgWorld *world, jgParticle *parti
 extern void              jgWorldAddSpring(jgWorld *world, jgSpring *spring);
 extern void              jgWorldRemoveSpring(jgWorld *world, jgSpring *spring);
 
+extern void              jgWorldClearCollisions(jgWorld *world);
+
 extern void              jgWorldStep(jgWorld *world, float timestep);
-extern void              jgWorldUpdate(jgWorld *world, float newTime);
 
 #endif

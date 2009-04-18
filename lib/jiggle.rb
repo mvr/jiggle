@@ -4,6 +4,7 @@ require 'jiggle_ext'
 
 require 'jiggle/array'
 
+require 'jiggle/world'
 require 'jiggle/vector2'
 require 'jiggle/spring'
 require 'jiggle/area'
