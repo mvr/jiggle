@@ -17,7 +17,9 @@ CLEAN.include('libjiggle.a')
 CLEAN.include('tests/test.o')
 CLEAN.include('tests/test')
 
-task :default => LIBRARY
+task :default => :build
+
+task :build => LIBRARY
 
 file LIBRARY => OBJECTS do
   sh 'ar rcs libjiggle.a src/*.o'
