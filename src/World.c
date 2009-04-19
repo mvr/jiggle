@@ -140,11 +140,11 @@ void jgWorldHandleCollisions(jgWorld *world)
 
           float relDot = jgVector2Dot(relVel, collision->normal);
 
-/*           if(collision->penetration > world->penetrationThreshold) */
-/*           { */
-/*                world->penetrationCount++; */
-/*                continue; */
-/*           } */
+          if(collision->penetration > world->penetrationThreshold)
+          {
+               world->penetrationCount++;
+               continue;
+          }
 
           float b1inf = 1.0 - collision->edgeD;
           float b2inf = collision->edgeD;

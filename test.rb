@@ -8,10 +8,10 @@ include Rubygame
 
 class Vector2
   def to_world
-    (self - jgv(200, 200)) / 5
+    (self - jgv(200, 200)) / 100
   end
   def to_screen
-    (self * 5) + jgv(200, 200)
+    (self * 100) + jgv(200, 200)
   end
 end
 
@@ -20,18 +20,20 @@ screen = Screen.set_mode [400, 400]
 queue = EventQueue.new()
 
 w = World.new
-w.gravity = jgv(0, 98)
+w.gravity = jgv(0, 9.8)
 
 
 box_shape = [jgv(0, 0),
-             jgv(0, 10),
-             jgv(10, 10),
-             jgv(10, 0)]
+             jgv(0, 0.5),
+             jgv(0.5, 0.5),
+             jgv(0.5, 0)]
 
 #b = StaticBody.new box_shape
 #w.add_body b
 
-r = Rope.new jgv(-20, -30), jgv(20, -30), :number_of_points => 30, :mass => 10
+r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 30,
+                                          :mass => 10,
+                                          :strength => 1000
 w.add_rope r
 
 buffer = Surface.new(screen.size)
