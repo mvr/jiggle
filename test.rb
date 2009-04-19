@@ -15,12 +15,6 @@ class Vector2
   end
 end
 
-@start_time = Time.now
-
-def current_time
-  ((Time.now - @start_time).to_f)
-end
-
 Rubygame.init
 screen = Screen.set_mode [400, 400]
 queue = EventQueue.new()
