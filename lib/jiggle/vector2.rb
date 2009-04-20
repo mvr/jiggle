@@ -10,6 +10,11 @@ module Jiggle
     end
 
     alias :<=> :distance_to
+
+    def to_a
+      [x, y]
+    end
+    alias :to_ary :to_a
   end
   
   def jgv(x, y)
