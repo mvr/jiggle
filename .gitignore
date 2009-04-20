@@ -1,9 +1,11 @@
 *~
 *.o
+libjiggle.a
+TODO
 tests/test.c
 tests/*.o
 tests/test
-tests/test.exe
-demos/demo1
-demos/demo1.exe
-demos/alleg42.dll
+ext/Makefile
+ext/*.o
+ext/mkmf.log
+lib/jiggle_ext.so

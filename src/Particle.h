@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __PARTICLE_H__
-#define __PARTICLE_H__
+#ifndef __JG_PARTICLE_H__
+#define __JG_PARTICLE_H__
 
 #include "Vector2.h"
 
@@ -13,9 +13,19 @@ typedef struct jgParticle
      jgVector2 position;
      jgVector2 velocity;
      jgVector2 force;
+
+     float     elasticity;
+     float     friction;
 } jgParticle;
 
-extern jgParticle        jgParticleNew(float mass, jgVector2 pos);
+extern jgParticle       *jgParticleAlloc();
+extern jgParticle       *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos);
+extern jgParticle       *jgParticleNew(float mass, jgVector2 pos);
+extern void              jgParticleFree(jgParticle *particle);
+
+extern void              jgParticleDampenVelocity(jgParticle *particle, float damp);
+extern void              jgParticleAddMasslessForce(jgParticle *particle, jgVector2 force);
+
 extern void              jgParticleIntegrate(jgParticle *point, float elapsed);
 
 #endif

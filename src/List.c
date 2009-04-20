@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h> // For memcpy, wtf?
 
 #include "List.h"
 
@@ -11,6 +12,17 @@ jgList *jgListNew()
      return ret;
 }
 
+jgList *jgListNewFromArray(void **array, int length)
+{
+     jgList *list = jgListNew();
+     list->length = length;
+     list->alloc = length;
+     list->arr = malloc(length * sizeof(void *));
+     memcpy(list->arr, array, length * sizeof(void *));
+
+     return list;
+}
+
 void jgListClear(jgList *list)
 {
      list->length = 0;
@@ -18,6 +30,7 @@ void jgListClear(jgList *list)
 
 void jgListFree(jgList *list)
 {
+     free(list->arr);
      free(list);
 }
 
@@ -35,9 +48,26 @@ void jgListSet(jgList *list, int position, void* data)
           list->arr[position] = data;
 }
 
+static void jgListExpand(jgList *list)
+{
+     if(list->length == list->alloc){
+          list->alloc *= 2;
+          list->arr = realloc(list->arr, list->alloc * sizeof(void *));
+     }
+     list->length++;     
+}
+
 void jgListInsert(jgList *list, int position, void *data)
 {
-     // TODO
+     if(list->length == 0)
+     {
+          jgListAdd(list, data);
+          return;
+     }
+     
+     jgListExpand(list);
+     memcpy(list->arr + position + 1, list->arr + position, (list->length - position) * sizeof(void *));
+     list->arr[position] = data;
 }
 
 void jgListDelete(jgList *list, int position)
@@ -61,13 +91,8 @@ bool jgListContains(jgList *list, void *data)
 
 void jgListAdd(jgList *list, void *data)
 {
-     if(list->length == list->alloc){
-          list->alloc *= 2;
-          list->arr = realloc(list->arr, list->alloc * sizeof(void *));
-     }
-
-     list->arr[list->length] = data;
-     list->length++;
+     jgListExpand(list);
+     list->arr[list->length - 1] = data;
 }
 
 void jgListRemove(jgList *list, void *data)

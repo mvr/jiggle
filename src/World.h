@@ -2,65 +2,48 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __WORLD_H__
-#define __WORLD_H__
+#ifndef __JG_WORLD_H__
+#define __JG_WORLD_H__
 
 #include <stdbool.h>
 
 #include "Vector2.h"
-#include "Body.h"
 #include "List.h"
 #include "AABB.h"
-#include "Misc.h"
-
-typedef struct jgCollisionInfo
-{
-     jgBody    *bodyA;
-     int        bodyApm;
-     jgBody    *bodyB;
-     int        bodyBpmA;
-     int        bodyBpmB;
-     jgVector2  hitPt;
-     float      edgeD;
-     jgVector2  normal;
-     float      penetration;
-} jgCollisionInfo;
+#include "Area.h"
+#include "Spring.h"
 
 typedef struct jgWorld
 {
-     jgList         *bodies;
-     jgList         *collisions;
+     jgList         *particles;
+     jgList         *areas;
+     jgList         *springs;
 
-     jgAABB          limits;
-     jgVector2       size;
-     jgVector2       gridstep;
+     jgList         *pendingCollisions;    // That need resolving
+     jgList         *collisions;           // That hang around for peeking at
 
      float           penetrationThreshold;
      int             penetrationCount;
 
      float           damping;
      jgVector2       gravity;
-
-     float           ticksPerSecond;
-     float           currentTime;
-     float           timeAccumulator;
 } jgWorld;
 
 extern jgWorld          *jgWorldAlloc();
-extern jgWorld          *jgWorldInit(jgWorld *world, jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
-extern jgWorld          *jgWorldNew(jgVector2 min, jgVector2 max, float ticksPerSecond, float currentTime);
+extern jgWorld          *jgWorldInit(jgWorld *world);
+extern jgWorld          *jgWorldNew();
 extern void              jgWorldFree(jgWorld *world);
-extern void              jgWorldFreeBodies(jgWorld *world);
+extern void              jgWorldFreeChildren(jgWorld *world);
 
-extern void              jgWorldSetSize(jgWorld *world, jgVector2 min, jgVector2 max);
+extern void              jgWorldAddArea(jgWorld *world, jgArea *area);
+extern void              jgWorldRemoveArea(jgWorld *world, jgArea *area);
+extern void              jgWorldAddParticle(jgWorld *world, jgParticle *particle);
+extern void              jgWorldRemoveParticle(jgWorld *world, jgParticle *particle);
+extern void              jgWorldAddSpring(jgWorld *world, jgSpring *spring);
+extern void              jgWorldRemoveSpring(jgWorld *world, jgSpring *spring);
 
-extern void              jgWorldAddBody(jgWorld *world, jgBody *body);
-extern void              jgWorldRemoveBody(jgWorld *world, jgBody *body);
+extern void              jgWorldClearCollisions(jgWorld *world);
 
-extern void              jgWorldBodyCollide(jgWorld *world, jgBody *a, jgBody *b);
 extern void              jgWorldStep(jgWorld *world, float timestep);
-extern void              jgWorldUpdate(jgWorld *world, float newTime);
-
-extern jgBody           *jgWorldBodyContaining(jgWorld *world, jgVector2 point);
 
 #endif

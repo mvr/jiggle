@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __VECTOR2_INL_H__
-#define __VECTOR2_INL_H__
+#ifndef __JG_VECTOR2_INL_H__
+#define __JG_VECTOR2_INL_H__
 
 
 static inline jgVector2 jgVector2New(float x, float y)

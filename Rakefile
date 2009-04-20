@@ -1,12 +1,7 @@
 require 'rake/clean'
 require 'rake/loaders/makefile'
+require 'spec/rake/spectask'
 #import  '.depend.mf' # Import dependencies
-
-alias :old_sh :sh
-def sh(command)
-  puts command
-  old_sh command
-end
 
 SOURCES      = FileList.new('src/*.c')
 OBJECTS      = SOURCES.ext('.o')
@@ -19,11 +14,12 @@ CCOPTIONS    = '-std=c99 -Werror -Wall -pedantic -I. -I.. -Isrc -O3'
 CLEAN.include(OBJECTS)
 CLEAN.include('.depend.mf')
 CLEAN.include('libjiggle.a')
-CLEAN.include('ruby/jiggle.a')
 CLEAN.include('tests/test.o')
 CLEAN.include('tests/test')
 
-task :default => LIBRARY
+task :default => :build
+
+task :build => LIBRARY
 
 file LIBRARY => OBJECTS do
   sh 'ar rcs libjiggle.a src/*.o'
@@ -69,19 +65,12 @@ task :test => ['tests/test.c', LIBRARY] do
   sh "tests/test"
 end
 
-# Demos
-
-task :demo => DEMOS + [LIBRARY] do
-  DEMOS.each do |name|
-    libs = `allegro-config --libs`.chomp
-    cflags = `allegro-config --cflags`.chomp
-    sh "gcc -o #{name.ext ''} #{name} #{CCOPTIONS} -L. -ljiggle #{cflags} #{libs} -lm"
-  end
+Spec::Rake::SpecTask.new do |t|
+  t.libs +=  ["lib", "spec"]
 end
 
 # Ruby
 
 task :ruby => LIBRARY do
-  system "cd ruby && ruby mkrf_conf.rb"
-  system "cd ruby && rake"
+  system "cd ext && ruby extconf.rb && make && mv jiggle_ext.so ../lib/jiggle_ext.so"
 end

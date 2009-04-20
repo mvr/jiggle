@@ -25,19 +25,33 @@ static jgVector2 jgSpringCalculateForce(jgVector2 posA,
      return jgVector2Multiply(BtoA, (dist * springK) - (totalRelVel * damping));
 }
 
+jgSpring *jgSpringAlloc()
+{
+     return malloc(sizeof(jgSpring));
+}
+
+jgSpring *jgSpringInit(jgSpring *spring,
+                       jgParticle *a,
+                       jgParticle *b,
+                       float d,
+                       float k,
+                       float damp)
+{
+     spring->particleA = a;
+     spring->particleB = b;
+     spring->springD = d;
+     spring->springK = k;
+     spring->damping = damp;
+     return spring;
+}
+
 jgSpring *jgSpringNew(jgParticle *a,
                       jgParticle *b,
                       float d,
                       float k,
                       float damp)
 {
-     jgSpring *ret = malloc(sizeof(jgSpring));
-     ret->massA = a;
-     ret->massB = b;
-     ret->springD = d;
-     ret->springK = k;
-     ret->damping = damp;
-     return ret;
+     return jgSpringInit(jgSpringAlloc(), a, b, d, k, damp);
 }
 
 void jgSpringFree(jgSpring *spring)
@@ -47,36 +61,36 @@ void jgSpringFree(jgSpring *spring)
 
 void jgSpringExert(jgSpring *spring)
 {
-     jgSpringDragTogether(spring->massA,
-                          spring->massB,
+     jgSpringDragTogether(spring->particleA,
+                          spring->particleB,
                           spring->springD,
                           spring->springK,
                           spring->damping);
 }
 
-void jgSpringDragTowards(jgParticle *mass, jgVector2 point, float d, float k, float damp)
+void jgSpringDragTowards(jgParticle *particle, jgVector2 point, float d, float k, float damp)
 {
-     jgVector2 force = jgSpringCalculateForce(mass->position,
-                                              mass->velocity,
+     jgVector2 force = jgSpringCalculateForce(particle->position,
+                                              particle->velocity,
                                               point,
-                                              mass->velocity,
+                                              particle->velocity,
                                               d,
                                               k,
                                               damp);
 
-     mass->force = jgVector2Add(mass->force, force);
+     particle->force = jgVector2Add(particle->force, force);
 }
 
-void jgSpringDragTogether(jgParticle *massA, jgParticle *massB, float d, float k, float damp)
+void jgSpringDragTogether(jgParticle *particleA, jgParticle *particleB, float d, float k, float damp)
 {
-     jgVector2 force = jgSpringCalculateForce(massA->position,
-                                              massA->velocity,
-                                              massB->position,
-                                              massB->velocity,
+     jgVector2 force = jgSpringCalculateForce(particleA->position,
+                                              particleA->velocity,
+                                              particleB->position,
+                                              particleB->velocity,
                                               d,
                                               k,
                                               damp);
 
-     massA->force = jgVector2Add     (massA->force, force);
-     massB->force = jgVector2Subtract(massB->force, force);
+     particleA->force = jgVector2Add     (particleA->force, force);
+     particleB->force = jgVector2Subtract(particleB->force, force);
 }

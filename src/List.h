@@ -2,8 +2,8 @@
 /* Mitchell Riley (c) 2008 */
 /***************************/
 
-#ifndef __LIST_H__
-#define __LIST_H__
+#ifndef __JG_LIST_H__
+#define __JG_LIST_H__
 
 #include <stdbool.h>
 
@@ -15,6 +15,7 @@ typedef struct jgList
 } jgList;
 
 extern jgList  *jgListNew();
+extern jgList  *jgListNewFromArray(void **array, int length);
 extern void     jgListClear(jgList *list);
 extern void     jgListFree(jgList *list);
 
@@ -29,11 +30,16 @@ extern bool     jgListContains(jgList *list, void *data);
 extern void     jgListAdd(jgList *list, void *data);
 extern void     jgListRemove(jgList *list, void *data);
 
-// These are clunky but they'll do for now.
+// EWW! These are mega-gross.
 
 #define JG_LIST_FOREACH(list, var)              \
      var = jgListGet(list, 0);                  \
      for(int _i_ = 0; _i_ < list->length; _i_++, var = jgListGet(list, _i_))
+
+// OMGWTFBBQ
+#define JG_LIST_FOREACH2(list, var)             \
+     var = jgListGet(list, 0);                  \
+     for(int _i2_ = 0; _i2_ < list->length; _i2_++, var = jgListGet(list, _i2_))
 
 #define JG_LIST_FOREACH_PAIR(list, var, var2)                           \
      var = jgListGet(list, 0);                                          \
@@ -44,13 +50,14 @@ extern void     jgListRemove(jgList *list, void *data);
 
 #define JG_LIST_FOREACH_TRIPLET(list, prev, current, next)              \
      prev = jgListGet(list, list->length - 1);                          \
-     var2 = jgListGet(list, 0);                                         \
-     var = jgListGet(list, 1);                                          \
+     current = jgListGet(list, 0);                                      \
+     next = jgListGet(list, 1);                                         \
      for(int _i_ = 0; _i_ < list->length; _i_++,                        \
-              prev = (_i_ == 0) ? jgListGet(list, list->length - 1) : jgListGet(list, _i_ - 1) \
+              prev = (_i_ == 0) ? jgListGet(list, list->length - 1) : jgListGet(list, _i_ - 1), \
               current = jgListGet(list, _i_),                           \
               next = (_i_ == list->length - 1) ? jgListGet(list, 0) : jgListGet(list, _i_ + 1))
           
+// Is this even used any more?
 
 #define JG_LIST_FOREACH_COMBO(list, b)                                  \
      b = NULL;                                                          \

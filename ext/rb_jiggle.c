@@ -43,13 +43,14 @@ bool rb_jgHashGetBool(VALUE hash, char *key, bool de)
      return de;					
 }
 
-void Init_jiggle(void)
+void Init_jiggle_ext(void)
 {
      m_Jiggle = rb_define_module("Jiggle");
 
      Init_jgVector2();
-     Init_jgPointMass();
-     Init_jgBody();
-     Init_jgSpringBody();
+     Init_jgParticle();
+     Init_jgArea();
+     Init_jgSpring();
      Init_jgWorld();
+     Init_jgCollision();
 }
