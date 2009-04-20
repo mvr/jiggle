@@ -10,9 +10,9 @@ static VALUE rb_jgCollisionAlloc(VALUE klass)
 
 static VALUE rb_jgFindInArray(VALUE array, void *element)
 {
-     for(int i = 0; i < RARRAY(array)->len; i++)
+     for(int i = 0; i < RARRAY_LEN(array); i++)
      {
-          VALUE value = RARRAY(array)->ptr[i];
+          VALUE value = RARRAY_PTR(array)[i];
           if(DATA_PTR(value) == element)
                return value;
      }

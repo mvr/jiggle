@@ -21,7 +21,7 @@ module Jiggle
         @springs << spring
       end
 
-      @areas = [Area.new @particles]
+      @areas = [Area.new(@particles)]
     end
 
     def contains?(thing)

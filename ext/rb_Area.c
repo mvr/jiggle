@@ -22,12 +22,13 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      if(!NIL_P(attr)) Check_Type(attr, T_HASH);
 
      jgArea *area = AREA(self);
-     
+
      jgParticle **unwrapped;
-     unwrapped = malloc(RARRAY(particles)->len * sizeof(jgParticle *));
-     for(int i = 0; i < RARRAY(particles)->len; i++)
-          unwrapped[i] = PARTICLE(RARRAY(particles)->ptr[i]);
-     jgAreaInit(area, unwrapped, RARRAY(particles)->len);
+     int numParticles = RARRAY_LEN(particles);
+     unwrapped = malloc(numParticles * sizeof(jgParticle *));
+     for(int i = 0; i < numParticles; i++)
+          unwrapped[i] = PARTICLE(RARRAY_PTR(particles)[i]);
+     jgAreaInit(area, unwrapped, numParticles);
      free(unwrapped);
 
      rb_iv_set(self, "@particles", particles);
