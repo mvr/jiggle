@@ -52,20 +52,20 @@ loop do
   
   w.particles.each do |particle|
     position = particle.position.to_screen
-    buffer.draw_circle_s [position.x, position.y], 2, :white
+    buffer.draw_circle_s position, 2, :white
   end
 
   w.springs.each do |spring|
     p_a = spring.a.position.to_screen
     p_b = spring.b.position.to_screen
-    buffer.draw_line [p_a.x, p_a.y], [p_b.x, p_b.y], :blue
+    buffer.draw_line p_a, p_b, :blue
   end
 
   w.areas.each do |area|
     area.particles.adjacent.each do |a, b|
       p_a = a.position.to_screen
       p_b = b.position.to_screen
-      buffer.draw_line [p_a.x, p_a.y], [p_b.x, p_b.y], :red
+      buffer.draw_line p_a, p_b, :red
     end
   end
   
