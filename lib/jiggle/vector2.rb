@@ -24,4 +24,8 @@ module Jiggle
   def jgv(x, y)
     Vector2.new(x, y)
   end
+  
+  def self.jgv(x, y) # WUT
+    Vector2.new(x, y)
+  end
 end
