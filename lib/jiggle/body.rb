@@ -1,3 +1,5 @@
+require 'jiggle/group'
+
 module Jiggle
   
   class Body < Group
