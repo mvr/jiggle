@@ -6,6 +6,7 @@ require 'jiggle/array'
 
 require 'jiggle/world'
 require 'jiggle/vector2'
+require 'jiggle/particle'
 require 'jiggle/spring'
 require 'jiggle/area'
 require 'jiggle/group'

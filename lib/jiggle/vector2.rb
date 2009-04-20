@@ -8,7 +8,11 @@ module Jiggle
     def inspect
       "#<Vector2 x=#{x} y=#{y}>"
     end
-
+    
+    def to_vec
+      self
+    end
+    
     alias :<=> :distance_to
 
     def to_a

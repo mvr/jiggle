@@ -57,7 +57,7 @@ void Init_jgArea()
      rb_define_method(c_jgArea, "friction",    rb_jgAreaGetFriction, 0);
      rb_define_method(c_jgArea, "friction=",   rb_jgAreaSetFriction, 1);
 
-     rb_define_method(c_jgArea, "contains?",   rb_jgAreaContains, 1);
+     rb_define_private_method(c_jgArea, "_contains?",   rb_jgAreaContains, 1);
 
      rb_define_attr(c_jgArea, "particles", 1, 0);
 }
