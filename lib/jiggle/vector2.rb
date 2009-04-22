@@ -1,6 +1,13 @@
 module Jiggle
   
   class Vector2
+    
+    def -@
+      jgv(0, 0) - self
+    end
+    
+    alias :<=> :distance_to
+    
     def to_s
       "(#{x}, #{y})"
     end
@@ -12,8 +19,6 @@ module Jiggle
     def to_vec
       self
     end
-    
-    alias :<=> :distance_to
 
     def to_a
       [x, y]
