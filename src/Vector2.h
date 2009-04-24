@@ -56,16 +56,6 @@ extern float            jgVector2PositionAlong(jgVector2 a1, jgVector2 a2, jgVec
 extern jgVector2        jgVector2Normal(jgVector2 a1, jgVector2 a2);
 extern jgVector2        jgVector2ThreePointNormal(jgVector2 prev, jgVector2 current, jgVector2 next);
 
-//// Polygons
-
-extern void             jgVector2Recenter(jgVector2 points[], int numOfPoints);
-extern jgVector2       *jgVector2Transform(jgVector2 points[],
-                                           int numOfPoints,
-                                           jgVector2 position,
-                                           float rotation,
-                                           jgVector2 scale);
-extern jgVector2       *jgVector2MakeCircle(float radius, int segments);
-
 #include "Vector2-inl.h"
 
 #endif

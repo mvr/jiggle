@@ -58,38 +58,3 @@ float jgVector2PositionAlong(jgVector2 a1, jgVector2 a2, jgVector2 pt)
      else
           return (pt.y - a1.y) / (a2.y - a1.y);
 }
-
-// Arrays of Vector2s
-
-void jgVector2Recenter(jgVector2 points[], int numOfPoints)
-{
-     jgVector2 total = jgVector2Zero();
-
-     for(int i = 0; i < numOfPoints; i++)
-          total = jgVector2Add(total, points[i]);
-
-     jgVector2 average = jgVector2Divide(total, numOfPoints);
-
-     for(int i = 0; i < numOfPoints; i++)
-          points[i] = jgVector2Subtract(points[i], average);
-}
-
-jgVector2 *jgVector2Transform(jgVector2 points[],
-                              int       numOfPoints,
-                              jgVector2 position,
-                              float     rotation,
-                              jgVector2 scale)
-{
-     jgVector2 *dup = calloc(numOfPoints, sizeof(jgVector2));
-
-     jgVector2 v;
-     for(int i = 0; i < numOfPoints; i++)
-     {
-          v = jgVector2Scale(points[i], scale);
-          v = jgVector2Rotate(v, rotation);
-          v = jgVector2Add(v, position);
-          dup[i] = v;
-     }
-
-     return dup;
-}
