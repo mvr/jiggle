@@ -77,13 +77,18 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
 }
 
 // AAH! Ptr to ptr!
-jgVector2 jgAreaClosestOnEdge(jgArea *area, jgVector2 pt, jgVector2 normal,
-                              jgParticle **Aout, jgParticle **Bout, float *Dout, jgVector2 *normout)
+jgVector2 jgAreaClosestOnEdge(jgArea *area, jgParticle *particle, 
+                              jgParticle **Aout, jgParticle **Bout, 
+                              float *Dout, jgVector2 *normout)
 {
      float       sameDist,     awayDist;
      jgParticle *sameA,       *awayA;
      jgParticle *sameB,       *awayB;
      jgVector2   sameClosest,  awayClosest;
+
+     jgVector2 pt = particle->position;
+//     jgVector2 normal = jgVector2Normalize(particle->velocity);
+     jgVector2 normal = jgVector2Zero();
 
      sameDist = awayDist = INFINITY;
      sameA = sameB = awayA = awayB = 0;

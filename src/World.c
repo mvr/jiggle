@@ -105,19 +105,14 @@ void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
 {
      jgCollision *collision = jgCollisionAlloc();
      
-     // Will this work?
-//     jgVector2 norm = jgVector2Normalize(particle->velocity);
-     jgVector2 norm = jgVector2Zero();
-
      collision->particle = particle;
      collision->area = area;
      collision->hitPt = jgAreaClosestOnEdge(area, 
-                                       particle->position, 
-                                       norm, 
-                                       &collision->areaParticleA, 
-                                       &collision->areaParticleB, 
-                                       &collision->edgeD, 
-                                       &collision->normal);
+                                            particle,
+                                            &collision->areaParticleA, 
+                                            &collision->areaParticleB, 
+                                            &collision->edgeD, 
+                                            &collision->normal);
      collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
 
      jgListAdd(world->collisions, collision);

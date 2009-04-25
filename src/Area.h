@@ -34,7 +34,7 @@ extern void      jgAreaFree(jgArea *area);
 extern void      jgAreaUpdateAABB(jgArea *area, float elapsed);
 
 extern bool      jgAreaContains(jgArea *area, jgVector2 point);
-extern jgVector2 jgAreaClosestOnEdge(jgArea *area, jgVector2 pt, jgVector2 normal,
+extern jgVector2 jgAreaClosestOnEdge(jgArea *area, jgParticle *particle,
                                      jgParticle **Aout, jgParticle **Bout, 
                                      float *Dout, jgVector2 *normout);
 
