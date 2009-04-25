@@ -6,8 +6,9 @@
 #define __JG_COLLISION_H__
 
 #include "Particle.h"
-#include "Area.h"
 #include "Vector2.h"
+
+struct jgArea;
 
 typedef struct jgCollision
 {

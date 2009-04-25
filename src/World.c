@@ -101,24 +101,6 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 #undef CREATE_ADDS_AND_REMOVES
 
-void jgWorldAreaCollide(jgWorld *world, jgArea *area, jgParticle *particle)
-{
-     jgCollision *collision = jgCollisionAlloc();
-     
-     collision->particle = particle;
-     collision->area = area;
-     collision->hitPt = jgAreaClosestOnEdge(area, 
-                                            particle,
-                                            &collision->areaParticleA, 
-                                            &collision->areaParticleB, 
-                                            &collision->edgeD, 
-                                            &collision->normal);
-     collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
-
-     jgListAdd(world->collisions, collision);
-     jgListAdd(world->pendingCollisions, collision);
-}
-
 void jgWorldHandleCollisions(jgWorld *world)
 {
      // I'm just copying, I don't understand any of this... yet.
@@ -266,7 +248,10 @@ void jgWorldStep(jgWorld *world, float timeStep)
                if(!area->isValid)
                     continue;
 
-               jgWorldAreaCollide(world, area, particle);
+               jgCollision *collision = jgAreaFindCollision(area, particle);
+
+               jgListAdd(world->collisions, collision);
+               jgListAdd(world->pendingCollisions, collision);
           }
      }
 

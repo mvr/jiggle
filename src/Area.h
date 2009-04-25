@@ -11,6 +11,7 @@
 #include "List.h"
 #include "Particle.h"
 #include "Vector2.h"
+#include "Collision.h"
 
 typedef struct jgArea
 {
@@ -34,9 +35,7 @@ extern void      jgAreaFree(jgArea *area);
 extern void      jgAreaUpdateAABB(jgArea *area, float elapsed);
 
 extern bool      jgAreaContains(jgArea *area, jgVector2 point);
-extern jgVector2 jgAreaClosestOnEdge(jgArea *area, jgParticle *particle,
-                                     jgParticle **Aout, jgParticle **Bout, 
-                                     float *Dout, jgVector2 *normout);
+extern jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle);
 
 extern float     jgAreaArea(jgArea *area); // Heh.
 extern bool      jgAreaIsInsideOut(jgArea *area);

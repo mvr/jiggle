@@ -77,9 +77,7 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
 }
 
 // AAH! Ptr to ptr!
-jgVector2 jgAreaClosestOnEdge(jgArea *area, jgParticle *particle, 
-                              jgParticle **Aout, jgParticle **Bout, 
-                              float *Dout, jgVector2 *normout)
+jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
 {
      float       sameDist,     awayDist;
      jgParticle *sameA,       *awayA;
@@ -130,30 +128,36 @@ jgVector2 jgAreaClosestOnEdge(jgArea *area, jgParticle *particle,
           }
      }
 
+     jgCollision *collision = jgCollisionAlloc();
+
+     collision->area = area;
+     collision->particle = particle;
+
      if(awayFound)
      {
-          *Aout = awayA;
-          *Bout = awayB;
+          collision->areaParticleA = awayA;
+          collision->areaParticleB = awayB;
 
-          *Dout = jgVector2PositionAlong(awayA->position,
-                                         awayB->position,
-                                         awayClosest);
-          *normout  = jgVector2Normal(awayA->position,
-                                      awayB->position);
-          return awayClosest;
+          collision->hitPt = awayClosest;
      }
      else
      {
-          *Aout = sameA;
-          *Bout = sameB;
+          collision->areaParticleA = sameA;
+          collision->areaParticleB = sameB;
 
-          *Dout = jgVector2PositionAlong(sameA->position,
-                                         sameB->position,
-                                         sameClosest);
-          *normout  = jgVector2Normal(sameA->position,
-                                      sameB->position);
-          return sameClosest;
+          collision->hitPt = sameClosest;
      }
+
+     collision->edgeD = jgVector2PositionAlong(collision->areaParticleA->position,
+                                               collision->areaParticleB->position,
+                                               awayClosest);
+
+     collision->normal = jgVector2Normal(collision->areaParticleA->position,
+                                         collision->areaParticleB->position);
+
+     collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
+
+     return collision;
 }
 
 float jgAreaArea(jgArea *area)
