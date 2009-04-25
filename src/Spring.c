@@ -1,9 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "Spring.h"
-#include "Particle.h"
-#include "Vector2.h"
+#include "jiggle.h"
 
 static jgVector2 jgSpringCalculateForce(jgVector2 posA,
                                         jgVector2 velA,

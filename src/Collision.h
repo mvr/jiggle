@@ -5,10 +5,7 @@
 #ifndef __JG_COLLISION_H__
 #define __JG_COLLISION_H__
 
-#include "Particle.h"
-#include "Vector2.h"
-
-struct jgArea;
+#include "jiggle.h"
 
 typedef struct jgCollision
 {

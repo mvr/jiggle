@@ -7,11 +7,7 @@
 
 #include <stdbool.h>
 
-#include "AABB.h"
-#include "List.h"
-#include "Particle.h"
-#include "Vector2.h"
-#include "Collision.h"
+#include "jiggle.h"
 
 typedef struct jgArea
 {
@@ -25,19 +21,18 @@ typedef struct jgArea
      bool         isValid;
 } jgArea;
 
-struct jgWorld; // LOL WUT
+extern jgArea             *jgAreaAlloc();
+extern jgArea             *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles);
+extern jgArea             *jgAreaNew(jgParticle **particles, int numOfParticles);
+extern void                jgAreaFree(jgArea *area);
 
-extern jgArea   *jgAreaAlloc();
-extern jgArea   *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles);
-extern jgArea   *jgAreaNew(jgParticle **particles, int numOfParticles);
-extern void      jgAreaFree(jgArea *area);
+extern void                jgAreaUpdateAABB(jgArea *area, float elapsed);
+extern bool                jgAreaContains(jgArea *area, jgVector2 point);
 
-extern void      jgAreaUpdateAABB(jgArea *area, float elapsed);
+struct        jgCollision;
+extern struct jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle);
 
-extern bool      jgAreaContains(jgArea *area, jgVector2 point);
-extern jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle);
-
-extern float     jgAreaArea(jgArea *area); // Heh.
-extern bool      jgAreaIsInsideOut(jgArea *area);
+extern float               jgAreaArea(jgArea *area); // Heh.
+extern bool                jgAreaIsInsideOut(jgArea *area);
 
 #endif

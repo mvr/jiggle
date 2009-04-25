@@ -5,8 +5,7 @@
 #ifndef __JG_INTERNALSPRING_H__
 #define __JG_INTERNALSPRING_H__
 
-#include "Vector2.h"
-#include "Particle.h"
+#include "jiggle.h"
 
 typedef struct jgSpring
 {

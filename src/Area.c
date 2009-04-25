@@ -1,10 +1,6 @@
 #include <stdlib.h>
 
-#include "Area.h"
-#include "Particle.h"
-#include "Spring.h"
-#include "AABB.h"
-#include "World.h"
+#include "jiggle.h"
 
 jgArea *jgAreaAlloc()
 {

@@ -1,5 +1,4 @@
-#include "AABB.h"
-#include "Vector2.h"
+#include "jiggle.h"
 
 jgAABB jgAABBNewFromVector2(jgVector2 min, jgVector2 max)
 {

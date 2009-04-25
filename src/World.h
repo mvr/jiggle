@@ -7,11 +7,7 @@
 
 #include <stdbool.h>
 
-#include "Vector2.h"
-#include "List.h"
-#include "AABB.h"
-#include "Area.h"
-#include "Spring.h"
+#include "jiggle.h"
 
 typedef struct jgWorld
 {

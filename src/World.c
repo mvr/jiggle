@@ -3,12 +3,7 @@
 #include <assert.h>
 #include <math.h>
 
-#include "World.h"
-#include "Vector2.h"
-#include "List.h"
-#include "Particle.h"
-#include "AABB.h"
-#include "Collision.h"
+#include "jiggle.h"
 
 jgWorld *jgWorldAlloc()
 {

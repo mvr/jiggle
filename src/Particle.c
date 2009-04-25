@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "Particle.h"
-#include "Vector2.h"
+#include "jiggle.h"
 
 jgParticle *jgParticleAlloc()
 {

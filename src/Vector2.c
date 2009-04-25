@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "Vector2.h"
+#include "jiggle.h"
 
 bool jgVector2Intersect(jgVector2 a1, jgVector2 a2, jgVector2 b1, jgVector2 b2)
 {

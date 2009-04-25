@@ -5,7 +5,7 @@
 #ifndef __JG_PARTICLE_H__
 #define __JG_PARTICLE_H__
 
-#include "Vector2.h"
+#include "jiggle.h"
 
 typedef struct jgParticle
 {

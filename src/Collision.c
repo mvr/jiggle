@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "Collision.h"
+#include "jiggle.h"
 
 jgCollision *jgCollisionAlloc()
 {

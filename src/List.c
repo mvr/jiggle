@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h> // For memcpy, wtf?
 
-#include "List.h"
+#include "jiggle.h"
 
 jgList *jgListNew()
 {
