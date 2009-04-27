@@ -5,6 +5,14 @@ module Jiggle
     def -@
       jgv(0, 0) - self
     end
+
+    def perpendicular
+      jgv(-y, x)
+    end
+
+    def unit
+      jgv(x/length, y/length)
+    end
     
     alias :<=> :distance_to
     
