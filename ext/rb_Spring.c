@@ -49,9 +49,6 @@ void Init_jgSpring()
      c_jgSpring = rb_define_class_under(m_Jiggle, "Spring", rb_cObject);
      rb_define_alloc_func(c_jgSpring, rb_jgSpringAlloc);
      rb_define_method(c_jgSpring, "initialize", rb_jgSpringInitialize, -1);
-
-     rb_define_attr(c_jgSpring, "a", 1, 0);
-     rb_define_attr(c_jgSpring, "b", 1, 0);
      
      rb_define_method(c_jgSpring, "length",    rb_jgSpringGetLength, 0);
      rb_define_method(c_jgSpring, "length=",   rb_jgSpringSetLength, 1);

@@ -48,11 +48,6 @@ void Init_jgCollision()
      c_jgCollision = rb_define_class_under(m_Jiggle, "Collision", rb_cObject);
      rb_define_alloc_func(c_jgCollision, rb_jgCollisionAlloc);
 
-     rb_define_attr(c_jgCollision, "particle",        1, 0);
-     rb_define_attr(c_jgCollision, "area",            1, 0);
-     rb_define_attr(c_jgCollision, "area_particle_a", 1, 0);
-     rb_define_attr(c_jgCollision, "area_particle_b", 1, 0);
-
      rb_define_method(c_jgCollision, "hit_point", rb_jgCollisionGetHitPoint, 0);
      rb_define_method(c_jgCollision, "edge_d", rb_jgCollisionGetEdgeD, 0);
      rb_define_method(c_jgCollision, "normal", rb_jgCollisionGetNormal, 0);

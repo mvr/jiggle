@@ -1,6 +1,10 @@
 module Jiggle
 
   class World
+    attr_reader :particles
+    attr_reader :springs
+    attr_reader :areas
+    
     def setup
       @last_time = Time.now
       @time_accumulator = 0

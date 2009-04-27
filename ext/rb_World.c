@@ -84,8 +84,7 @@ FLOAT_SET(rb_jgWorldSetDamping, WORLD, damping)
 
 #define RUBY_DEFINE_ADD_AND_REMOVE(method_name, class)                  \
      rb_define_method(c_jgWorld, "add_" method_name,    rb_jgWorldAdd ## class,    1); \
-     rb_define_method(c_jgWorld, "remove_" method_name, rb_jgWorldRemove ## class, 1); \
-     rb_define_attr(  c_jgWorld, method_name "s", 1, 0); \
+     rb_define_method(c_jgWorld, "remove_" method_name, rb_jgWorldRemove ## class, 1);
 
 void Init_jgWorld()
 {

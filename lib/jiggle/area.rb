@@ -1,6 +1,8 @@
 module Jiggle
 
   class Area
+    attr_reader :particles
+    
     def inspect
       points = "[" + @particles.map {|p| p.position.to_s }.join(", ") + "]"
       "#<Area: #{points}>"
