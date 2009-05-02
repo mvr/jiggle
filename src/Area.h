@@ -35,4 +35,6 @@ extern struct jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particl
 extern float               jgAreaArea(jgArea *area); // Heh.
 extern bool                jgAreaIsInsideOut(jgArea *area);
 
+extern jgVector2           jgAreaCenterOfMass(jgArea *area);
+
 #endif

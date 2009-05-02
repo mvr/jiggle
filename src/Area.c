@@ -175,3 +175,19 @@ bool jgAreaIsInsideOut(jgArea *area)
      return jgAreaArea(area) < 0;
 }
 
+jgVector2 jgAreaCenterOfMass(jgArea *area)
+{
+     float totalMass = 0;
+     jgVector2 center = jgv(0, 0);
+
+     jgParticle *particle;
+     JG_LIST_FOREACH(area->particles, particle)
+     {
+          totalMass += particle->mass;
+          center = jgVector2Add(center, jgVector2Multiply(particle->position, particle->mass));
+     }
+     
+     center = jgVector2Divide(center, totalMass);
+
+     return center;
+}
