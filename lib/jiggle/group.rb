@@ -24,6 +24,12 @@ module Jiggle
         p.elasticity = value
       end
     end
+
+    def friction=(value)
+      [@particles, @areas].flatten.each do |p|
+        p.friction = value
+      end
+    end
   end
 
   class World
