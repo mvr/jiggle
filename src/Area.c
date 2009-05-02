@@ -72,7 +72,6 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
      return inside;
 }
 
-// AAH! Ptr to ptr!
 jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
 {
      float       sameDist,     awayDist;
