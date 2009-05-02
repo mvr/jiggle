@@ -11,6 +11,10 @@ module Jiggle
       @areas = []
     end
 
+    def objects
+      [@particles, @springs, @areas].flatten
+    end
+
     def contains?(thing)
       @areas.any? {|a| a.contains? point}
     end
@@ -24,30 +28,14 @@ module Jiggle
 
   class World
     def add_group(group)
-      group.particles.each do |particle| 
-        add_particle particle
-      end
-      
-      group.springs.each do |spring| 
-        add_spring spring
-      end
-
-      group.areas.each do |area| 
-        add_area area
+      group.objects.each do |o|
+        add o
       end
     end
     
     def remove_group(group)
-      group.particles.each do |particle| 
-        remove_particle particle
-      end
-      
-      group.springs.each do |spring| 
-        remove_spring spring
-      end
-
-      group.areas.each do |area|
-        remove_area area
+      group.objects.each do |o|
+        remove o
       end
     end
   end

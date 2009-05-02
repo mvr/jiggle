@@ -25,6 +25,32 @@ module Jiggle
         @time_accumulator -= @time_step
       end
     end
+
+    def add(thing)
+      case thing
+      when Particle
+        add_particle thing
+      when Spring
+        add_spring thing
+      when Area
+        add_area thing
+      when Group
+        add_group thing
+      end
+    end
+
+    def remove(thing)
+      case thing
+      when Particle
+        remove_particle thing
+      when Spring
+        remove_spring thing
+      when Area
+        remove_area thing
+      when Group
+        remove_group thing
+      end
+    end
   end
   
 end
