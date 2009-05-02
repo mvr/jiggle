@@ -47,6 +47,11 @@ static VALUE rb_jgAreaContains(VALUE self, VALUE point)
      return BOOL2VAL(jgAreaContains(AREA(self), *VGET(point)));
 }
 
+static VALUE rb_jgAreaArea(VALUE self)
+{
+     return rb_float_new(jgAreaArea(AREA(self)));
+}
+
 static VALUE rb_jgAreaCenterOfMass(VALUE self)
 {
      return VNEW(jgAreaCenterOfMass(AREA(self)));
@@ -65,5 +70,6 @@ void Init_jgArea()
 
      rb_define_private_method(c_jgArea, "_contains?",   rb_jgAreaContains, 1);
 
+     rb_define_method(c_jgArea, "area",             rb_jgAreaArea, 0);
      rb_define_method(c_jgArea, "center_of_mass",   rb_jgAreaCenterOfMass, 0);
 }
