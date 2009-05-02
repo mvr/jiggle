@@ -10,6 +10,16 @@ module Jiggle
       @springs = []
       @areas = []
     end
+
+    def contains?(thing)
+      @areas.any? {|a| a.contains? point}
+    end
+
+    def elasticity=(value)
+      [@particles, @areas].flatten.each do |p|
+        p.elasticity = value
+      end
+    end
   end
 
   class World
