@@ -57,6 +57,9 @@ void jgParticleIntegrate(jgParticle *point, float elapsed)
 
 jgVector2 jgParticleAreaNormal(jgParticle *particle, jgList *areas)
 {
+     if(particle->mass == INFINITY)
+          return jgv(0, 0);
+     
      jgVector2 sum = jgv(0, 0);
      int count = 0;
      
