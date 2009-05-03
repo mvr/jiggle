@@ -27,7 +27,7 @@ module Jiggle
     protected
 
     def points_along(a, b, num)
-      step = (b - a) / num
+      step = (b - a) / (num - 1)
       points = []
       num.times do |i|
         points << a + (step * i)
