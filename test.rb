@@ -33,9 +33,9 @@ box_shape = [jgv(0, 0),
 # b.elasticity = 10
 # w.addb
 
-r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 4,
+r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
                                           :mass => 10,
-                                          :strength => 100
+                                          :strength => 1500
 w.add r
 
 buffer = Surface.new(screen.size)
