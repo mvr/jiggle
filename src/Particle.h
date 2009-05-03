@@ -28,4 +28,6 @@ extern void              jgParticleAddMasslessForce(jgParticle *particle, jgVect
 
 extern void              jgParticleIntegrate(jgParticle *point, float elapsed);
 
+extern jgVector2         jgParticleAreaNormal(jgParticle *point, jgList *areas);
+
 #endif

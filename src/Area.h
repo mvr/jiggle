@@ -30,7 +30,8 @@ extern void                jgAreaUpdateAABB(jgArea *area, float elapsed);
 extern bool                jgAreaContains(jgArea *area, jgVector2 point);
 
 struct        jgCollision;
-extern struct jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle);
+struct        jgWorld;
+extern struct jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle, struct jgWorld *world);
 
 extern float               jgAreaArea(jgArea *area); // Heh.
 extern bool                jgAreaIsInsideOut(jgArea *area);

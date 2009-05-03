@@ -72,7 +72,7 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
      return inside;
 }
 
-jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
+jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle, jgWorld *world)
 {
      float       sameDist,     awayDist;
      jgParticle *sameA,       *awayA;
@@ -80,8 +80,7 @@ jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
      jgVector2   sameClosest,  awayClosest;
 
      jgVector2 pt = particle->position;
-//     jgVector2 normal = jgVector2Normalize(particle->velocity);
-     jgVector2 normal = jgVector2Zero();
+     jgVector2 normal = jgParticleAreaNormal(particle, world->areas);
 
      sameDist = awayDist = INFINITY;
      sameA = sameB = awayA = awayB = 0;

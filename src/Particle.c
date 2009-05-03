@@ -55,3 +55,25 @@ void jgParticleIntegrate(jgParticle *point, float elapsed)
      point->force = jgVector2Zero();
 }
 
+jgVector2 jgParticleAreaNormal(jgParticle *particle, jgList *areas)
+{
+     jgVector2 sum = jgv(0, 0);
+     int count = 0;
+     
+     jgArea *currentArea;
+     JG_LIST_FOREACH(areas, currentArea)
+     {
+          if(jgListContains(currentArea->particles, particle))
+          {
+               sum = jgVector2Add(sum, jgAreaCenterOfMass(currentArea));
+               count++;
+          }
+     }
+
+     if(count == 0)
+          return jgv(0, 0);
+
+     jgVector2 average = jgVector2Divide(sum, count);
+     
+     return jgVector2Normalize(jgVector2Subtract(particle->position, average));
+}
