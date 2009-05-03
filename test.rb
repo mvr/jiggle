@@ -29,14 +29,14 @@ box_shape = [jgv(0, 0),
              jgv(0.5, 0),
             ]
 
- b = StaticBody.new box_shape.map {|p| p * 5}, :offset => jgv(-1, 1)
+# b = StaticBody.new box_shape.map {|p| p * 5}, :offset => jgv(-1, 1)
 # b.elasticity = 10
- w.add_body b
+# w.addb
 
-# r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
-#                                           :mass => 10,
-#                                           :strength => 1000
-# w.add_rope r
+r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 4,
+                                          :mass => 10,
+                                          :strength => 100
+w.add r
 
 buffer = Surface.new(screen.size)
 
@@ -46,7 +46,7 @@ loop do
     when MouseDownEvent
       position = jgv(*event.pos).to_world
       b = Body.new box_shape, :offset => position
-      w.add_body b
+      w.add b
     end
   end
   

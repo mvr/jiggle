@@ -35,10 +35,4 @@ module Jiggle
       points
     end
   end
-
-  class World
-    alias :add_rope    :add_group
-    alias :remove_rope :remove_group
-  end
-  
 end

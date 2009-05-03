@@ -24,10 +24,4 @@ module Jiggle
       @areas = [Area.new(@particles)]
     end
   end
-  
-  class World
-    alias :add_body    :add_group
-    alias :remove_body :remove_group
-  end
-  
 end
