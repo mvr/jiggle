@@ -5,7 +5,9 @@
 
 jgParticle *jgParticleAlloc()
 {
-     return malloc(sizeof(jgParticle));
+     jgParticle *p = malloc(sizeof(jgParticle));
+     p->ownerAreas = jgListNew();
+     return p;
 }
 
 jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
@@ -29,6 +31,7 @@ jgParticle *jgParticleNew(float mass, jgVector2 pos)
 void jgParticleFree(jgParticle *particle)
 {
      free(particle);
+     jgListFree(particle->ownerAreas);
 }
 
 void jgParticleDampenVelocity(jgParticle *particle, float damp)
@@ -55,28 +58,23 @@ void jgParticleIntegrate(jgParticle *point, float elapsed)
      point->force = jgVector2Zero();
 }
 
-jgVector2 jgParticleAreaNormal(jgParticle *particle, jgList *areas)
+jgVector2 jgParticleAreaNormal(jgParticle *particle)
 {
      if(particle->mass == INFINITY)
           return jgv(0, 0);
+
+     if(particle->ownerAreas->length == 0)
+          return jgv(0, 0);
      
      jgVector2 sum = jgv(0, 0);
-     int count = 0;
      
      jgArea *currentArea;
-     JG_LIST_FOREACH(areas, currentArea)
+     JG_LIST_FOREACH(particle->ownerAreas, currentArea)
      {
-          if(jgListContains(currentArea->particles, particle))
-          {
-               sum = jgVector2Add(sum, jgAreaCenterOfMass(currentArea));
-               count++;
-          }
+          sum = jgVector2Add(sum, jgAreaCenterOfMass(currentArea));
      }
 
-     if(count == 0)
-          return jgv(0, 0);
-
-     jgVector2 average = jgVector2Divide(sum, count);
+     jgVector2 average = jgVector2Divide(sum, particle->ownerAreas->length);
      
      return jgVector2Normalize(jgVector2Subtract(particle->position, average));
 }

@@ -11,6 +11,12 @@ jgArea *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles)
 {
      area->particles = jgListNewFromArray((void **)particles, numOfParticles);
 
+     jgParticle *currentParticle;
+     JG_LIST_FOREACH(area->particles, currentParticle)
+     {
+          jgListAdd(currentParticle->ownerAreas, area);
+     }
+
      area->friction  = 0.8;
      area->elasticity = 0.3;
 
@@ -26,6 +32,12 @@ jgArea *jgAreaNew(jgParticle **particles, int numOfParticles)
 
 void jgAreaFree(jgArea *area)
 {
+     jgParticle *currentParticle;
+     JG_LIST_FOREACH(area->particles, currentParticle)
+     {
+          jgListRemove(currentParticle->ownerAreas, area);
+     }
+
      jgListFree(area->particles);
      free(area);
 }
@@ -72,7 +84,7 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
      return inside;
 }
 
-jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle, jgWorld *world)
+jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
 {
      float       sameDist,     awayDist;
      jgParticle *sameA,       *awayA;
@@ -80,7 +92,7 @@ jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle, jgWorld *wo
      jgVector2   sameClosest,  awayClosest;
 
      jgVector2 pt = particle->position;
-     jgVector2 normal = jgParticleAreaNormal(particle, world->areas);
+     jgVector2 normal = jgParticleAreaNormal(particle);
 
      sameDist = awayDist = INFINITY;
      sameA = sameB = awayA = awayB = 0;
