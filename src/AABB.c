@@ -55,3 +55,9 @@ bool jgAABBIntersects(jgAABB a, jgAABB b)
      return (a.min.x <= b.max.x) && (a.max.x >= b.min.x) &&
             (a.min.y <= b.max.y) && (a.max.y >= b.min.y);
 }
+
+jgVector2 jgAABBCenter(jgAABB a)
+{
+     return (jgVector2){(a.min.x + a.max.x) / 2,
+                        (a.min.y + a.max.y) / 2};
+}

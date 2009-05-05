@@ -23,4 +23,6 @@ extern jgAABB   jgAABBExpandToInclude(jgAABB a, jgVector2 pt);
 extern bool     jgAABBContains(jgAABB a, jgVector2 pt);
 extern bool     jgAABBIntersects(jgAABB a, jgAABB b);
 
+extern jgVector2 jgAABBCenter(jgAABB a);
+
 #endif
