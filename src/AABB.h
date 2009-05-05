@@ -19,6 +19,7 @@ extern jgAABB   jgAABBNewFromVector2(jgVector2 min, jgVector2 max);
 extern jgAABB   jgAABBNewFromFloat(float x1, float y1, float x2, float y2);
 extern jgAABB   jgAABBNull();
 extern jgAABB   jgAABBExpandToInclude(jgAABB a, jgVector2 pt);
+extern jgAABB   jgAABBCombine(jgAABB a, jgAABB b);
 
 extern bool     jgAABBContains(jgAABB a, jgVector2 pt);
 extern bool     jgAABBIntersects(jgAABB a, jgAABB b);

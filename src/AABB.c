@@ -39,6 +39,16 @@ jgAABB jgAABBExpandToInclude(jgAABB a, jgVector2 pt)
      }
 }
 
+jgAABB jgAABBCombine(jgAABB a, jgAABB b)
+{
+     jgVector2 result = jgAABBNull();
+     result = jgAABBExpandToInclude(result, a.min);
+     result = jgAABBExpandToInclude(result, a.max);
+     result = jgAABBExpandToInclude(result, b.min);
+     result = jgAABBExpandToInclude(result, b.max);
+     return result;
+}
+
 bool jgAABBContains(jgAABB a, jgVector2 pt)
 {
      if (!a.isValid)
