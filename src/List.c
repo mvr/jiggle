@@ -23,6 +23,11 @@ jgList *jgListNewFromArray(void **array, int length)
      return list;
 }
 
+jgList *jgListDuplicate(jgList *list)
+{
+     return jgListNewFromArray(list->arr, list->length);
+}
+
 void jgListClear(jgList *list)
 {
      list->length = 0;

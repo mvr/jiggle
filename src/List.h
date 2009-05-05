@@ -16,6 +16,7 @@ typedef struct jgList
 
 extern jgList  *jgListNew();
 extern jgList  *jgListNewFromArray(void **array, int length);
+extern jgList  *jgListDuplicate(jgList *list);
 extern void     jgListClear(jgList *list);
 extern void     jgListFree(jgList *list);
 
