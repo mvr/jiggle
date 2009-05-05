@@ -30,6 +30,8 @@ extern bool     jgListContains(jgList *list, void *data);
 extern void     jgListAdd(jgList *list, void *data);
 extern void     jgListRemove(jgList *list, void *data);
 
+extern void     jgListAppend(jgList *list, jgList *other);
+
 // EWW! These are mega-gross.
 
 #define JG_LIST_FOREACH(list, var)              \
