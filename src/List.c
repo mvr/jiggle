@@ -121,6 +121,6 @@ void jgListRemove(jgList *list, void *data)
 
 void jgListAppend(jgList *list, jgList *other)
 {
-     jgListExpand(list->length + other->length);
+     jgListExpandTo(list, list->length + other->length);
      memcpy(list->arr + list->length, other->arr, other->length * sizeof(void *));    
 }
