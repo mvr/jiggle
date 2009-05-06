@@ -64,9 +64,10 @@ static void jgListExpand(jgList *list)
 
 static void jgListExpandTo(jgList *list, int size)
 {
+     list->length = size;
+
      if(size > list->alloc){
           list->alloc = size;
-          list->length = size;
           list->arr = realloc(list->arr, list->alloc * sizeof(void *));
      }
 }
@@ -122,6 +123,7 @@ void jgListRemove(jgList *list, void *data)
 
 void jgListAppend(jgList *list, jgList *other)
 {
+     int originalLength = list->length;
      jgListExpandTo(list, list->length + other->length);
-     memcpy(list->arr + list->length, other->arr, other->length * sizeof(void *));    
+     memcpy(list->arr + originalLength, other->arr, other->length * sizeof(void *));    
 }
