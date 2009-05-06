@@ -41,7 +41,7 @@ jgAABB jgAABBExpandToInclude(jgAABB a, jgVector2 pt)
 
 jgAABB jgAABBCombine(jgAABB a, jgAABB b)
 {
-     jgVector2 result = jgAABBNull();
+     jgAABB result = jgAABBNull();
      result = jgAABBExpandToInclude(result, a.min);
      result = jgAABBExpandToInclude(result, a.max);
      result = jgAABBExpandToInclude(result, b.min);
