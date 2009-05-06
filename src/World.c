@@ -225,14 +225,17 @@ void jgWorldStep(jgWorld *world, float timeStep)
           jgAreaUpdateAABB(currentArea, timeStep);
      }
 
+     jgQuadtree *tree = jgQuadtreeNew(world->areas);
+
      jgArea *area;
      jgParticle *particle;
-     JG_LIST_FOREACH(world->areas, area)
+     JG_LIST_FOREACH(world->particles, particle)
      {
-          JG_LIST_FOREACH2(world->particles, particle)
+          jgList *candidates = jgQuadtreeCandidates(tree, particle->position);
+          JG_LIST_FOREACH2(candidates, area)
           {
                if(jgListContains(area->particles, particle))
-                    continue;
+                    continue; 
 
                if(!jgAABBContains(area->aabb, particle->position))
                     continue;
