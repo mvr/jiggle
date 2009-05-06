@@ -251,6 +251,7 @@ void jgWorldStep(jgWorld *world, float timeStep)
                jgListAdd(world->collisions, collision);
                jgListAdd(world->pendingCollisions, collision);
           }
+          jgListFree(candidates);
      }
 
      jgQuadtreeFree(tree);
