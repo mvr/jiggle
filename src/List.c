@@ -14,7 +14,7 @@ jgList *jgListNew()
 
 jgList *jgListNewFromArray(void **array, int length)
 {
-     jgList *list = jgListNew();
+     jgList *list = malloc(sizeof(jgList));
      list->length = length;
      list->alloc = length;
      list->arr = malloc(length * sizeof(void *));
