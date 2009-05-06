@@ -253,5 +253,7 @@ void jgWorldStep(jgWorld *world, float timeStep)
           }
      }
 
+     jgQuadtreeFree(tree);
+
      jgWorldHandleCollisions(world);
 }

@@ -87,10 +87,10 @@ jgQuadtree *jgQuadtreeNew(jgList *areas)
 
 void jgQuadtreeFree(jgQuadtree *tree)
 {
-     jgQuadtreeFree(tree->nw);
-     jgQuadtreeFree(tree->ne);
-     jgQuadtreeFree(tree->sw);
-     jgQuadtreeFree(tree->se);
+     if(tree->nw) jgQuadtreeFree(tree->nw);
+     if(tree->ne) jgQuadtreeFree(tree->ne);
+     if(tree->sw) jgQuadtreeFree(tree->sw);
+     if(tree->se) jgQuadtreeFree(tree->se);
      jgListFree(tree->items);
      free(tree);
 }
@@ -111,8 +111,11 @@ jgList *jgQuadtreeCandidates(jgQuadtree *tree, jgVector2 point)
      if(tree->se && point.x >= center.x && point.y >= center.y)
           subitems = jgQuadtreeCandidates(tree->se, point);
 
-     jgListAppend(results, subitems);
-     jgListFree(subitems);
+     if(subitems)
+     {
+          jgListAppend(results, subitems);
+          jgListFree(subitems);
+     }
 
      return results;
 }
