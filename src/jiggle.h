@@ -11,6 +11,7 @@
 #include "Spring.h"
 #include "AABB.h"
 #include "Area.h"
+#include "Quadtree.h"
 #include "Collision.h"
 #include "World.h"
 
