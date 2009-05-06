@@ -66,6 +66,7 @@ static void jgListExpandTo(jgList *list, int size)
 {
      if(size > list->alloc){
           list->alloc = size;
+          list->length = size;
           list->arr = realloc(list->arr, list->alloc * sizeof(void *));
      }
 }
