@@ -71,7 +71,7 @@ jgVector2 jgParticleAreaNormal(jgParticle *particle)
      jgArea *currentArea;
      JG_LIST_FOREACH(particle->ownerAreas, currentArea)
      {
-          sum = jgVector2Add(sum, jgAreaCenterOfMass(currentArea));
+          sum = jgVector2Add(sum, currentArea->centerOfMass);
      }
 
      jgVector2 average = jgVector2Divide(sum, particle->ownerAreas->length);

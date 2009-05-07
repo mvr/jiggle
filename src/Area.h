@@ -17,6 +17,7 @@ typedef struct jgArea
      float        friction;
 
      jgAABB       aabb;
+     jgVector2    centerOfMass;
      
      bool         isValid;
 } jgArea;
@@ -35,6 +36,6 @@ extern struct jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particl
 extern float               jgAreaArea(jgArea *area); // Heh.
 extern bool                jgAreaIsInsideOut(jgArea *area);
 
-extern jgVector2           jgAreaCenterOfMass(jgArea *area);
+extern void                jgAreaUpdateCenterOfMass(jgArea *area);
 
 #endif

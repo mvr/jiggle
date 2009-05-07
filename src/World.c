@@ -223,6 +223,8 @@ void jgWorldStep(jgWorld *world, float timeStep)
           currentArea->isValid = jgAreaIsInsideOut(currentArea);
 
           jgAreaUpdateAABB(currentArea, timeStep);
+
+          jgAreaUpdateCenterOfMass(currentArea);
      }
 
      jgQuadtree *tree = jgQuadtreeNew(world->areas);

@@ -186,7 +186,7 @@ bool jgAreaIsInsideOut(jgArea *area)
      return jgAreaArea(area) < 0;
 }
 
-jgVector2 jgAreaCenterOfMass(jgArea *area)
+void jgAreaUpdateCenterOfMass(jgArea *area)
 {
      float totalMass = 0;
      jgVector2 center = jgv(0, 0);
@@ -200,5 +200,5 @@ jgVector2 jgAreaCenterOfMass(jgArea *area)
      
      center = jgVector2Divide(center, totalMass);
 
-     return center;
+     area->centerOfMass = center;
 }
