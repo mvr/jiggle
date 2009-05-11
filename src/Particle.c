@@ -20,6 +20,8 @@ jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
      particle->friction  = 0.8;
      particle->elasticity = 0.3;
 
+     particle->collidable = true;
+
      return particle;
 }
 

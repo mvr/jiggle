@@ -233,6 +233,9 @@ void jgWorldStep(jgWorld *world, float timeStep)
      jgParticle *particle;
      JG_LIST_FOREACH(world->particles, particle)
      {
+          if(!particle->collidable)
+               continue;
+
           jgList *candidates = jgQuadtreeCandidates(tree, particle->position);
           JG_LIST_FOREACH2(candidates, area)
           {

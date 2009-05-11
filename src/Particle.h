@@ -17,6 +17,8 @@ typedef struct jgParticle
      float     elasticity;
      float     friction;
 
+     bool      collidable;
+
      jgList   *ownerAreas;
 } jgParticle;
 

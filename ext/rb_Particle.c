@@ -20,6 +20,9 @@ FLOAT_SET(rb_jgParticleSetElasticity, PARTICLE, elasticity)
 FLOAT_GET(rb_jgParticleGetFriction, PARTICLE, friction)
 FLOAT_SET(rb_jgParticleSetFriction, PARTICLE, friction)
 
+BOOL_GET(rb_jgParticleGetCollidable, PARTICLE, collidable)
+BOOL_SET(rb_jgParticleSetCollidable, PARTICLE, collidable)
+
 static VALUE rb_jgParticleAlloc(VALUE klass)
 {
      jgParticle *particle = jgParticleAlloc();
@@ -73,6 +76,8 @@ void Init_jgParticle()
      rb_define_method(c_jgParticle, "friction",    rb_jgParticleGetFriction, 0);
      rb_define_method(c_jgParticle, "friction=",   rb_jgParticleSetFriction, 1);
 
+     rb_define_method(c_jgParticle, "collidable?",    rb_jgParticleGetCollidable, 0);
+     rb_define_method(c_jgParticle, "collidable=",    rb_jgParticleSetCollidable, 1);
 }
 
 
