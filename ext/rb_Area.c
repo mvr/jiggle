@@ -8,6 +8,8 @@ FLOAT_SET(rb_jgAreaSetElasticity, AREA, elasticity)
 FLOAT_GET(rb_jgAreaGetFriction, AREA, friction)
 FLOAT_SET(rb_jgAreaSetFriction, AREA, friction)
 
+VECTOR_GET(rb_jgAreaCenterOfMass, AREA, centerOfMass)
+
 static VALUE rb_jgAreaAlloc(VALUE klass)
 {
      jgArea *area = jgAreaAlloc();
@@ -50,11 +52,6 @@ static VALUE rb_jgAreaContains(VALUE self, VALUE point)
 static VALUE rb_jgAreaArea(VALUE self)
 {
      return rb_float_new(jgAreaArea(AREA(self)));
-}
-
-static VALUE rb_jgAreaCenterOfMass(VALUE self)
-{
-     return VNEW(jgAreaCenterOfMass(AREA(self)));
 }
 
 void Init_jgArea()
