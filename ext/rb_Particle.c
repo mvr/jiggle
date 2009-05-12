@@ -8,9 +8,6 @@ FLOAT_SET(rb_jgParticleSetMass, PARTICLE, mass)
 VECTOR_GET(rb_jgParticleGetPosition, PARTICLE, position)
 VECTOR_SET(rb_jgParticleSetPosition, PARTICLE, position)
 
-VECTOR_GET(rb_jgParticleGetVelocity, PARTICLE, velocity)
-VECTOR_SET(rb_jgParticleSetVelocity, PARTICLE, velocity)
-
 VECTOR_GET(rb_jgParticleGetForce, PARTICLE, force)
 VECTOR_SET(rb_jgParticleSetForce, PARTICLE, force)
 
@@ -52,6 +49,11 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
      return self;
 }
 
+static VALUE rb_jgParticleGetVelocity(VALUE self)
+{
+     return VNEW(jgParticleEffectiveVelocity(PARTICLE(self)));
+}
+
 void Init_jgParticle()
 {
      c_jgParticle = rb_define_class_under(m_Jiggle, "Particle", rb_cObject);
@@ -65,7 +67,6 @@ void Init_jgParticle()
      rb_define_method(c_jgParticle, "position=", rb_jgParticleSetPosition, 1);
 
      rb_define_method(c_jgParticle, "velocity" , rb_jgParticleGetVelocity, 0);
-     rb_define_method(c_jgParticle, "velocity=", rb_jgParticleSetVelocity, 1);
 
      rb_define_method(c_jgParticle, "force" , rb_jgParticleGetForce, 0);
      rb_define_method(c_jgParticle, "force=", rb_jgParticleSetForce, 1);
