@@ -141,7 +141,7 @@ static inline bool jgVector2CW(jgVector2 a, jgVector2 b)
 
 static inline jgVector2 jgVector2Towards(jgVector2 point, jgVector2 target, float amount)
 {
-     return jgVector2Multiply(jgVector2Subtract(target, point), amount);
+     return jgVector2Add(point, jgVector2Multiply(jgVector2Subtract(target, point), amount));
 }
 
 #endif
