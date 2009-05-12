@@ -69,9 +69,9 @@ void jgSpringExert(jgSpring *spring)
 void jgSpringDragTowards(jgParticle *particle, jgVector2 point, float d, float k, float damp)
 {
      jgVector2 force = jgSpringCalculateForce(particle->position,
-                                              particle->velocity,
+                                              jgParticleEffectiveVelocity(particle),
                                               point,
-                                              particle->velocity,
+                                              jgParticleEffectiveVelocity(particle),
                                               d,
                                               k,
                                               damp);
@@ -82,9 +82,9 @@ void jgSpringDragTowards(jgParticle *particle, jgVector2 point, float d, float k
 void jgSpringDragTogether(jgParticle *particleA, jgParticle *particleB, float d, float k, float damp)
 {
      jgVector2 force = jgSpringCalculateForce(particleA->position,
-                                              particleA->velocity,
+                                              jgParticleEffectiveVelocity(particleA),
                                               particleB->position,
-                                              particleB->velocity,
+                                              jgParticleEffectiveVelocity(particleB),
                                               d,
                                               k,
                                               damp);
