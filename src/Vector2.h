@@ -53,6 +53,7 @@ static inline bool      jgVector2CW(jgVector2 a, jgVector2 b);
 extern bool             jgVector2Intersect(jgVector2 a1, jgVector2 a2, jgVector2 b1, jgVector2 b2);
 extern jgVector2        jgVector2ClosestPointOnLine(jgVector2 a1, jgVector2 a2, jgVector2 pt);
 extern float            jgVector2PositionAlong(jgVector2 a1, jgVector2 a2, jgVector2 pt);
+static inline jgVector2 jgVector2Towards(jgVector2 point, jgVector2 target, float amount);
 extern jgVector2        jgVector2Normal(jgVector2 a1, jgVector2 a2);
 extern jgVector2        jgVector2ThreePointNormal(jgVector2 prev, jgVector2 current, jgVector2 next);
 

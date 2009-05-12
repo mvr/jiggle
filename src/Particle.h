@@ -11,7 +11,7 @@ typedef struct jgParticle
 {
      float     mass;
      jgVector2 position;
-     jgVector2 velocity;
+     jgVector2 prevPos;
      jgVector2 force;
 
      float     elasticity;

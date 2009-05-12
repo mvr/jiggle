@@ -14,7 +14,7 @@ jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
 {
      particle->mass = mass;
      particle->position = pos;
-     particle->velocity = jgVector2Zero();
+     particle->prevPos = pos;
      particle->force = jgVector2Zero();
 
      particle->friction  = 0.8;
@@ -39,7 +39,9 @@ void jgParticleFree(jgParticle *particle)
 void jgParticleDampenVelocity(jgParticle *particle, float damp)
 {
      if(particle->mass != INFINITY)
-          particle->velocity = jgVector2Multiply(particle->velocity, damp);
+          particle->prevPos = jgVector2Towards(particle->prevPos, 
+                                               particle->position, 
+                                               1.0f - damp);
 }
 
 void jgParticleAddMasslessForce(jgParticle *particle, jgVector2 force)
@@ -53,9 +55,16 @@ void jgParticleIntegrate(jgParticle *point, float elapsed)
 {
      if(point->mass != INFINITY)
      {
-          float elapMass = elapsed / point->mass;
-          point->velocity = jgVector2Add(point->velocity, jgVector2Multiply(point->force, elapMass));
-          point->position = jgVector2Add(point->position, jgVector2Multiply(point->velocity, elapsed));
+          jgVector2 acceleration = jgVector2Divide(point->force, point->mass);
+          jgVector2 temp = point->position;
+
+          // x' = 2x - x* + at^2
+          // Also eww.
+          point->position = jgVector2Add(jgVector2Subtract(jgVector2Multiply(point->position, 2.0),
+                                                           point->prevPos),
+                                         jgVector2Multiply(acceleration,
+                                                           elapsed * elapsed));
+          point->prevPos = temp;
      }
      point->force = jgVector2Zero();
 }
