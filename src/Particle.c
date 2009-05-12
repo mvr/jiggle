@@ -36,6 +36,11 @@ void jgParticleFree(jgParticle *particle)
      jgListFree(particle->ownerAreas);
 }
 
+jgVector2 jgParticleEffectiveVelocity(jgParticle *particle)
+{
+     return jgVector2Subtract(particle->position, particle->prevPos);
+}
+
 void jgParticleDampenVelocity(jgParticle *particle, float damp)
 {
      if(particle->mass != INFINITY)

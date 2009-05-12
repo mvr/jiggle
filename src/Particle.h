@@ -27,6 +27,7 @@ extern jgParticle       *jgParticleInit(jgParticle *particle, float mass, jgVect
 extern jgParticle       *jgParticleNew(float mass, jgVector2 pos);
 extern void              jgParticleFree(jgParticle *particle);
 
+extern jgVector2         jgParticleEffectiveVelocity(jgParticle *particle);
 extern void              jgParticleDampenVelocity(jgParticle *particle, float damp);
 extern void              jgParticleAddMasslessForce(jgParticle *particle, jgVector2 force);
 
