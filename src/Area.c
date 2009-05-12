@@ -52,8 +52,8 @@ void jgAreaUpdateAABB(jgArea *area, float elapsed)
           jgVector2 p = currentParticle->position;
           area->aabb = jgAABBExpandToInclude(area->aabb, p);
 
-          p = jgVector2Add(p, jgVector2Multiply(currentParticle->velocity, elapsed));
-          area->aabb = jgAABBExpandToInclude(area->aabb, p);
+//          p = jgVector2Add(p, jgVector2Multiply(currentParticle->velocity, elapsed));
+//          area->aabb = jgAABBExpandToInclude(area->aabb, p);
      }
 }
 
