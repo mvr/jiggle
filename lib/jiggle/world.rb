@@ -38,7 +38,8 @@ module Jiggle
         add_group thing
       end
     end
-
+    alias :<< :add
+    
     def remove(thing)
       case thing
       when Particle
