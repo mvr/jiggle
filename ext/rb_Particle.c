@@ -43,11 +43,13 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
      float friction   = rb_jgHashGetFloat(attr, "friction",   0.8);
      float elasticity = rb_jgHashGetFloat(attr, "elasticity", 0.3);
      float mass       = rb_jgHashGetFloat(attr, "mass",       1);
+     bool  collidable = rb_jgHashGetBool (attr, "collidable", true);
 
      jgParticleInit(particle, mass, position);
 
      particle->friction = friction;
      particle->elasticity = elasticity;
+     particle->collidable = collidable;
 
      return self;
 }
