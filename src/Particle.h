@@ -18,6 +18,7 @@ typedef struct jgParticle
      float     friction;
 
      bool      collidable;
+     bool      floating;
 
      jgList   *ownerAreas;
 } jgParticle;

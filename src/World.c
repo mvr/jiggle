@@ -203,7 +203,8 @@ void jgWorldStep(jgWorld *world, float timeStep)
      JG_LIST_FOREACH(world->particles, currentParticle)
      {
           jgParticleDampenVelocity(currentParticle, world->damping);
-          jgParticleAddMasslessForce(currentParticle, world->gravity);
+          if(!currentParticle->floating)
+               jgParticleAddMasslessForce(currentParticle, world->gravity);
      }
 
      jgSpring *currentSpring;
