@@ -71,7 +71,7 @@ void jgSpringDragTowards(jgParticle *particle, jgVector2 point, float d, float k
      jgVector2 force = jgSpringCalculateForce(particle->position,
                                               particle->velocity,
                                               point,
-                                              particle->velocity,
+                                              jgv(0, 0),
                                               d,
                                               k,
                                               damp);
