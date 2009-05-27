@@ -6,7 +6,7 @@ module Jiggle
     attr_reader :areas
     
     def setup
-      @last_time = Time.now
+      @start_time = @last_time = Time.now
       @time_accumulator = 0
       @time_step = 1 / @ticks_per_second
     end
@@ -26,6 +26,10 @@ module Jiggle
       end
     end
 
+    def time
+       @last_time - @start_time
+    end
+    
     def add(thing)
       case thing
       when Particle
