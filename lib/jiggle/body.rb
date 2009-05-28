@@ -8,11 +8,14 @@ module Jiggle
       
       attr[:mass] ||= points.size
       mass = attr[:mass] / points.size
-
+      
+      scale  = attr[:scale]  || 1
       offset = attr[:offset] || jgv(0, 0)
 
+      points = points.map { |point| (point * scale) + offset }
+      
       points.each do |point|
-        particle = Particle.new point + offset, :mass => mass
+        particle = Particle.new point, :mass => mass
         @particles << particle
       end
 
