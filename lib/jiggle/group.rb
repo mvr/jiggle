@@ -30,6 +30,18 @@ module Jiggle
         p.friction = value
       end
     end
+    
+    def expand(amount = 2)
+      @springs.each do |spring|
+        spring.length *= amount
+      end
+    end
+    def contract(amount = 2)
+      @springs.each do |spring|
+        spring.length /= amount
+      end
+    end
+    
   end
 
   class World

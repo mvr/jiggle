@@ -21,6 +21,7 @@ jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
      particle->elasticity = 0.3;
 
      particle->collidable = true;
+     particle->floating   = false;
 
      return particle;
 }
