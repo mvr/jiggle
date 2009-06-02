@@ -56,13 +56,15 @@ module Jiggle
       @particles = matrix.flatten
       
       matrix.send(:extend, BlobMatrix)
-
+      
+      # Row and column springs
       (matrix.rows + matrix.columns).each do |row|
         row.adjacent(false).each do |p1, p2|
-          @springs << Spring.new(p1, p2, :strength => attr[:strength], :damping => attr[:damping])
+          @springs << Spring.new(p1, p2, attr)
         end
       end
-      
+
+      # Crossing springs
       (matrix.size - 1).times do |row_idx|
         row = matrix[row_idx]
         next_row = matrix[row_idx + 1]
@@ -70,24 +72,20 @@ module Jiggle
           particle = row[column_idx]
           @springs << Spring.new(particle,
                                  next_row[column_idx - 1],
-                                 :strength => attr[:strength],
-                                 :damping => attr[:damping]) if column_idx > 0
+                                 attr) if column_idx > 0
           @springs << Spring.new(particle,
                                  next_row[column_idx + 1],
-                                 :strength => attr[:strength],
-                                 :damping => attr[:damping]) if column_idx < matrix.size - 1
+                                 attr) if column_idx < matrix.size - 1
         end
       end
-      
+
+      # Corner to corner springs
       @springs << Spring.new(matrix.rows.first.first,
                              matrix.rows.last.last,
-                             :strength => attr[:strength],
-                             :damping => attr[:damping])
-
+                             attr)
       @springs << Spring.new(matrix.rows.first.last,
                              matrix.rows.last.first,
-                             :strength => attr[:strength],
-                             :damping => attr[:damping])
+                             attr)
       
       edge_particles = ( matrix.rows.first +
                          matrix.columns.last[1..-1] +
@@ -96,6 +94,7 @@ module Jiggle
       interior_particles = (matrix.flatten - edge_particles)
       
       @areas << Area.new(edge_particles)
+      
       interior_particles.each do |particle|
         particle.collidable = false
       end
