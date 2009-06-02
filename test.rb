@@ -8,10 +8,10 @@ include Rubygame
 
 class Vector2
   def to_world
-    (self - jgv(200, 200)) / 100
+    (self - jgv(200, 200)) / 50
   end
   def to_screen
-    (self * 100) + jgv(200, 200)
+    (self * 50) + jgv(200, 200)
   end
 end
 
@@ -24,18 +24,18 @@ w.gravity = jgv(0, 9.8)
 
 
 box_shape = [jgv(0, 0),
-             jgv(0, 0.5),
-             jgv(0.5, 0.5),
-             jgv(0.5, 0),
+             jgv(0, 1),
+             jgv(1, 1),
+             jgv(1, 0),
             ]
 
 b = StaticBody.new box_shape.map {|p| p * 10}, :offset => jgv(-1, 1)
 w.add b
 
-# r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
-#                                           :mass => 10,
-#                                           :strength => 1500
-# w.add r
+ r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
+                                           :mass => 10,
+                                           :strength => 1500
+ w.add r
 
 buffer = Surface.new(screen.size)
 
@@ -44,7 +44,7 @@ loop do
     case(event)
     when MouseDownEvent
       position = jgv(*event.pos).to_world
-      b = Body.new box_shape, :offset => position
+      b = QuadBlob.new box_shape, :offset => position, :friction => 0, :strength => 800
       w.add b
     end
   end
