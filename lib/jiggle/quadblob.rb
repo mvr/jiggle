@@ -90,16 +90,21 @@ module Jiggle
       edge_particles = ( matrix.rows.first +
                          matrix.columns.last[1..-1] +
                          matrix.rows.last.reverse[1..-1] +
-                         matrix.columns.first.reverse[1..-1] ).reverse
+                         matrix.columns.first.reverse[1..-2] ).reverse
       interior_particles = (matrix.flatten - edge_particles)
       
       @areas << Area.new(edge_particles)
+      @edge_particles = edge_particles
       
       interior_particles.each do |particle|
         particle.collidable = false
       end
     end
-
+    
+    def particles
+      @edge_particles
+    end
+    
     protected
     
     # More duplication AH.
