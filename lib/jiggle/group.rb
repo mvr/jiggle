@@ -1,9 +1,9 @@
 module Jiggle
   
   class Group
-    attr_accessor :particles
-    attr_accessor :springs
-    attr_accessor :areas
+    attr_reader :particles
+    attr_reader :springs
+    attr_reader :areas
 
     def initialize
       @particles = []
