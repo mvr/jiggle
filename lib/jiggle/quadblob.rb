@@ -80,12 +80,12 @@ module Jiggle
       end
 
       # Corner to corner springs
-      @springs << Spring.new(matrix.rows.first.first,
-                             matrix.rows.last.last,
-                             attr)
-      @springs << Spring.new(matrix.rows.first.last,
-                             matrix.rows.last.first,
-                             attr)
+      [matrix.rows.first.first,
+       matrix.rows.last.last,
+       matrix.rows.first.last,
+       matrix.rows.last.first].pairs.each do |a, b|
+        @springs << Spring.new(a, b, attr)
+      end
       
       edge_particles = ( matrix.rows.first +
                          matrix.columns.last[1..-1] +
