@@ -50,7 +50,7 @@ loop do
     case(event)
     when MouseDownEvent
       position = jgv(*event.pos).to_world
-      b = QuadBlob.new box_shape, :offset => position, :friction => 0, :strength => 800
+      b = QuadBlob.new box_shape, :offset => position
       w.add b
     end
   end
