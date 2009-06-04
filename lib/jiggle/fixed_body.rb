@@ -8,7 +8,7 @@ module Jiggle
     def initialize(points, attr={})
       super(points, attr)
 
-      anchor_strength = attr[:anchor_strength] || 200
+      anchor_strength = attr[:anchor_strength] || 100
       anchor_damping  = attr[:anchor_damping]  || 40
       
       anchors = []
