@@ -32,10 +32,13 @@ box_shape = [jgv(0, 0),
 b = StaticBody.new box_shape.map {|p| p * 10}, :offset => jgv(-1, 1)
 w.add b
 
- r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
-                                           :mass => 10,
-                                           :strength => 1500
- w.add r
+r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
+                                          :mass => 10,
+                                          :strength => 1500
+w.add r
+
+f = FixedBody.new box_shape, :offset => jgv(3, -1)
+w.add f
 
 buffer = Surface.new(screen.size)
 
