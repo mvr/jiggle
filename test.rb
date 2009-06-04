@@ -40,6 +40,9 @@ w.add r
 f = FixedBody.new box_shape, :offset => jgv(3, -1)
 w.add f
 
+f = RotatingBody.new box_shape, :offset => jgv(5, -1)
+w.add f
+
 buffer = Surface.new(screen.size)
 
 loop do
