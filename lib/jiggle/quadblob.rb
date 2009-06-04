@@ -32,7 +32,7 @@ module Jiggle
       # Horrible horrible duplication
       grid_number = attr[:grid_number] || 4
       
-      attr[:mass] ||= grid_number ** 2
+      attr[:mass] ||= 4.0
       mass = attr[:mass] / (grid_number ** 2)
 
       scale  = attr[:scale]  || 1
