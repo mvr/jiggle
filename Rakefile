@@ -28,5 +28,6 @@ Spec::Rake::SpecTask.new do |t|
 end
 
 task :ruby => LIBRARY do
-  system "cd ext && ruby extconf.rb && make && mv jiggle_ext.so ../lib/jiggle_ext.so"
+  ext = RUBY_PLATFORM =~ /darwin/ ? "bundle" : "so"
+  system "cd ext && ruby extconf.rb && make && mv jiggle_ext.#{ext} ../lib/jiggle_ext.#{ext}"
 end
