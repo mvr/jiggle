@@ -6,7 +6,7 @@ describe Collision do
     @world.gravity = jgv(0, 9.8)
 
     @box = box
-    @world.add_body @box
+    @world.add @box
     
     @particle = Particle.new jgv(0, 0)
     @world.add_particle @particle
