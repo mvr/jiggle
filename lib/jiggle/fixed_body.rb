@@ -14,6 +14,8 @@ module Jiggle
       anchors = []
       springs = []
       
+      @original_particles = @particles
+      
       @particles.each do |particle|
         anchor = Particle.new particle.position, :mass => Infinity
         anchor.collidable = false
@@ -23,10 +25,14 @@ module Jiggle
                                               :damping => anchor_damping
         springs << spring
       end
-
+      
       @particles += anchors
       @springs   += springs
       
+    end
+
+    def particles
+      @original_particles
     end
   end
   
