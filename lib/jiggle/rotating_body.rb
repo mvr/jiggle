@@ -13,6 +13,8 @@ module Jiggle
 
       anchor = Particle.new @areas[0].center_of_mass, :mass => Infinity
       anchor.collidable = false
+
+      @original_particles = @particles
       
       springs = @particles.map do |particle|
         Spring.new particle, anchor, :strength => anchor_strength,
@@ -22,6 +24,10 @@ module Jiggle
       @particles << anchor
       @springs   += springs
       
+    end
+
+    def particles
+      @original_particles
     end
   end
   
