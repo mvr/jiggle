@@ -107,3 +107,5 @@ void Init_jgWorld()
      rb_define_method(c_jgWorld, "damping",  rb_jgWorldGetDamping, 0);
      rb_define_method(c_jgWorld, "damping=", rb_jgWorldSetDamping, 1);
 }
+
+#undef RUBY_DEFINE_ADD_AND_REMOVE
