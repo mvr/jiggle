@@ -2,10 +2,16 @@
 
 VALUE c_jgWorld;
 
+static void rb_jgWorldFree(void *world)
+{
+     jgWorldClearCollisions(world);
+     jgWorldFree(world);
+}
+
 static VALUE rb_jgWorldAlloc(VALUE klass)
 {
      jgWorld *world = jgWorldAlloc();
-     return Data_Wrap_Struct(klass, NULL, jgWorldFree, world);
+     return Data_Wrap_Struct(klass, NULL, rb_jgWorldFree, world);
 }
 
 static VALUE rb_jgWorldInitialize(int argc, VALUE *argv, VALUE self)
