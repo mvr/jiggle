@@ -3,7 +3,7 @@
 require 'lib/jiggle'
 include Jiggle
 
-w = World.new :ticks_per_second => 200
+w = Space.new :ticks_per_second => 200
 w.gravity = jgv(0, 9.8)
 
 box_shape = [jgv(0, 0),

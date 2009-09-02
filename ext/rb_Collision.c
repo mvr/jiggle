@@ -19,21 +19,21 @@ static VALUE rb_jgFindInArray(VALUE array, void *element)
      return Qnil;
 }
 
-VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE world)
+VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE space)
 {     
      VALUE wrappedCollision = Data_Wrap_Struct(c_jgCollision, NULL, NULL, collision);
      
      rb_iv_set(wrappedCollision, "@particle",        
-               rb_jgFindInArray(rb_iv_get(world, "@particles"), collision->particle));
+               rb_jgFindInArray(rb_iv_get(space, "@particles"), collision->particle));
 
      rb_iv_set(wrappedCollision, "@area",
-               rb_jgFindInArray(rb_iv_get(world, "@areas"), collision->area));
+               rb_jgFindInArray(rb_iv_get(space, "@areas"), collision->area));
 
      rb_iv_set(wrappedCollision, "@area_particle_a", 
-               rb_jgFindInArray(rb_iv_get(world, "@particles"), collision->areaParticleA));
+               rb_jgFindInArray(rb_iv_get(space, "@particles"), collision->areaParticleA));
 
      rb_iv_set(wrappedCollision, "@area_particle_b", 
-               rb_jgFindInArray(rb_iv_get(world, "@particles"), collision->areaParticleB));
+               rb_jgFindInArray(rb_iv_get(space, "@particles"), collision->areaParticleB));
      
      return wrappedCollision;
 }

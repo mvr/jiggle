@@ -13,6 +13,6 @@
 #include "Area.h"
 #include "Quadtree.h"
 #include "Collision.h"
-#include "World.h"
+#include "Space.h"
 
 #endif

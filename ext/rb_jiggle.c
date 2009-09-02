@@ -51,6 +51,6 @@ void Init_jiggle_ext(void)
      Init_jgParticle();
      Init_jgArea();
      Init_jgSpring();
-     Init_jgWorld();
+     Init_jgSpace();
      Init_jgCollision();
 }

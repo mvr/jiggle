@@ -7,7 +7,7 @@ require 'rubygame'
 include Rubygame
 
 class Vector2
-  def to_world
+  def to_space
     (self - jgv(200, 200)) / 50
   end
   def to_screen
@@ -19,7 +19,7 @@ Rubygame.init
 screen = Screen.set_mode [600, 600]
 queue = EventQueue.new()
 
-w = World.new :ticks_per_second => 200
+w = Space.new :ticks_per_second => 200
 w.gravity = jgv(0, 9.8)
 
 
@@ -49,7 +49,7 @@ loop do
   queue.each do |event|
     case(event)
     when MouseDownEvent
-      position = jgv(*event.pos).to_world
+      position = jgv(*event.pos).to_space
       b = QuadBlob.new box_shape, :offset => position
       w.add b
     end

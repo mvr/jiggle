@@ -44,7 +44,7 @@ module Jiggle
     
   end
 
-  class World
+  class Space
     def add_group(group)
       group.objects.each do |o|
         add o

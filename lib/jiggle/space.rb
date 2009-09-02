@@ -1,6 +1,6 @@
 module Jiggle
 
-  class World
+  class Space
     attr_reader :particles
     attr_reader :springs
     attr_reader :areas
