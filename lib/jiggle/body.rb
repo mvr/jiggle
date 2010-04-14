@@ -3,11 +3,17 @@ require 'jiggle/group'
 module Jiggle
   
   class Body < Group
+    Infinity = 1.0/0 # WTF, Ruby?
+    
     def initialize(points, attr={})
       super()
-      
-      attr[:mass] ||= points.size
-      mass = attr[:mass] / points.size
+
+      unless attr[:static]
+        attr[:mass] ||= points.size
+        mass = attr[:mass] / points.size
+      else
+        mass = Infinity
+      end
       
       scale  = attr[:scale]  || 1
       offset = attr[:offset] || jgv(0, 0)
