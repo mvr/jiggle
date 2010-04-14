@@ -33,12 +33,9 @@ module Jiggle
     end
     alias :to_ary :to_a
   end
-  
-  def jgv(x, y)
-    Vector2.new(x, y)
-  end
-  
-  def self.jgv(x, y) # WUT
-    Vector2.new(x, y)
-  end
+end
+
+# It's gross, I know
+def jgv(x, y)       
+  Jiggle::Vector2.new(x, y)
 end
