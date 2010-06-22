@@ -25,8 +25,17 @@ module Jiggle
         @particles << particle
       end
 
-      @particles.pairs.each do |p1, p2|
+      outside = @particles.adjacent(true)
+      inside  = @particles.pairs - outside
+      
+      outside.each do |p1, p2|
         spring = Spring.new p1, p2, :strength => attr[:strength], :damping => attr[:damping]
+        @springs << spring
+      end
+
+      inside.each do |p1, p2|
+        spring = Spring.new p1, p2, :strength => attr[:strength], :damping => attr[:damping]
+        spring.strength /= 1.5
         @springs << spring
       end
 
