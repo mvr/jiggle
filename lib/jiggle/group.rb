@@ -45,6 +45,10 @@ module Jiggle
         spring.length /= amount
       end
     end
+
+    def center_of_mass
+      @areas[0].center_of_mass
+    end
     
   end
 
