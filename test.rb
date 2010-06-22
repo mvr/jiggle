@@ -16,7 +16,7 @@ class Vector2
 end
 
 Rubygame.init
-screen = Screen.set_mode [600, 600]
+screen = Screen.new [600, 600]
 queue = EventQueue.new()
 
 w = Space.new :ticks_per_second => 200
@@ -29,12 +29,14 @@ box_shape = [jgv(0, 0),
              jgv(1, 0),
             ]
 
-b = StaticBody.new box_shape.map {|p| p * 10}, :offset => jgv(-1, 1)
+b = Body.new box_shape.map {|p| p * 10}, :offset => jgv(-1, 1), :static => true
 w.add b
 
 r = Rope.new jgv(-1, -1.5), jgv(1, -1.5), :number_of_points => 50,
                                           :mass => 10,
-                                          :strength => 1500
+                                          :strength => 1500,
+                                          :start_static => true,
+                                          :end_static => true
 w.add r
 
 f = FixedBody.new box_shape, :offset => jgv(3, -1)
@@ -44,6 +46,8 @@ f = RotatingBody.new box_shape, :offset => jgv(5, -1)
 w.add f
 
 buffer = Surface.new(screen.size)
+
+last_time = Time.now
 
 loop do
   queue.each do |event|
@@ -77,7 +81,8 @@ loop do
   end
   
   buffer.blit(screen, [0,0])
-  w.update
+  w.update(Time.now-last_time)
+  last_time = Time.now
   screen.update
 end
 
