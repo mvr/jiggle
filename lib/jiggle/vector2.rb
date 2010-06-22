@@ -6,6 +6,10 @@ module Jiggle
       jgv(0, 0) - self
     end
 
+    def +@
+      self
+    end
+
     def perpendicular
       jgv(-y, x)
     end
@@ -28,6 +32,19 @@ module Jiggle
       self
     end
 
+    def ==(other)
+      x == other.x and y == other.y
+    end
+    alias :eql? :==
+
+    def hash
+      x.hash/2 + y.hash/2
+    end
+
+    def dup
+      jgv(x, y)
+    end
+    
     def to_a
       [x, y]
     end
