@@ -1,7 +1,7 @@
 module Jiggle
   class Spring
-    attr_reader :a
-    attr_reader :b
+    attr_accessor :a
+    attr_accessor :b
     
     def particles
       [@a, @b]

@@ -33,7 +33,7 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      jgAreaInit(area, unwrapped, numParticles);
      free(unwrapped);
 
-     rb_iv_set(self, "@particles", particles);
+     rb_iv_set(self, "@particles", rb_funcall(particles, rb_intern("dup"), 0));
 
      float friction   = rb_jgHashGetFloat(attr, "friction", 0.8);
      float elasticity = rb_jgHashGetFloat(attr, "elasticity", 0.3);

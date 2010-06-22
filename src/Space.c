@@ -5,88 +5,88 @@
 
 #include "jiggle.h"
 
-jgWorld *jgWorldAlloc()
+jgSpace *jgSpaceAlloc()
 {
-     jgWorld *world = malloc(sizeof(jgWorld));
-     world->particles = jgListNew();
-     world->areas = jgListNew();
-     world->springs = jgListNew();
-     world->pendingCollisions = jgListNew();
-     world->collisions = jgListNew();
-     return world;
+     jgSpace *space = malloc(sizeof(jgSpace));
+     space->particles = jgListNew();
+     space->areas = jgListNew();
+     space->springs = jgListNew();
+     space->pendingCollisions = jgListNew();
+     space->collisions = jgListNew();
+     return space;
 }
 
-jgWorld *jgWorldInit(jgWorld *world)
+jgSpace *jgSpaceInit(jgSpace *space)
 {
-     world->penetrationThreshold = 0.3;
+     space->penetrationThreshold = 0.3;
 
-     world->damping = 0.999;
-     world->gravity = jgVector2Zero();
+     space->damping = 0.999;
+     space->gravity = jgVector2Zero();
 
-     return world;
+     return space;
 }
 
-jgWorld *jgWorldNew()
+jgSpace *jgSpaceNew()
 {
-     return jgWorldInit(jgWorldAlloc());
+     return jgSpaceInit(jgSpaceAlloc());
 }
 
-void jgWorldFree(jgWorld *world)
+void jgSpaceFree(jgSpace *space)
 {
-     jgListFree(world->particles);
-     jgListFree(world->areas);
-     jgListFree(world->springs);
-     jgListFree(world->pendingCollisions);
-     jgListFree(world->collisions);
-     free(world);
+     jgListFree(space->particles);
+     jgListFree(space->areas);
+     jgListFree(space->springs);
+     jgListFree(space->pendingCollisions);
+     jgListFree(space->collisions);
+     free(space);
 }
 
-void jgWorldClearCollisions(jgWorld *world)
+void jgSpaceClearCollisions(jgSpace *space)
 {
      jgCollision *collision;
-     JG_LIST_FOREACH(world->collisions, collision)
+     JG_LIST_FOREACH(space->collisions, collision)
           jgCollisionFree(collision);
 
-     jgListClear(world->collisions);
+     jgListClear(space->collisions);
 }
 
-void jgWorldFreeChildren(jgWorld *world)
+void jgSpaceFreeChildren(jgSpace *space)
 {
-     jgWorldClearCollisions(world);
+     jgSpaceClearCollisions(space);
 
      jgParticle *currentParticle;
-     JG_LIST_FOREACH(world->particles, currentParticle)
+     JG_LIST_FOREACH(space->particles, currentParticle)
      {
           jgParticleFree(currentParticle);
      }
 
      jgSpring *currentSpring;
-     JG_LIST_FOREACH(world->springs, currentSpring)
+     JG_LIST_FOREACH(space->springs, currentSpring)
      {
           jgSpringFree(currentSpring);
      }
 
      jgArea *currentArea;
-     JG_LIST_FOREACH(world->areas, currentArea)
+     JG_LIST_FOREACH(space->areas, currentArea)
      {
           jgAreaFree(currentArea);
      }
 }
 
 #define CREATE_ADDS_AND_REMOVES(class, name)                            \
-     void jgWorldAdd ## class(jgWorld *world, jg ## class *name)        \
+     void jgSpaceAdd ## class(jgSpace *space, jg ## class *name)        \
      {                                                                  \
-          if(!jgListContains(world->name ## s, name))                   \
+          if(!jgListContains(space->name ## s, name))                   \
           {                                                             \
-               jgListAdd(world->name ## s, name);                       \
+               jgListAdd(space->name ## s, name);                       \
           }                                                             \
      }                                                                  \
                                                                         \
-     void jgWorldRemove ## class(jgWorld *world, jg ## class *name)     \
+     void jgSpaceRemove ## class(jgSpace *space, jg ## class *name)     \
      {                                                                  \
-          if(jgListContains(world->name ## s, name))                    \
+          if(jgListContains(space->name ## s, name))                    \
           {                                                             \
-               jgListRemove(world->name ## s, name);                    \
+               jgListRemove(space->name ## s, name);                    \
           }                                                             \
      }                                                                  \
 
@@ -96,20 +96,20 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 #undef CREATE_ADDS_AND_REMOVES
 
-void jgWorldHandleCollisions(jgWorld *world)
+void jgSpaceHandleCollisions(jgSpace *space)
 {
      // I'm just copying, I don't understand any of this... yet.
 
      jgCollision *collision;
-     JG_LIST_FOREACH(world->pendingCollisions, collision)
+     JG_LIST_FOREACH(space->pendingCollisions, collision)
      {
           jgParticle *A  = collision->particle;
           jgParticle *B1 = collision->areaParticleA;
           jgParticle *B2 = collision->areaParticleB;
 
-          if(collision->penetration > world->penetrationThreshold)
+          if(collision->penetration > space->penetrationThreshold)
           {
-               world->penetrationCount++;
+               space->penetrationCount++;
                continue;
           }
 
@@ -153,34 +153,34 @@ void jgWorldHandleCollisions(jgWorld *world)
                B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, B2move));
           }
      }
-     jgListClear(world->pendingCollisions);
+     jgListClear(space->pendingCollisions);
 }
 
-void jgWorldStep(jgWorld *world, float timeStep)
+void jgSpaceStep(jgSpace *space, float timeStep)
 {
-     world->penetrationCount = 0;
+     space->penetrationCount = 0;
 
      jgParticle *currentParticle;
-     JG_LIST_FOREACH(world->particles, currentParticle)
+     JG_LIST_FOREACH(space->particles, currentParticle)
      {
-          jgParticleDampenVelocity(currentParticle, world->damping);
+          jgParticleDampenVelocity(currentParticle, space->damping);
           if(!currentParticle->floating)
-               jgParticleAddMasslessForce(currentParticle, world->gravity);
+               jgParticleAddMasslessForce(currentParticle, space->gravity);
      }
 
      jgSpring *currentSpring;
-     JG_LIST_FOREACH(world->springs, currentSpring)
+     JG_LIST_FOREACH(space->springs, currentSpring)
      {
           jgSpringExert(currentSpring);
      }
 
-     JG_LIST_FOREACH(world->particles, currentParticle)
+     JG_LIST_FOREACH(space->particles, currentParticle)
      {
           jgParticleIntegrate(currentParticle, timeStep);
      }
 
      jgArea *currentArea;
-     JG_LIST_FOREACH(world->areas, currentArea)
+     JG_LIST_FOREACH(space->areas, currentArea)
      {
           currentArea->isValid = jgAreaIsInsideOut(currentArea);
 
@@ -189,11 +189,11 @@ void jgWorldStep(jgWorld *world, float timeStep)
           jgAreaUpdateCenterOfMass(currentArea);
      }
 
-     jgQuadtree *tree = jgQuadtreeNew(world->areas);
+     jgQuadtree *tree = jgQuadtreeNew(space->areas);
 
      jgArea *area;
      jgParticle *particle;
-     JG_LIST_FOREACH(world->particles, particle)
+     JG_LIST_FOREACH(space->particles, particle)
      {
           if(!particle->collidable)
                continue;
@@ -215,13 +215,13 @@ void jgWorldStep(jgWorld *world, float timeStep)
 
                jgCollision *collision = jgAreaFindCollision(area, particle);
 
-               jgListAdd(world->collisions, collision);
-               jgListAdd(world->pendingCollisions, collision);
+               jgListAdd(space->collisions, collision);
+               jgListAdd(space->pendingCollisions, collision);
           }
           jgListFree(candidates);
      }
 
      jgQuadtreeFree(tree);
 
-     jgWorldHandleCollisions(world);
+     jgSpaceHandleCollisions(space);
 }

@@ -15,7 +15,7 @@ extern VALUE c_jgVector2;
 extern VALUE c_jgParticle;
 extern VALUE c_jgArea;
 extern VALUE c_jgSpring;
-extern VALUE c_jgWorld;
+extern VALUE c_jgSpace;
 extern VALUE c_jgCollision;
 
 void Init_jiggle_ext(void);
@@ -23,7 +23,7 @@ void Init_jgVector2();
 void Init_jgParticle();
 void Init_jgSpring();
 void Init_jgArea();
-void Init_jgWorld();
+void Init_jgSpace();
 void Init_jgCollision();
 
 VALUE rb_jgHashGet(VALUE hash, char *key);
@@ -32,7 +32,7 @@ double rb_jgHashGetFloat(VALUE hash, char *key, double de);
 jgVector2 rb_jgHashGetVector2(VALUE hash, char *key, jgVector2 de);
 bool rb_jgHashGetBool(VALUE hash, char *key, bool de);
 
-VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE world);
+VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE space);
 
 static inline VALUE VNEW(jgVector2 v)
 {
@@ -62,7 +62,7 @@ GETTER_TEMPLATE(VGET,         c_jgVector2,      "Vector2",      jgVector2)
 GETTER_TEMPLATE(AREA,         c_jgArea,         "Area",         jgArea)
 GETTER_TEMPLATE(PARTICLE,     c_jgParticle,     "Particle",     jgParticle)
 GETTER_TEMPLATE(SPRING,       c_jgSpring,       "Spring",       jgSpring)
-GETTER_TEMPLATE(WORLD,        c_jgWorld,        "World",        jgWorld)
+GETTER_TEMPLATE(SPACE,        c_jgSpace,        "Space",        jgSpace)
 GETTER_TEMPLATE(COLLISION,    c_jgCollision,    "Collision",    jgCollision)
 
 #define FLOAT_GET(func_name, type_conv, attr)			\

@@ -1,9 +1,9 @@
 module Jiggle
   
   class Group
-    attr_accessor :particles
-    attr_accessor :springs
-    attr_accessor :areas
+    attr_reader :particles
+    attr_reader :springs
+    attr_reader :areas
 
     def initialize
       @particles = []
@@ -11,6 +11,10 @@ module Jiggle
       @areas = []
     end
 
+    def points
+      @particles.map { |p| p.position }
+    end
+    
     def objects
       [@particles, @springs, @areas].flatten
     end
@@ -41,10 +45,14 @@ module Jiggle
         spring.length /= amount
       end
     end
+
+    def center_of_mass
+      @areas[0].center_of_mass
+    end
     
   end
 
-  class World
+  class Space
     def add_group(group)
       group.objects.each do |o|
         add o

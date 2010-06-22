@@ -21,6 +21,7 @@ jgArea *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles)
      area->elasticity = 0.3;
 
      jgAreaUpdateAABB(area, 0.0);
+     jgAreaUpdateCenterOfMass(area);
 
      return area;
 }
