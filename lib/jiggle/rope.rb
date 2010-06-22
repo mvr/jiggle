@@ -14,10 +14,15 @@ module Jiggle
       mass = attr[:mass].to_f / attr[:number_of_points].to_f
       
       points = points_along point_a, point_b, attr[:number_of_points]
-
       @particles = points.map { |point| Particle.new point, :mass => mass }
-      @particles.first.mass = Infinity
-      @particles.last.mass = Infinity
+
+      if attr[:start_static]
+        @particles.first.mass = Infinity
+      end
+
+      if attr[:end_static]
+        @particles.last.mass = Infinity
+      end
 
       @springs = @particles.adjacent(false).map do |p1, p2|
         Spring.new p1, p2, :strength => attr[:strength], :damping => attr[:damping]
