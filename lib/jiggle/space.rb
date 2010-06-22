@@ -6,28 +6,20 @@ module Jiggle
     attr_reader :areas
     
     def setup
-      @start_time = @last_time = Time.now
-      @time_accumulator = 0
       @time_step = 1 / @ticks_per_second
+      @time_accumulator = 0
     end
     private :setup
     
-    def update
+    def update(timestep)
       clear_collisions
-      
-      now = Time.now
-      difference = now - @last_time
-      @last_time = now
-      @time_accumulator += difference
+
+      @time_accumulator += timestep
       
       while @time_accumulator > @time_step
         step(@time_step)
         @time_accumulator -= @time_step
       end
-    end
-
-    def time
-       @last_time - @start_time
     end
     
     def add(thing)
