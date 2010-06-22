@@ -1,7 +1,3 @@
-/***************************/
-/* Mitchell Riley (c) 2008 */
-/***************************/
-
 #ifndef __JG_QUADTREE_H__
 #define __JG_QUADTREE_H__
 
