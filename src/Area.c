@@ -87,19 +87,14 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
 
 jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
 {
-     float       sameDist,     awayDist;
-     jgParticle *sameA,       *awayA;
-     jgParticle *sameB,       *awayB;
-     jgVector2   sameClosest,  awayClosest;
-
-     jgVector2 pt = particle->position;
-     jgVector2 normal = jgParticleAreaNormal(particle);
-
-     sameDist = awayDist = INFINITY;
-     sameA = sameB = awayA = awayB = 0;
-     sameClosest = awayClosest = jgVector2Zero();
-
+     jgCollision *same = jgCollisionAlloc();
+     jgCollision *away = jgCollisionAlloc();
+     jgCollision *collision;
      bool awayFound = false;
+
+     same->penetration = away->penetration = INFINITY;
+
+     jgVector2 normal = jgParticleAreaNormal(particle);
 
      jgParticle *currentParticle;
      jgParticle *nextParticle;
@@ -107,62 +102,54 @@ jgCollision *jgAreaFindCollision(jgArea *area, jgParticle *particle)
      {
           jgVector2 hitPt = jgVector2ClosestPointOnLine(currentParticle->position,
                                                         nextParticle->position,
-                                                        pt);
-          float dist = jgVector2DistanceBetween(pt, hitPt);
+                                                        particle->position);
+          float dist = jgVector2DistanceBetween(particle->position, hitPt);
 
           float dot = jgVector2Dot(normal, jgVector2Normal(currentParticle->position, 
                                                            nextParticle->position));
           if(dot <= 0)
           {
-               if(dist < awayDist)
+               if(dist < away->penetration)
                {
-                    awayDist = dist;
-                    awayA = currentParticle;
-                    awayB = nextParticle;
-                    awayClosest = hitPt;
+                    away->penetration = dist;
+                    away->areaParticleA = currentParticle;
+                    away->areaParticleB = nextParticle;
+                    away->hitPt = hitPt;
                     awayFound = true;
                }
           }
           else
           {
-               if(dist < sameDist)
+               if(dist < same->penetration)
                {
-                    sameDist = dist;
-                    sameA = currentParticle;
-                    sameB = nextParticle;
-                    sameClosest = hitPt;
+                    same->penetration = dist;
+                    same->areaParticleA = currentParticle;
+                    same->areaParticleB = nextParticle;
+                    same->hitPt = hitPt;
                }
           }
      }
 
-     jgCollision *collision = jgCollisionAlloc();
+     if(awayFound)
+     {
+          jgCollisionFree(same);
+          collision = away;
+     }
+     else
+     {
+          jgCollisionFree(away);
+          collision = same;
+     }
 
      collision->area = area;
      collision->particle = particle;
 
-     if(awayFound)
-     {
-          collision->areaParticleA = awayA;
-          collision->areaParticleB = awayB;
-
-          collision->hitPt = awayClosest;
-     }
-     else
-     {
-          collision->areaParticleA = sameA;
-          collision->areaParticleB = sameB;
-
-          collision->hitPt = sameClosest;
-     }
-
      collision->edgeD = jgVector2PositionAlong(collision->areaParticleA->position,
                                                collision->areaParticleB->position,
-                                               awayClosest);
+                                               collision->hitPt);
 
      collision->normal = jgVector2Normal(collision->areaParticleA->position,
                                          collision->areaParticleB->position);
-
-     collision->penetration = jgVector2DistanceBetween(particle->position, collision->hitPt);
 
      return collision;
 }
