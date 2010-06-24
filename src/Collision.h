@@ -18,4 +18,7 @@ typedef struct jgCollision
 extern jgCollision       *jgCollisionAlloc();
 extern void               jgCollisionFree(jgCollision *collision);
 
+extern jgCollision       *jgCollisionFind(jgArea *area, jgParticle *particle);
+
+
 #endif

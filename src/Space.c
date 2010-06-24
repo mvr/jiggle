@@ -213,7 +213,7 @@ void jgSpaceStep(jgSpace *space, float timeStep)
                if(!area->isValid)
                     continue;
 
-               jgCollision *collision = jgAreaFindCollision(area, particle);
+               jgCollision *collision = jgCollisionFind(area, particle);
 
                jgListAdd(space->collisions, collision);
                jgListAdd(space->pendingCollisions, collision);
