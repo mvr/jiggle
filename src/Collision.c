@@ -18,8 +18,7 @@ void jgCollisionFindMoveProportions(jgCollision *collision)
      jgParticle *B1 = collision->areaParticleA;
      jgParticle *B2 = collision->areaParticleB;
 
-     float b2MassSum = B1->mass + B2->mass;
-     float massSum = A->mass + b2MassSum;
+     float totalMass = A->mass + B1->mass + B2->mass;
 
      float Amove;
      float Bmove;
@@ -28,15 +27,15 @@ void jgCollisionFindMoveProportions(jgCollision *collision)
           Amove = 0;
           Bmove = collision->penetration + 0.001;
      }
-     else if(b2MassSum == INFINITY)
+     else if(B1->mass + B2->mass == INFINITY)
      {
           Amove = collision->penetration + 0.001;
           Bmove = 0;
      }
      else
      {
-          Amove = collision->penetration * (b2MassSum / massSum);
-          Bmove = collision->penetration * (A->mass / massSum);
+          Amove = collision->penetration * ((B1->mass + B2->mass) / totalMass);
+          Bmove = collision->penetration * (A->mass / totalMass);
      }
      
      collision->Amove = Amove;

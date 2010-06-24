@@ -120,7 +120,7 @@ void jgSpaceHandleCollisions(jgSpace *space)
                A->position = jgVector2Add(A->position, jgVector2Multiply(collision->normal, collision->Amove));
 	  }
 
-          if(B1->mass != INFINITY && B2->mass != INFINITY)
+          if(B1->mass + B2->mass != INFINITY)
           {
                B1->position = jgVector2Subtract(B1->position, jgVector2Multiply(collision->normal, collision->B1move));
                B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, collision->B2move));
