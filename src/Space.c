@@ -113,44 +113,17 @@ void jgSpaceHandleCollisions(jgSpace *space)
                continue;
           }
 
-          float b1inf = 1.0 - collision->edgeD;
-          float b2inf = collision->edgeD;
-
-          float b2MassSum = B1->mass + B2->mass;
-          float massSum = A->mass + b2MassSum;
-
-          float Amove;
-          float Bmove;
-	  if(A->mass == INFINITY)
-          {
-               Amove = 0;
-               Bmove = collision->penetration + 0.001;
-          }
-          else if(b2MassSum == INFINITY)
-          {
-               Amove = collision->penetration + 0.001;
-               Bmove = 0;
-          }
-          else
-          {
-               Amove = collision->penetration * (b2MassSum / massSum);
-               Bmove = collision->penetration * (A->mass / massSum);
-          }
-
-          float B1move = Bmove * b1inf;
-          float B2move = Bmove * b2inf;
-
 //          float elas = collision->particle->elasticity * collision->area->elasticity + 1;
 
           if(A->mass != INFINITY)
 	  {
-               A->position = jgVector2Add(A->position, jgVector2Multiply(collision->normal, Amove));
+               A->position = jgVector2Add(A->position, jgVector2Multiply(collision->normal, collision->Amove));
 	  }
 
-          if(b2MassSum != INFINITY)
+          if(B1->mass != INFINITY && B2->mass != INFINITY)
           {
-               B1->position = jgVector2Subtract(B1->position, jgVector2Multiply(collision->normal, B1move));
-               B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, B2move));
+               B1->position = jgVector2Subtract(B1->position, jgVector2Multiply(collision->normal, collision->B1move));
+               B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, collision->B2move));
           }
      }
      jgListClear(space->pendingCollisions);

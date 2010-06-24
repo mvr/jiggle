@@ -12,6 +12,38 @@ void jgCollisionFree(jgCollision *collision)
      free(collision);
 }
 
+void jgCollisionFindMoveProportions(jgCollision *collision)
+{
+     jgParticle *A  = collision->particle;
+     jgParticle *B1 = collision->areaParticleA;
+     jgParticle *B2 = collision->areaParticleB;
+
+     float b2MassSum = B1->mass + B2->mass;
+     float massSum = A->mass + b2MassSum;
+
+     float Amove;
+     float Bmove;
+     if(A->mass == INFINITY)
+     {
+          Amove = 0;
+          Bmove = collision->penetration + 0.001;
+     }
+     else if(b2MassSum == INFINITY)
+     {
+          Amove = collision->penetration + 0.001;
+          Bmove = 0;
+     }
+     else
+     {
+          Amove = collision->penetration * (b2MassSum / massSum);
+          Bmove = collision->penetration * (A->mass / massSum);
+     }
+     
+     collision->Amove = Amove;
+     collision->B1move = Bmove * (1.0 - collision->edgeD);
+     collision->B2move = Bmove * collision->edgeD;
+}
+
 jgCollision *jgCollisionFind(jgArea *area, jgParticle *particle)
 {
      jgCollision *same = jgCollisionAlloc();
@@ -77,6 +109,9 @@ jgCollision *jgCollisionFind(jgArea *area, jgParticle *particle)
 
      collision->normal = jgVector2Normal(collision->areaParticleA->position,
                                          collision->areaParticleB->position);
+     
+     jgCollisionFindMoveProportions(collision);
 
      return collision;
 }
+

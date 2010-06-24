@@ -7,12 +7,18 @@ typedef struct jgCollision
 {
      jgParticle *particle;
      jgArea     *area;
+
      jgParticle *areaParticleA;
      jgParticle *areaParticleB;
+
      jgVector2   hitPt;
      float       edgeD;
      jgVector2   normal;
      float       penetration;
+
+     float       Amove;
+     float       B1move;
+     float       B2move;
 } jgCollision;
 
 extern jgCollision       *jgCollisionAlloc();
