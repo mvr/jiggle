@@ -9,9 +9,6 @@ typedef struct jgArea
 {
      jgList      *particles;
 
-     float        elasticity;
-     float        friction;
-
      jgAABB       aabb;
      jgVector2    centerOfMass;
      

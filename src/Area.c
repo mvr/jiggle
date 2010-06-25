@@ -17,9 +17,6 @@ jgArea *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles)
           jgListAdd(currentParticle->ownerAreas, area);
      }
 
-     area->friction  = 0.8;
-     area->elasticity = 0.3;
-
      jgAreaUpdateAABB(area, 0.0);
      jgAreaUpdateCenterOfMass(area);
 
