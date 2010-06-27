@@ -96,10 +96,19 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 #undef CREATE_ADDS_AND_REMOVES
 
-void jgSpaceHandleCollisions(jgSpace *space)
+void jgSpaceApplyFrictionTo(jgParticle *particle, jgVector2 tangent, float factor)
 {
-     // I'm just copying, I don't understand any of this... yet.
+     jgVector2 velocity = jgVector2Subtract(particle->position, particle->prevPos);
+     jgVector2 tangentialVelocity = jgVector2Multiply(tangent, jgVector2Dot(velocity, tangent));
 
+     if(factor > 1)
+          factor = 1;
+
+     particle->prevPos = jgVector2Add(particle->prevPos, jgVector2Multiply(tangentialVelocity, factor)); 
+}
+
+void jgSpaceHandleCollisions(jgSpace *space, float timeStep)
+{
      jgCollision *collision;
      JG_LIST_FOREACH(space->pendingCollisions, collision)
      {
@@ -113,8 +122,6 @@ void jgSpaceHandleCollisions(jgSpace *space)
                continue;
           }
 
-//          float elas = collision->particle->elasticity * collision->area->elasticity + 1;
-
           if(A->mass != INFINITY)
 	  {
                A->position = jgVector2Add(A->position, jgVector2Multiply(collision->normal, collision->Amove));
@@ -125,6 +132,14 @@ void jgSpaceHandleCollisions(jgSpace *space)
                B1->position = jgVector2Subtract(B1->position, jgVector2Multiply(collision->normal, collision->B1move));
                B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, collision->B2move));
           }
+
+          float friction = fmax(A->friction, (B1->friction + B2->friction) / 2);
+          float slowFactor =  friction * collision->penetration / timeStep;
+          jgVector2 tangent = jgVector2Perpendicular(collision->normal);
+
+          jgSpaceApplyFrictionTo(A,  tangent, slowFactor);
+          jgSpaceApplyFrictionTo(B1, tangent, slowFactor);
+          jgSpaceApplyFrictionTo(B2, tangent, slowFactor);
      }
      jgListClear(space->pendingCollisions);
 }
@@ -196,5 +211,5 @@ void jgSpaceStep(jgSpace *space, float timeStep)
 
      jgQuadtreeFree(tree);
 
-     jgSpaceHandleCollisions(space);
+     jgSpaceHandleCollisions(space, timeStep);
 }
