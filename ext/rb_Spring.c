@@ -43,20 +43,6 @@ static VALUE rb_jgSpringInitialize(int argc, VALUE *argv, VALUE self)
 
      return self;
 }
-
-static VALUE rb_jgSpringDragTowards(int argc, VALUE *argv, VALUE self)
-{
-     VALUE point, attr;
-     rb_scan_args(argc, argv, "11", &point, &attr);
-     if(!NIL_P(attr)) Check_Type(attr, T_HASH);
-
-     float strength = rb_jgHashGetFloat(attr, "strength", 400.0);
-     float damping  = rb_jgHashGetFloat(attr, "damping",  10.0);
-
-     jgSpringDragTowards(PARTICLE(self), *VGET(point), 0.0, strength, damping);
-     return self;
-}
-
 void Init_jgSpring()
 {
      c_jgSpring = rb_define_class_under(m_Jiggle, "Spring", rb_cObject);
@@ -71,6 +57,4 @@ void Init_jgSpring()
 
      rb_define_method(c_jgSpring, "damping",   rb_jgSpringGetDamping, 0);
      rb_define_method(c_jgSpring, "damping=",  rb_jgSpringSetDamping, 1);
-
-     rb_define_method(c_jgParticle, "drag_towards", rb_jgSpringDragTowards, -1);
 }
