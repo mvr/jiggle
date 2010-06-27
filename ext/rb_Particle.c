@@ -11,9 +11,6 @@ VECTOR_SET(rb_jgParticleSetPosition, PARTICLE, position)
 VECTOR_GET(rb_jgParticleGetForce, PARTICLE, force)
 VECTOR_SET(rb_jgParticleSetForce, PARTICLE, force)
 
-FLOAT_GET(rb_jgParticleGetElasticity, PARTICLE, elasticity)
-FLOAT_SET(rb_jgParticleSetElasticity, PARTICLE, elasticity)
-
 FLOAT_GET(rb_jgParticleGetFriction, PARTICLE, friction)
 FLOAT_SET(rb_jgParticleSetFriction, PARTICLE, friction)
 
@@ -41,7 +38,6 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
      jgVector2 position = *VGET(wrappedposition);
 
      float friction   = rb_jgHashGetFloat(attr, "friction",   0.8);
-     float elasticity = rb_jgHashGetFloat(attr, "elasticity", 0.3);
      float mass       = rb_jgHashGetFloat(attr, "mass",       1);
      bool  collidable = rb_jgHashGetBool (attr, "collidable", true);
      bool  floating   = rb_jgHashGetBool (attr, "floating",   false);
@@ -49,7 +45,6 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
      jgParticleInit(particle, mass, position);
 
      particle->friction = friction;
-     particle->elasticity = elasticity;
      particle->collidable = collidable;
      particle->floating = floating;
 
@@ -77,9 +72,6 @@ void Init_jgParticle()
 
      rb_define_method(c_jgParticle, "force" , rb_jgParticleGetForce, 0);
      rb_define_method(c_jgParticle, "force=", rb_jgParticleSetForce, 1);
-
-     rb_define_method(c_jgParticle, "elasticity",  rb_jgParticleGetElasticity, 0);
-     rb_define_method(c_jgParticle, "elasticity=", rb_jgParticleSetElasticity, 1);
 
      rb_define_method(c_jgParticle, "friction",    rb_jgParticleGetFriction, 0);
      rb_define_method(c_jgParticle, "friction=",   rb_jgParticleSetFriction, 1);

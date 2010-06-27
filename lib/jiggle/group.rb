@@ -23,12 +23,6 @@ module Jiggle
       @areas.any? {|a| a.contains? point}
     end
 
-    def elasticity=(value)
-      [@particles, @areas].flatten.each do |p|
-        p.elasticity = value
-      end
-    end
-
     def friction=(value)
       [@particles, @areas].flatten.each do |p|
         p.friction = value
