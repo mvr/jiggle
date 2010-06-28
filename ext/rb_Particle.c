@@ -8,6 +8,8 @@ FLOAT_SET(rb_jgParticleSetMass, PARTICLE, mass)
 VECTOR_GET(rb_jgParticleGetPosition, PARTICLE, position)
 VECTOR_SET(rb_jgParticleSetPosition, PARTICLE, position)
 
+VECTOR_GET(rb_jgParticleGetVelocity, PARTICLE, velocity)
+
 VECTOR_GET(rb_jgParticleGetForce, PARTICLE, force)
 VECTOR_SET(rb_jgParticleSetForce, PARTICLE, force)
 
@@ -49,11 +51,6 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
      particle->floating = floating;
 
      return self;
-}
-
-static VALUE rb_jgParticleGetVelocity(VALUE self)
-{
-     return VNEW(jgParticleEffectiveVelocity(PARTICLE(self)));
 }
 
 void Init_jgParticle()

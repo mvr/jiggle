@@ -15,6 +15,7 @@ jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
      particle->mass = mass;
      particle->position = pos;
      particle->prevPos = pos;
+     particle->velocity = jgVector2Zero();
      particle->force = jgVector2Zero();
 
      particle->friction  = 0.8;
@@ -34,11 +35,6 @@ void jgParticleFree(jgParticle *particle)
 {
      free(particle);
      jgListFree(particle->ownerAreas);
-}
-
-jgVector2 jgParticleEffectiveVelocity(jgParticle *particle)
-{
-     return jgVector2Subtract(particle->position, particle->prevPos);
 }
 
 void jgParticleDampenVelocity(jgParticle *particle, float damp)
@@ -70,6 +66,8 @@ void jgParticleIntegrate(jgParticle *point, float elapsed)
                                          jgVector2Multiply(acceleration,
                                                            elapsed * elapsed));
           point->prevPos = temp;
+          
+          point->velocity = jgVector2Divide(jgVector2Subtract(point->position, point->prevPos), elapsed);
      }
      point->force = jgVector2Zero();
 }
