@@ -39,7 +39,7 @@ static VALUE rb_jgParticleInitialize(int argc, VALUE *argv, VALUE self)
      
      jgVector2 position = *VGET(wrappedposition);
 
-     float friction   = rb_jgHashGetFloat(attr, "friction",   0.8);
+     float friction   = rb_jgHashGetFloat(attr, "friction",   0.4);
      float mass       = rb_jgHashGetFloat(attr, "mass",       1);
      bool  collidable = rb_jgHashGetBool (attr, "collidable", true);
      bool  floating   = rb_jgHashGetBool (attr, "floating",   false);
