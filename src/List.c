@@ -87,9 +87,7 @@ void jgListInsert(jgList *list, int position, void *data)
 
 void jgListDelete(jgList *list, int position)
 {
-     // TODO: reorders array
-     int last = list->length - 1;
-     list->arr[position] = list->arr[last];
+     memcpy(list->arr + position, list->arr + position + 1, (list->length - position - 1) * sizeof(void *));
      list->length--;
 }
 
