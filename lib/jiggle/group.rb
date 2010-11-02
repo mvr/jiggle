@@ -12,7 +12,7 @@ module Jiggle
     end
 
     def points
-      @particles.map { |p| p.position }
+      particles.map { |p| p.position }
     end
     
     def objects
