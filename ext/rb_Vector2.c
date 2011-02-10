@@ -42,6 +42,11 @@ VALUE rb_jgVector2Divide(VALUE self, VALUE other)
      return VNEW(jgVector2Divide(*VGET(self), NUM2DBL(other)));
 }
 
+VALUE rb_jgVector2Dot(VALUE self, VALUE other)
+{
+     return rb_float_new(jgVector2Dot(*VGET(self), *VGET(other)));
+}
+
 VALUE rb_jgVector2Length(VALUE self)
 {
      return rb_float_new(jgVector2Length(*VGET(self)));
@@ -67,6 +72,8 @@ void Init_jgVector2()
      rb_define_method(c_jgVector2, "-", rb_jgVector2Subtract, 1);
      rb_define_method(c_jgVector2, "*", rb_jgVector2Multiply, 1);
      rb_define_method(c_jgVector2, "/", rb_jgVector2Divide, 1);
+
+     rb_define_method(c_jgVector2, "dot", rb_jgVector2Dot, 1);
 
      rb_define_method(c_jgVector2, "length", rb_jgVector2Length, 0);
      rb_define_method(c_jgVector2, "distance_to", rb_jgVector2DistanceTo, 1);
