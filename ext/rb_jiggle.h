@@ -26,11 +26,11 @@ void Init_jgArea();
 void Init_jgSpace();
 void Init_jgCollision();
 
-VALUE rb_jgHashGet(VALUE hash, char *key);
-int rb_jgHashGetInt(VALUE hash, char *key, int de);
-double rb_jgHashGetFloat(VALUE hash, char *key, double de);
-jgVector2 rb_jgHashGetVector2(VALUE hash, char *key, jgVector2 de);
-bool rb_jgHashGetBool(VALUE hash, char *key, bool de);
+VALUE rb_jgHashGet(VALUE hash, const char *key);
+int rb_jgHashGetInt(VALUE hash, const char *key, int de);
+double rb_jgHashGetFloat(VALUE hash, const char *key, double de);
+jgVector2 rb_jgHashGetVector2(VALUE hash, const char *key, jgVector2 de);
+bool rb_jgHashGetBool(VALUE hash, const char *key, bool de);
 
 VALUE rb_jgCollisionWrap(jgCollision *collision, VALUE space);
 

@@ -2,7 +2,7 @@
 
 VALUE m_Jiggle;
 
-VALUE rb_jgHashGet(VALUE hash, char *key)
+VALUE rb_jgHashGet(VALUE hash, const char *key)
 {
      VALUE v;
      
@@ -15,28 +15,28 @@ VALUE rb_jgHashGet(VALUE hash, char *key)
      return Qnil;
 }
 
-int rb_jgHashGetInt(VALUE hash, char *key, int de)	
+int rb_jgHashGetInt(VALUE hash, const char *key, int de)	
 {							
      VALUE v = rb_jgHashGet(hash, key);		
      if (!NIL_P(v)) return NUM2INT(v);		
      return de;					
 } 
 
-double rb_jgHashGetFloat(VALUE hash, char *key, double de)	
+double rb_jgHashGetFloat(VALUE hash, const char *key, double de)	
 {							
      VALUE v = rb_jgHashGet(hash, key);		
      if (!NIL_P(v)) return NUM2DBL(v);		
      return de;					
 } 
 
-jgVector2 rb_jgHashGetVector2(VALUE hash, char *key, jgVector2 de)	
+jgVector2 rb_jgHashGetVector2(VALUE hash, const char *key, jgVector2 de)	
 {							
      VALUE v = rb_jgHashGet(hash, key);		
      if (!NIL_P(v)) return *VGET(v);		
      return de;					
 } 
 
-bool rb_jgHashGetBool(VALUE hash, char *key, bool de)
+bool rb_jgHashGetBool(VALUE hash, const char *key, bool de)
 {
      VALUE v = rb_jgHashGet(hash, key);		
      if (!NIL_P(v)) return VAL2BOOL(v);		
