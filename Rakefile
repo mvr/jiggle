@@ -1,6 +1,5 @@
 require 'rake/clean'
 require 'rake/loaders/makefile'
-require 'spec/rake/spectask'
 
 SOURCES      = FileList.new('src/*.c')
 OBJECTS      = SOURCES.ext('.o')
@@ -21,10 +20,6 @@ end
 
 rule '.o' => '.c' do |t|
   sh "gcc -c -o #{t.name} #{t.source} #{CCOPTIONS}"
-end
-
-Spec::Rake::SpecTask.new do |t|
-  t.libs +=  ["lib", "spec"]
 end
 
 task :ruby => LIBRARY do
