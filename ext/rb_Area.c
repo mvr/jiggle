@@ -3,6 +3,21 @@
 VALUE c_jgArea;
 
 VECTOR_GET(rb_jgAreaCenterOfMass, AREA, centerOfMass)
+VECTOR_GET(rb_jgAreaPosition,     AREA, derivedPosition)
+VECTOR_GET(rb_jgAreaVelocity,     AREA, derivedVelocity)
+FLOAT_GET( rb_jgAreaAngle,        AREA, derivedAngle)
+
+BOOL_GET(rb_jgAreaGetIsShapeMatching, AREA, isShapeMatching)
+BOOL_SET(rb_jgAreaSetIsShapeMatching, AREA, isShapeMatching)
+
+BOOL_GET(rb_jgAreaGetIsKinematic, AREA, isKinematic)
+BOOL_SET(rb_jgAreaSetIsKinematic, AREA, isKinematic)
+
+FLOAT_GET(rb_jgAreaGetShapeStrength, AREA, shapeStrength)
+FLOAT_SET(rb_jgAreaSetShapeStrength, AREA, shapeStrength)
+
+FLOAT_GET(rb_jgAreaGetShapeDamping, AREA, shapeDamping)
+FLOAT_SET(rb_jgAreaSetShapeDamping, AREA, shapeDamping)
 
 static VALUE rb_jgAreaAlloc(VALUE klass)
 {
@@ -16,9 +31,9 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
      rb_scan_args(argc, argv, "11", &particles, &attr);
      Check_Type(particles, T_ARRAY);
      if(!NIL_P(attr)) Check_Type(attr, T_HASH);
-
+     
      jgArea *area = AREA(self);
-
+     
      jgParticle **unwrapped;
      int numParticles = RARRAY_LEN(particles);
      unwrapped = malloc(numParticles * sizeof(jgParticle *));
@@ -29,7 +44,32 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
 
      rb_iv_set(self, "@particles", rb_funcall(particles, rb_intern("dup"), 0));
 
+     area->isKinematic = rb_jgHashGetBool(attr, "kinematic", false);
+
+     area->isShapeMatching = rb_jgHashGetBool(attr, "shape_matching", area->isKinematic);
+     area->shapeStrength   = rb_jgHashGetFloat(attr, "shape_strength", 20);
+     area->shapeDamping    = rb_jgHashGetFloat(attr, "shape_damping", 5);
+
      return self;
+}
+
+static VALUE rb_jgAreaUpdate(VALUE self)
+{
+     jgArea *area = AREA(self);
+    
+     jgParticle **unwrapped;
+     VALUE particles = rb_iv_get(self, "@particles");
+     int numParticles = RARRAY_LEN(particles);
+     unwrapped = malloc(numParticles * sizeof(jgParticle *));
+     for(int i = 0; i < numParticles; i++)
+          unwrapped[i] = PARTICLE(RARRAY_PTR(particles)[i]);
+
+     jgListFree(area->particles);
+     area->particles = jgListNewFromArray((void **)unwrapped, numParticles);
+     printf("%d\n", area->particles->length);
+     free(unwrapped); 
+
+     return Qnil;
 }
 
 static VALUE rb_jgAreaContains(VALUE self, VALUE point)
@@ -50,6 +90,23 @@ void Init_jgArea()
 
      rb_define_private_method(c_jgArea, "_contains?",   rb_jgAreaContains, 1);
 
+     rb_define_method(c_jgArea, "update!",   rb_jgAreaUpdate, 0);
+
      rb_define_method(c_jgArea, "area",             rb_jgAreaArea, 0);
      rb_define_method(c_jgArea, "center_of_mass",   rb_jgAreaCenterOfMass, 0);
+
+     rb_define_method(c_jgArea, "position",   rb_jgAreaPosition, 0);
+     rb_define_method(c_jgArea, "velocity",   rb_jgAreaVelocity, 0);
+     rb_define_method(c_jgArea, "angle",      rb_jgAreaAngle, 0);
+
+     rb_define_method(c_jgArea, "shape_matching?",    rb_jgAreaGetIsShapeMatching, 0);
+     rb_define_method(c_jgArea, "shape_matching=",    rb_jgAreaSetIsShapeMatching, 1);
+
+     rb_define_method(c_jgArea, "kinematic?",    rb_jgAreaGetIsKinematic, 0);
+     rb_define_method(c_jgArea, "kinematic=",    rb_jgAreaSetIsKinematic, 1);
+
+     rb_define_method(c_jgArea, "shape_strength",    rb_jgAreaGetShapeStrength, 0);
+     rb_define_method(c_jgArea, "shape_strength=",   rb_jgAreaSetShapeStrength, 1);
+     rb_define_method(c_jgArea, "shape_damping",     rb_jgAreaGetShapeDamping, 0);
+     rb_define_method(c_jgArea, "shape_damping=",    rb_jgAreaSetShapeDamping, 1);
 }

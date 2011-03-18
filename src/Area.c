@@ -10,12 +10,32 @@ jgArea *jgAreaAlloc()
 jgArea *jgAreaInit(jgArea *area, jgParticle **particles, int numOfParticles)
 {
      area->particles = jgListNewFromArray((void **)particles, numOfParticles);
+     area->baseShape = malloc(numOfParticles * sizeof(jgParticle));
+
+     jgVector2 center;
 
      jgParticle *currentParticle;
      JG_LIST_FOREACH(area->particles, currentParticle)
      {
           jgListAdd(currentParticle->ownerAreas, area);
+          center = jgVector2Add(center, currentParticle->position);
      }
+     
+     center = jgVector2Divide(center, numOfParticles);
+
+     // Recenter the 'baseShape' so its position is zero.
+     JG_LIST_FOREACH(area->particles, currentParticle)
+     {
+          area->baseShape[_i_] = jgVector2Subtract(currentParticle->position, center);
+     }
+
+     area->isShapeMatching = false;
+     area->shapeStrength = 20;
+     area->shapeDamping = 5;
+
+     area->isKinematic = false;
+
+     jgAreaDerive(area);
 
      jgAreaUpdateAABB(area, 0.0);
      jgAreaUpdateCenterOfMass(area);
@@ -37,6 +57,7 @@ void jgAreaFree(jgArea *area)
      }
 
      jgListFree(area->particles);
+     free(area->baseShape);
      free(area);
 }
 
@@ -82,6 +103,75 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
      return inside;
 }
 
+void jgAreaDerive(jgArea *area)
+{
+     if(area->isKinematic) 
+          return;
+
+     jgVector2 center   = jgVector2Zero();
+     jgVector2 velocity = jgVector2Zero();
+
+     jgParticle *currentParticle;
+     JG_LIST_FOREACH(area->particles, currentParticle)
+     {
+          center   = jgVector2Add(center,   currentParticle->position);
+          velocity = jgVector2Add(velocity, currentParticle->velocity);
+     }
+
+     center   = jgVector2Divide(center,   area->particles->length);
+     velocity = jgVector2Divide(velocity, area->particles->length);
+
+     area->derivedPosition = center;
+     area->derivedVelocity = velocity;
+
+     float angle = 0;
+     int originalSign = 0;
+     float originalAngle = 0;
+     const float PI = 3.14159265;
+     JG_LIST_FOREACH(area->particles, currentParticle)
+     {
+          float thisAngle = jgVector2AngleBetween(area->baseShape[_i_],
+                                                  jgVector2Subtract(currentParticle->position, center));
+
+          if (_i_ == 0)
+          {
+               originalSign = (thisAngle >= 0.0f) ? 1 : -1;
+               originalAngle = thisAngle;
+          }
+          else
+          {
+               float diff = (thisAngle - originalAngle);
+               int thisSign = (thisAngle >= 0) ? 1 : -1;
+
+               if (abs(diff) > PI && thisSign != originalSign)
+               {
+                    thisAngle = (thisSign == -1) ? (thisAngle + 2 * PI) : (thisAngle - 2 * PI);
+               }
+          }
+
+          angle += thisAngle;
+     }
+
+     area->derivedAngle = angle / area->particles->length;
+}
+
+void jgAreaMatchShape(jgArea *area)
+{
+     jgParticle *currentParticle;
+     JG_LIST_FOREACH(area->particles, currentParticle)
+     {
+          jgVector2 rigidLocation = area->baseShape[_i_];
+          rigidLocation = jgVector2Rotate(rigidLocation, area->derivedAngle);
+          rigidLocation = jgVector2Add(rigidLocation, area->derivedPosition);
+
+          jgSpringDragTowards(currentParticle,
+                              rigidLocation,
+                              0,
+                              area->shapeStrength,
+                              area->shapeDamping);
+     }
+}
+
 float jgAreaArea(jgArea *area)
 {
      float sum = 0;
@@ -94,7 +184,7 @@ float jgAreaArea(jgArea *area)
 
           sum += (current.x * next.y) - (next.x * current.y);
      }
-     return sum / 2;
+     return -sum / 2;
 }
 
 bool jgAreaIsInsideOut(jgArea *area)

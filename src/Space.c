@@ -161,16 +161,23 @@ void jgSpaceStep(jgSpace *space, float timeStep)
      {
           jgSpringExert(currentSpring);
      }
-
+     
+     jgArea *currentArea;
+     JG_LIST_FOREACH(space->areas, currentArea)
+     {
+          jgAreaDerive(currentArea);
+          if(currentArea->isShapeMatching)
+            jgAreaMatchShape(currentArea);
+     }
+     
      JG_LIST_FOREACH(space->particles, currentParticle)
      {
           jgParticleIntegrate(currentParticle, timeStep);
      }
 
-     jgArea *currentArea;
      JG_LIST_FOREACH(space->areas, currentArea)
      {
-          currentArea->isValid = jgAreaIsInsideOut(currentArea);
+          currentArea->isValid = !jgAreaIsInsideOut(currentArea);
 
           jgAreaUpdateAABB(currentArea, timeStep);
 
