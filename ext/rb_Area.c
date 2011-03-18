@@ -66,7 +66,6 @@ static VALUE rb_jgAreaUpdate(VALUE self)
 
      jgListFree(area->particles);
      area->particles = jgListNewFromArray((void **)unwrapped, numParticles);
-     printf("%d\n", area->particles->length);
      free(unwrapped); 
 
      return Qnil;
