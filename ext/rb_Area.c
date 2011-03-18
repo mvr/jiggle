@@ -46,9 +46,18 @@ static VALUE rb_jgAreaInitialize(int argc, VALUE *argv, VALUE self)
 
      area->isKinematic = rb_jgHashGetBool(attr, "kinematic", false);
 
-     area->isShapeMatching = rb_jgHashGetBool(attr, "shape_matching", area->isKinematic);
-     area->shapeStrength   = rb_jgHashGetFloat(attr, "shape_strength", 20);
-     area->shapeDamping    = rb_jgHashGetFloat(attr, "shape_damping", 5);
+     if(area->isKinematic)
+     {
+          area->isShapeMatching = rb_jgHashGetBool(attr, "shape_matching", true);
+          area->shapeStrength   = rb_jgHashGetFloat(attr, "shape_strength", 400);
+          area->shapeDamping    = rb_jgHashGetFloat(attr, "shape_damping", 30);
+     }
+     else
+     {
+          area->isShapeMatching = rb_jgHashGetBool(attr, "shape_matching", false);
+          area->shapeStrength   = rb_jgHashGetFloat(attr, "shape_strength", 20);
+          area->shapeDamping    = rb_jgHashGetFloat(attr, "shape_damping", 5);
+     }
 
      return self;
 }
