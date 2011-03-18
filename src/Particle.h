@@ -10,6 +10,7 @@ typedef struct jgParticle
      jgVector2 prevPos;
      jgVector2 velocity;
      jgVector2 force;
+     jgVector2 constantForce;
 
      float     friction;
 

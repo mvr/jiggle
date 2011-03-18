@@ -13,6 +13,9 @@ VECTOR_GET(rb_jgParticleGetVelocity, PARTICLE, velocity)
 VECTOR_GET(rb_jgParticleGetForce, PARTICLE, force)
 VECTOR_SET(rb_jgParticleSetForce, PARTICLE, force)
 
+VECTOR_GET(rb_jgParticleGetConstantForce, PARTICLE, constantForce)
+VECTOR_SET(rb_jgParticleSetConstantForce, PARTICLE, constantForce)
+
 FLOAT_GET(rb_jgParticleGetFriction, PARTICLE, friction)
 FLOAT_SET(rb_jgParticleSetFriction, PARTICLE, friction)
 
@@ -69,6 +72,9 @@ void Init_jgParticle()
 
      rb_define_method(c_jgParticle, "force" , rb_jgParticleGetForce, 0);
      rb_define_method(c_jgParticle, "force=", rb_jgParticleSetForce, 1);
+
+     rb_define_method(c_jgParticle, "constant_force" , rb_jgParticleGetConstantForce, 0);
+     rb_define_method(c_jgParticle, "constant_force=", rb_jgParticleSetConstantForce, 1);
 
      rb_define_method(c_jgParticle, "friction",    rb_jgParticleGetFriction, 0);
      rb_define_method(c_jgParticle, "friction=",   rb_jgParticleSetFriction, 1);

@@ -17,6 +17,7 @@ jgParticle *jgParticleInit(jgParticle *particle, float mass, jgVector2 pos)
      particle->prevPos = pos;
      particle->velocity = jgVector2Zero();
      particle->force = jgVector2Zero();
+     particle->constantForce = jgVector2Zero();
 
      particle->friction  = 0.8;
 
@@ -69,7 +70,8 @@ void jgParticleIntegrate(jgParticle *point, float elapsed)
           
           point->velocity = jgVector2Divide(jgVector2Subtract(point->position, point->prevPos), elapsed);
      }
-     point->force = jgVector2Zero();
+     //     point->force = jgVector2Zero();
+     point->force = point->constantForce;
 }
 
 jgVector2 jgParticleAreaNormal(jgParticle *particle)
