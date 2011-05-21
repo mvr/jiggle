@@ -2,10 +2,12 @@
 
 VALUE c_jgArea;
 
-VECTOR_GET(rb_jgAreaCenterOfMass, AREA, centerOfMass)
-VECTOR_GET(rb_jgAreaPosition,     AREA, derivedPosition)
-VECTOR_GET(rb_jgAreaVelocity,     AREA, derivedVelocity)
-FLOAT_GET( rb_jgAreaAngle,        AREA, derivedAngle)
+VECTOR_GET(rb_jgAreaCenterOfMass,    AREA, centerOfMass)
+VECTOR_GET(rb_jgAreaGetPosition,     AREA, derivedPosition)
+VECTOR_SET(rb_jgAreaSetPosition,     AREA, derivedPosition)
+VECTOR_GET(rb_jgAreaVelocity,        AREA, derivedVelocity)
+FLOAT_GET( rb_jgAreaGetAngle,        AREA, derivedAngle)
+FLOAT_SET( rb_jgAreaSetAngle,        AREA, derivedAngle)
 
 BOOL_GET(rb_jgAreaGetIsShapeMatching, AREA, isShapeMatching)
 BOOL_SET(rb_jgAreaSetIsShapeMatching, AREA, isShapeMatching)
@@ -103,9 +105,11 @@ void Init_jgArea()
      rb_define_method(c_jgArea, "area",             rb_jgAreaArea, 0);
      rb_define_method(c_jgArea, "center_of_mass",   rb_jgAreaCenterOfMass, 0);
 
-     rb_define_method(c_jgArea, "position",   rb_jgAreaPosition, 0);
+     rb_define_method(c_jgArea, "position",   rb_jgAreaGetPosition, 0);
+     rb_define_method(c_jgArea, "position=",  rb_jgAreaSetPosition, 1);
      rb_define_method(c_jgArea, "velocity",   rb_jgAreaVelocity, 0);
-     rb_define_method(c_jgArea, "angle",      rb_jgAreaAngle, 0);
+     rb_define_method(c_jgArea, "angle",      rb_jgAreaGetAngle, 0);
+     rb_define_method(c_jgArea, "angle=",     rb_jgAreaSetAngle, 1);
 
      rb_define_method(c_jgArea, "shape_matching?",    rb_jgAreaGetIsShapeMatching, 0);
      rb_define_method(c_jgArea, "shape_matching=",    rb_jgAreaSetIsShapeMatching, 1);
