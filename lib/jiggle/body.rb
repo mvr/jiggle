@@ -38,8 +38,8 @@ module Jiggle
         spring.strength /= 1.5
         @springs << spring
       end
-
-      @areas = [Area.new(@particles)]
+      
+      @areas = [Area.new(@particles, attr)]
     end
   end
 end
