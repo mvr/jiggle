@@ -164,11 +164,21 @@ void jgAreaMatchShape(jgArea *area)
           rigidLocation = jgVector2Rotate(rigidLocation, area->derivedAngle);
           rigidLocation = jgVector2Add(rigidLocation, area->derivedPosition);
 
-          jgSpringDragTowards(currentParticle,
-                              rigidLocation,
-                              0,
-                              area->shapeStrength,
-                              area->shapeDamping);
+          jgVector2 BtoA = jgVector2Subtract(currentParticle->position, rigidLocation);
+          float dist = -jgVector2Length(BtoA);
+          BtoA = jgVector2Normalize(BtoA);
+
+          jgVector2 relVel = jgVector2Subtract(currentParticle->velocity, area->derivedVelocity);
+          float parallelVelocity = jgVector2Dot(relVel, BtoA);
+          
+          jgVector2 force = jgVector2Multiply(BtoA, (dist * area->shapeStrength) - (parallelVelocity * area->shapeDamping));
+
+          currentParticle->force = jgVector2Add(currentParticle->force, force);
+
+          jgVector2 perpendicular = jgVector2Perpendicular(BtoA);
+          float perpendicularVelocity = jgVector2Dot(relVel, perpendicular);
+          currentParticle->force = jgVector2Subtract(currentParticle->force, jgVector2Multiply(perpendicular, perpendicularVelocity * 5));
+
      }
 }
 
