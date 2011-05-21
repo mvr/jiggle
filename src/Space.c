@@ -96,17 +96,6 @@ CREATE_ADDS_AND_REMOVES(Spring,   spring)
 
 #undef CREATE_ADDS_AND_REMOVES
 
-void jgSpaceApplyFrictionTo(jgParticle *particle, jgVector2 tangent, float factor)
-{
-     jgVector2 velocity = jgVector2Subtract(particle->position, particle->prevPos);
-     jgVector2 tangentialVelocity = jgVector2Multiply(tangent, jgVector2Dot(velocity, tangent));
-
-     if(factor > 1)
-          factor = 1;
-
-     particle->prevPos = jgVector2Add(particle->prevPos, jgVector2Multiply(tangentialVelocity, factor)); 
-}
-
 void jgSpaceHandleCollisions(jgSpace *space, float timeStep)
 {
      jgCollision *collision;
@@ -121,6 +110,23 @@ void jgSpaceHandleCollisions(jgSpace *space, float timeStep)
                space->penetrationCount++;
                continue;
           }
+          
+          jgVector2 averageBVelocity = jgVector2Divide(jgVector2Add(B1->velocity, B2->velocity), 2);
+          jgVector2 relativeVelocity = jgVector2Subtract(A->velocity, averageBVelocity);
+          float relativeDot = jgVector2Dot(collision->normal, relativeVelocity);
+
+          float jDenom = 1.0/A->mass + 1.0/(B1->mass + B2->mass);
+          float elasticity = 1 + A->elasticity * (B1->elasticity + B2->elasticity) / 2;
+
+          jgVector2 numV = jgVector2Multiply(relativeVelocity, elasticity);
+          float jNumerator = -jgVector2Dot(numV, collision->normal);
+          float j = jNumerator / jDenom;
+
+          jgVector2 tangent = jgVector2Perpendicular(collision->normal);
+          float friction = A->friction * (B1->friction + B2->friction) / 2;
+
+          float fNumerator = jgVector2Dot(relativeVelocity, tangent) * friction;
+          float f = fNumerator / jDenom;
 
           if(A->mass != INFINITY)
 	  {
@@ -133,13 +139,20 @@ void jgSpaceHandleCollisions(jgSpace *space, float timeStep)
                B2->position = jgVector2Subtract(B2->position, jgVector2Multiply(collision->normal, collision->B2move));
           }
 
-          float friction = fmax(A->friction, (B1->friction + B2->friction) / 2);
-          float slowFactor =  friction * collision->penetration / timeStep;
-          jgVector2 tangent = jgVector2Perpendicular(collision->normal);
+          if(relativeDot < 0)
+          {
+               jgVector2 Achange = jgVector2Subtract(jgVector2Multiply(collision->normal, j / A->mass),
+                                                     jgVector2Multiply(tangent,           f / A->mass));
+               A->prevPos = jgVector2Subtract(A->prevPos, jgVector2Multiply(Achange, timeStep));
 
-          jgSpaceApplyFrictionTo(A,  tangent, slowFactor);
-          jgSpaceApplyFrictionTo(B1, tangent, slowFactor);
-          jgSpaceApplyFrictionTo(B2, tangent, slowFactor);
+               jgVector2 B1change = jgVector2Subtract(jgVector2Multiply(collision->normal, j / B1->mass * (1.0 - collision->edgeD)),
+                                                      jgVector2Multiply(tangent,           f / B1->mass * (1.0 - collision->edgeD)));
+               B1->prevPos = jgVector2Add(B1->prevPos, jgVector2Multiply(B1change, timeStep));
+
+               jgVector2 B2change = jgVector2Subtract(jgVector2Multiply(collision->normal, j / B2->mass * collision->edgeD),
+                                                      jgVector2Multiply(tangent,           f / B2->mass * collision->edgeD));
+               B2->prevPos = jgVector2Add(B2->prevPos, jgVector2Multiply(B2change, timeStep));
+          }
      }
      jgListClear(space->pendingCollisions);
 }

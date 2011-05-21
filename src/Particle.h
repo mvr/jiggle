@@ -13,6 +13,7 @@ typedef struct jgParticle
      jgVector2 constantForce;
 
      float     friction;
+     float     elasticity;
 
      bool      collidable;
      bool      floating;
