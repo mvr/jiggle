@@ -8,6 +8,7 @@ LIBRARY      = 'libjiggle.a'
 CCOPTIONS    = '-std=c99 -Werror -Wall -pedantic -I. -I.. -Isrc -O3'
 
 CLEAN.include(OBJECTS)
+CLEAN.include(FileList.new('ext/*.o'))
 CLEAN.include('libjiggle.a')
 
 task :default => :build
