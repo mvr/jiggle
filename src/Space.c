@@ -199,37 +199,39 @@ void jgSpaceStep(jgSpace *space, float timeStep)
 
      jgQuadtree *tree = jgQuadtreeNew(space->areas);
 
-     jgArea *area;
      jgParticle *particle;
      JG_LIST_FOREACH(space->particles, particle)
      {
           if(!particle->collidable)
                continue;
 
-          jgList *candidates = jgQuadtreeCandidates(tree, particle->position);
-          JG_LIST_FOREACH2(candidates, area)
+          void jgSpaceEachCandidate(jgArea *area)
           {
                if(jgListContains(area->particles, particle))
-                    continue; 
+                    return;
 
                if(!jgAABBContains(area->aabb, particle->position))
-                    continue;
+                    return;
 
                if(!jgAreaContains(area, particle->position))
-                    continue;
+                    return;
 
                if(!area->isValid)
-                    continue;
+                    return;
 
                jgCollision *collision = jgCollisionFind(area, particle);
 
                jgListAdd(space->collisions, collision);
-               jgListAdd(space->pendingCollisions, collision);
+               jgListAdd(space->pendingCollisions, collision);               
           }
-          jgListFree(candidates);
+
+          jgQuadtreeEachCandidate(tree, particle->position, jgSpaceEachCandidate);
      }
 
      jgQuadtreeFree(tree);
 
      jgSpaceHandleCollisions(space, timeStep);
 }
+
+
+

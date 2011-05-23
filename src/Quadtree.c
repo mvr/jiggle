@@ -95,27 +95,21 @@ void jgQuadtreeFree(jgQuadtree *tree)
      free(tree);
 }
 
-jgList *jgQuadtreeCandidates(jgQuadtree *tree, jgVector2 point)
+void jgQuadtreeEachCandidate(jgQuadtree *tree, jgVector2 point, void (callback)(jgArea *area))
 {
-     jgList *results = jgListDuplicate(tree->items);
+     jgArea *currentArea;
+     JG_LIST_FOREACH(tree->items, currentArea)
+     {
+          callback(currentArea);
+     }
      jgVector2 center = tree->center;
-     
-     jgList *subitems = NULL;
 
      if(tree->nw && point.x <= center.x && point.y <= center.y)
-          subitems = jgQuadtreeCandidates(tree->nw, point);
+          jgQuadtreeEachCandidate(tree->nw, point, callback);
      if(tree->sw && point.x <= center.x && point.y >= center.y)
-          subitems = jgQuadtreeCandidates(tree->sw, point);
+          jgQuadtreeEachCandidate(tree->sw, point, callback);
      if(tree->ne && point.x >= center.x && point.y <= center.y)
-          subitems = jgQuadtreeCandidates(tree->ne, point);
+          jgQuadtreeEachCandidate(tree->ne, point, callback);
      if(tree->se && point.x >= center.x && point.y >= center.y)
-          subitems = jgQuadtreeCandidates(tree->se, point);
-
-     if(subitems)
-     {
-          jgListAppend(results, subitems);
-          jgListFree(subitems);
-     }
-
-     return results;
+          jgQuadtreeEachCandidate(tree->se, point, callback);
 }

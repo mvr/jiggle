@@ -12,6 +12,6 @@ typedef struct jgQuadtree
 
 extern jgQuadtree *jgQuadtreeNew(jgList *areas);
 extern void        jgQuadtreeFree(jgQuadtree *tree);
-extern jgList     *jgQuadtreeCandidates(jgQuadtree *tree, jgVector2 point);
+extern void        jgQuadtreeEachCandidate(jgQuadtree *tree, jgVector2 point, void (callback)(jgArea *area));
 
 #endif
