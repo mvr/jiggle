@@ -9,7 +9,7 @@ static jgQuadtree *jgQuadtreeBuild(jgList *areas, int depth, jgAABB bounds)
      tree->ne = tree->nw = tree->se = tree->sw = NULL;
      
      depth--;
-     if(depth == 0)
+     if(depth == 0 || areas->length == 1)
      {
           tree->items = jgListDuplicate(areas);
           return tree;
