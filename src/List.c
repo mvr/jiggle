@@ -39,14 +39,6 @@ void jgListFree(jgList *list)
      free(list);
 }
 
-void *jgListGet(jgList *list, int position)
-{
-     if(position < list->length)
-          return list->arr[position];
-     else
-          return NULL;
-}
-
 void jgListSet(jgList *list, int position, void* data)
 {
      if(position < list->length)

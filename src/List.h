@@ -16,7 +16,7 @@ extern jgList  *jgListDuplicate(jgList *list);
 extern void     jgListClear(jgList *list);
 extern void     jgListFree(jgList *list);
 
-extern void    *jgListGet(jgList *list, int position);
+static inline void *jgListGet(jgList *list, int position) { return list->arr[position]; }
 extern void     jgListSet(jgList *list, int position, void* data);
 
 extern void     jgListInsert(jgList *list, int position, void *data);
