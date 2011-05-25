@@ -80,24 +80,29 @@ bool jgAreaContains(jgArea *area, jgVector2 point)
 {
      if(!jgAABBContains(area->aabb, point))
           return false;
-     
-     // Draw a line from the point to a point known to be outside the area.
-     // Count the number of lines in the polygon it intersects. If that
-     // number is odd, we are inside.  If it's even, we are outside.
-
-     // out is guarenteed to be outside the shape.
-     jgVector2 out = jgVector2Add(area->aabb.max, jgv(0, 1));
 
      int inside = false;
      jgParticle *currentParticle;
-     jgParticle *nextParticle;
-     JG_LIST_FOREACH_PAIR(area->particles, currentParticle, nextParticle)
+     jgVector2 new, old, p1, p2;
+     old = ((jgParticle *)area->particles->arr[area->particles->length - 1])->position; // last
+     JG_LIST_FOREACH(area->particles, currentParticle)
      {
-          jgVector2 start = currentParticle->position;
-          jgVector2 end = nextParticle->position;
-
-          if(jgVector2Intersect(point, out, start, end))
+          new = currentParticle->position;
+          if(new.x > old.x)
+          {
+               p1 = old;
+               p2 = new;
+          } 
+          else
+          {
+               p1 = new;
+               p2 = old;
+          }
+          if ((new.x < point.x) == (point.x <= old.x)
+           && (point.y - p1.y) * (p2.x - p1.x)
+            < (p2.y - p1.y) * (point.x - p1.x)) 
                inside = !inside;
+          old = new;
      }
 
      return inside;
